@@ -2,10 +2,10 @@
 definePageMeta({
   alias: "/",
 });
-
-const email = localStorage.getItem("email");
 </script>
 
 <template>
-  <div>You're in {{ email }}</div>
+  <div>
+    <Main></Main>
+  </div>
 </template>

@@ -1,0 +1,6 @@
+{
+  "name": "capim__main",
+  "dependencies": {
+    "ky": "^0.32.2"
+  }
+}

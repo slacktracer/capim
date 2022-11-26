@@ -1,20 +1,15 @@
 <script lang="ts" setup>
-const config = useRuntimeConfig();
+import { navigateTo, ref } from "#imports";
 
-const password = ref("");
-const username = ref("");
+import { useStore } from "~/store/use-store.js";
+
+const store = useStore();
+
+const password = ref("???");
+const username = ref("thiago");
 
 const login = async () => {
-  const response = await $fetch("/authentication/login", {
-    baseURL: config.public.baseURL,
-    body: {
-      password: password.value,
-      username: username.value,
-    },
-    method: "POST",
-  });
-
-  localStorage.setItem("email", response.email);
+  await store.login({ password, username });
 
   navigateTo("/");
 };
@@ -27,7 +22,7 @@ const login = async () => {
         <label for="username" class="form-label"> Username </label>
 
         <input
-          aria-describedby="emailHelp"
+          autocomplete="username"
           class="form-control"
           id="username"
           type="text"
@@ -39,6 +34,7 @@ const login = async () => {
         <label for="password" class="form-label"> Password </label>
 
         <input
+          autocomplete="current-password"
           class="form-control"
           id="password"
           type="password"

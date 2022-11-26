@@ -1,0 +1,3 @@
+<template>
+  <Balances></Balances>
+</template>

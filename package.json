@@ -1,20 +1,7 @@
 {
-  "private": true,
+  "name": "capim",
   "scripts": {
-    "build": "nuxt build",
-    "dev": "nuxt dev",
-    "generate": "nuxt generate",
-    "preview": "nuxt preview",
-    "postinstall": "nuxt prepare"
+    "start": "npm run dev --workspace gui"
   },
-  "devDependencies": {
-    "@types/bootstrap": "^5.2.6",
-    "nuxt": "3.0.0-rc.13"
-  },
-  "dependencies": {
-    "@pinia/nuxt": "^0.4.3",
-    "bootstrap": "^5.2.2",
-    "pinia": "^2.0.23",
-    "prettier": "^2.7.1"
-  }
+  "workspaces": ["gui", "main", "tests"]
 }
