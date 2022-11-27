@@ -1,3 +1,3 @@
 <template>
-  <Balances></Balances>
+  <Balances />
 </template>

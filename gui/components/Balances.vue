@@ -8,7 +8,7 @@ store.getBalances();
 
 <template>
   <div>
-    <h1>Balances 2</h1>
+    <h1>Balances</h1>
 
     <pre>{{ store.state.balances }}</pre>
   </div>

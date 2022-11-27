@@ -1,4 +1,6 @@
 <script lang="ts" setup>
+import { definePageMeta } from "#imports";
+
 definePageMeta({
   layout: "login",
 });
@@ -6,6 +8,6 @@ definePageMeta({
 
 <template>
   <div>
-    <Login></Login>
+    <Login />
   </div>
 </template>

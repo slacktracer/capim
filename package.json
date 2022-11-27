@@ -1,7 +1,17 @@
 {
+  "dependencies": {
+    "husky": "^8.0.0",
+    "lint-staged": "^13.0.4"
+  },
   "name": "capim",
   "scripts": {
-    "start": "npm run dev --workspace gui"
+    "lint-staged": "lint-staged",
+    "start": "npm run dev --workspace gui",
+    "prepare": "husky install"
   },
-  "workspaces": ["gui", "main", "tests"]
+  "workspaces": [
+    "gui",
+    "main",
+    "tests"
+  ]
 }

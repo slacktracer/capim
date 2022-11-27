@@ -5,7 +5,7 @@ const store = useStore();
 
 const getAccounts = async () => {
   await store.getAccounts();
-}
+};
 </script>
 
 <template>

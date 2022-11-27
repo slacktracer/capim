@@ -1,6 +1,5 @@
-import type { Ref } from "vue";
-
 import { defineStore } from "pinia";
+import type { Ref } from "vue";
 import { reactive } from "vue";
 
 import * as main from "../../main/src/main.js";
@@ -13,7 +12,7 @@ type StoreState = {
   accounts: Account[];
   balances: Balance[];
   user: User;
-}
+};
 
 export const useStore = defineStore("main", () => {
   const state: StoreState = reactive({
@@ -27,7 +26,6 @@ export const useStore = defineStore("main", () => {
 
     state.accounts = accounts as Account[];
   };
-
 
   const getBalances = async () => {
     const balances = await main.getBalances();

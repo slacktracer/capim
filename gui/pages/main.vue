@@ -1,4 +1,6 @@
 <script lang="ts" setup>
+import { definePageMeta } from "#imports";
+
 definePageMeta({
   alias: "/",
 });
@@ -6,6 +8,6 @@ definePageMeta({
 
 <template>
   <div>
-    <Main></Main>
+    <Main />
   </div>
 </template>
