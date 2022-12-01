@@ -7,11 +7,13 @@ import * as main from "../core/main.js";
 type Account = Record<string, any>;
 type Balance = Record<string, any>;
 type User = Record<string, any>;
+type Operation = Record<string, any>;
 type Tag = Record<string, any>;
 
 type StoreState = {
   accounts: Account[];
   balances: Balance[];
+  operations: Operation[];
   tags: Tag[];
   user: User;
 };
@@ -20,6 +22,7 @@ export const useStore = defineStore("main", () => {
   const state: StoreState = reactive({
     accounts: [],
     balances: [],
+    operations: [],
     tags: [],
     user: JSON.parse(main.storage.getItem("user") || "{}"),
   });
@@ -36,10 +39,14 @@ export const useStore = defineStore("main", () => {
     state.balances = balances as Balance[];
   };
 
+  const getOperations = async () => {
+    const operations = await main.getOperations();
+
+    state.operations = operations as Operation[];
+  };
+
   const getTags = async () => {
     const tags = await main.getTags();
-
-    console.log(3);
 
     state.tags = tags as Tag[];
   };
@@ -68,6 +75,7 @@ export const useStore = defineStore("main", () => {
   return {
     getAccounts,
     getBalances,
+    getOperations,
     getTags,
     login,
     logout,
