@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import { navigateTo, ref } from "#imports";
 
-import { useStore } from "~/store/use-store.js";
+import { useStore } from "~/stores/main-store.js";
 
 const store = useStore();
 
