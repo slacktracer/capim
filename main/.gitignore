@@ -1,2 +1,10 @@
+*.log*
+.cache
+.env
 .eslintcache
+.idea
+.nitro
+.nuxt
+.output
+dist
 node_modules

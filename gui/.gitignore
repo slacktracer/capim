@@ -1,9 +1,0 @@
-*.log*
-.cache
-.env
-.eslintcache
-.nitro
-.nuxt
-.output
-dist
-node_modules

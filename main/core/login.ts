@@ -1,7 +1,7 @@
 import ky from "ky";
 
 import { config } from "./config.js";
-import {storage} from "./storage.js";
+import { storage } from "./storage.js";
 
 export const login = async ({
   password,
@@ -12,8 +12,8 @@ export const login = async ({
 }) => {
   const user = await ky(`${config.baseURL}/authentication/login`, {
     json: {
-      password: password,
-      username: username,
+      password,
+      username,
     },
     credentials: "include",
     method: "POST",

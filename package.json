@@ -6,11 +6,10 @@
   "name": "capim",
   "scripts": {
     "lint-staged": "lint-staged",
-    "start": "npm run dev --workspace gui",
-    "prepare": "husky install"
+    "prepare": "husky install",
+    "start": "npm run dev --workspace main"
   },
   "workspaces": [
-    "gui",
     "main",
     "tests"
   ]

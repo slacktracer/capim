@@ -1,6 +1,6 @@
 {
   "*.js": ["eslint --cache --fix", "prettier --write"],
   "*.json": "prettier --write",
-  "*.vue": "nuxi typecheck >",
-  "*.ts": ["eslint --cache --fix", "prettier --write", "tsc-files --noEmit"]
+  "*.ts": ["eslint --cache --fix", "prettier --write", "tsc-files --noEmit"],
+  "*.vue": "nuxi typecheck ."
 }

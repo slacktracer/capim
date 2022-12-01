@@ -2,7 +2,7 @@ import { defineStore } from "pinia";
 import type { Ref } from "vue";
 import { reactive } from "vue";
 
-import * as main from "../../main/src/main.js";
+import * as main from "../core/main.js";
 
 type Account = Record<string, any>;
 type Balance = Record<string, any>;

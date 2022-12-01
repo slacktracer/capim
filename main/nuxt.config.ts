@@ -1,4 +1,5 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
+// @ts-ignore
 export default defineNuxtConfig({
   css: ["bootstrap/dist/css/bootstrap.min.css"],
   imports: {
