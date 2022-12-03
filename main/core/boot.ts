@@ -1,11 +1,11 @@
-import { config } from "~/core/config.js";
-import { getAccounts } from "~/core/get-accounts.js";
-import { getTags } from "~/core/get-tags.js";
-import { storage } from "~/core/storage.js";
-import type { State } from "~/core/types/State.js";
-import type { TagKey } from "~/core/types/TagKey.js";
-import type { TagValue } from "~/core/types/TagValue.js";
-import { isUserLoggedIn } from "~/core/utils/is-user-logged-in.js";
+import { config } from "./config.js";
+import { getAccounts } from "./get-accounts.js";
+import { getTags } from "./get-tags.js";
+import { storage } from "./storage.js";
+import type { State } from "./types/State.js";
+import type { TagKey } from "./types/TagKey.js";
+import type { TagValue } from "./types/TagValue.js";
+import { isUserLoggedIn } from "./utils/is-user-logged-in.js";
 
 export const boot = async ({
   runtimeConfig,

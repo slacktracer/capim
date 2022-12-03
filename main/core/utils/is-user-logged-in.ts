@@ -1,5 +1,5 @@
-import { storage } from "~/core/storage.js";
-import { getCookies } from "~/core/utils/get-cookies.js";
+import { storage } from "../storage.js";
+import { getCookies } from "../utils/get-cookies.js";
 
 export const isUserLoggedIn = (): boolean => {
   const cookies = getCookies();

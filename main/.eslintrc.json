@@ -18,6 +18,17 @@
   },
   "plugins": ["@typescript-eslint", "simple-import-sort"],
   "rules": {
+    "no-restricted-imports": [
+      "error",
+      {
+        "patterns": [
+          {
+            "group": ["*/core/*", "!*/core/main.js"],
+            "message": "All imports from core must be made through core/main.js."
+          }
+        ]
+      }
+    ],
     "simple-import-sort/imports": "error",
     "simple-import-sort/exports": "error"
   }

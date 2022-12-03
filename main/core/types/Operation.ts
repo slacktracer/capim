@@ -1,5 +1,5 @@
-import { TagKey } from "~/core/types/TagKey.js";
-import { TagValue } from "~/core/types/TagValue.js";
+import { TagKey } from "./TagKey.js";
+import { TagValue } from "./TagValue.js";
 
 export type Operation = {
   accountID: string;

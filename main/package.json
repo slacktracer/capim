@@ -19,7 +19,7 @@
   "name": "capim__main",
   "scripts": {
     "build": "nuxt build",
-    "check-types": "nuxi typecheck .",
+    "check-types": "tsc-files --noEmit . && nuxi typecheck .",
     "dev": "nuxt dev",
     "format": "prettier --write .",
     "generate": "nuxt generate",
