@@ -2,8 +2,6 @@
 import { useStore } from "~/stores/main-store.js";
 
 const store = useStore();
-
-store.getAccounts();
 </script>
 
 <template>

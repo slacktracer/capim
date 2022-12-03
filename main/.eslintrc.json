@@ -5,10 +5,10 @@
   },
   "extends": [
     "eslint:recommended",
-    "prettier",
     "plugin:@typescript-eslint/eslint-recommended",
     "plugin:@typescript-eslint/recommended",
-    "@nuxtjs/eslint-config-typescript"
+    "@nuxtjs/eslint-config-typescript",
+    "prettier"
   ],
   "parser": "vue-eslint-parser",
   "parserOptions": {

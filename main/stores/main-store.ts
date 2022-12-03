@@ -4,51 +4,52 @@ import { reactive } from "vue";
 
 import * as main from "../core/main.js";
 
-type Account = Record<string, any>;
-type Balance = Record<string, any>;
-type User = Record<string, any>;
-type Operation = Record<string, any>;
-type Tag = Record<string, any>;
-
-type StoreState = {
-  accounts: Account[];
-  balances: Balance[];
-  operations: Operation[];
-  tags: Tag[];
-  user: User;
+type MainStore = {
+  getAccounts: () => Promise<void>;
+  getBalances: () => Promise<void>;
+  getOperations: () => Promise<void>;
+  getTags: () => Promise<void>;
+  login: (args: {
+    password: Ref<string>;
+    username: Ref<string>;
+  }) => Promise<void>;
+  logout: () => Promise<void>;
+  state: main.State;
 };
 
 export const useStore = defineStore("main", () => {
-  const state: StoreState = reactive({
+  const state: main.State = reactive({
     accounts: [],
     balances: [],
     operations: [],
-    tags: [],
-    user: JSON.parse(main.storage.getItem("user") || "{}"),
+    tagKeysByID: [],
+    tags: { keys: [], values: [] },
+    tagValuesByID: [],
+    user: null,
   });
 
   const getAccounts = async () => {
     const accounts = await main.getAccounts();
 
-    state.accounts = accounts as Account[];
+    state.accounts = accounts as main.Account[];
   };
 
   const getBalances = async () => {
     const balances = await main.getBalances();
 
-    state.balances = balances as Balance[];
+    state.balances = balances as main.Balance[];
   };
 
   const getOperations = async () => {
     const operations = await main.getOperations();
 
-    state.operations = operations as Operation[];
+    state.operations = operations as main.Operation[];
   };
 
   const getTags = async () => {
     const tags = await main.getTags();
 
-    state.tags = tags as Tag[];
+    state.tags = tags as { keys: main.TagKey[]; values: main.TagValue[] };
   };
 
   const login = async ({
@@ -63,13 +64,13 @@ export const useStore = defineStore("main", () => {
       username: username.value,
     });
 
-    state.user = user as User;
+    state.user = user as main.User;
   };
 
   const logout = async () => {
     await main.logout();
 
-    state.user = {};
+    state.user = {} as main.User;
   };
 
   return {
@@ -80,5 +81,5 @@ export const useStore = defineStore("main", () => {
     login,
     logout,
     state,
-  };
+  } as MainStore;
 });

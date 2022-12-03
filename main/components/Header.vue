@@ -23,7 +23,7 @@ const logout = async () => {
       </ul>
     </nav>
     <p>
-      username: {{ store.state.user.username }} |
+      username: {{ store.state.user?.username }} |
       <a @click.prevent="logout" href="#">Logout</a>
     </p>
   </header>
