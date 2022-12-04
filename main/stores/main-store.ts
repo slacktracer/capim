@@ -3,6 +3,7 @@ import type { Ref } from "vue";
 import { reactive } from "vue";
 
 import * as main from "../core/main.js";
+import { getMainStoreDefaultState } from "./get-main-store-default-state.js";
 
 type MainStore = {
   getAccounts: () => Promise<void>;
@@ -18,15 +19,7 @@ type MainStore = {
 };
 
 export const useStore = defineStore("main", () => {
-  const state: main.State = reactive({
-    accounts: [],
-    balances: [],
-    operations: [],
-    tagKeysByID: [],
-    tags: { keys: [], values: [] },
-    tagValuesByID: [],
-    user: null,
-  });
+  const state: main.State = reactive(getMainStoreDefaultState());
 
   const getAccounts = async () => {
     const accounts = await main.getAccounts();
@@ -70,7 +63,7 @@ export const useStore = defineStore("main", () => {
   const logout = async () => {
     await main.logout();
 
-    state.user = {} as main.User;
+    Object.assign(state, getMainStoreDefaultState());
   };
 
   return {
