@@ -6,5 +6,5 @@ export const isUserLoggedIn = (): boolean => {
 
   const rawUser = storage.getItem("user");
 
-  return cookies.secret.length === 36 && rawUser !== null;
+  return cookies.secret?.length === 36 && rawUser !== null;
 };
