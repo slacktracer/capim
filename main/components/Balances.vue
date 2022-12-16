@@ -10,6 +10,11 @@ store.getBalances();
   <div>
     <h1>Balances</h1>
 
+    <div v-for="balance in store.state.balances">
+      {{ store.state.accountsByID[balance.accountID].name }} |
+      {{ balance.total }}
+    </div>
+
     <pre>{{ store.state.balances }}</pre>
   </div>
 </template>

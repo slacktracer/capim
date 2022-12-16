@@ -1,11 +1,12 @@
 import { defineStore } from "pinia";
 import type { Ref } from "vue";
-import { reactive } from "vue";
+import { reactive, readonly } from "vue";
 
 import * as main from "../core/main.js";
 import { getMainStoreDefaultState } from "./get-main-store-default-state.js";
 
 type MainStore = {
+  boot: () => Promise<void>;
   getAccounts: () => Promise<void>;
   getBalances: () => Promise<void>;
   getOperations: () => Promise<void>;
@@ -20,6 +21,14 @@ type MainStore = {
 
 export const useStore = defineStore("main", () => {
   const state: main.State = reactive(getMainStoreDefaultState());
+
+  const boot = async () => {
+    const initialState = await main.boot();
+
+    if (initialState !== false) {
+      Object.assign(state, initialState);
+    }
+  };
 
   const getAccounts = async () => {
     const accounts = await main.getAccounts();
@@ -52,12 +61,12 @@ export const useStore = defineStore("main", () => {
     password: Ref<string>;
     username: Ref<string>;
   }) => {
-    const user = await main.login({
+    await main.login({
       password: password.value,
       username: username.value,
     });
 
-    state.user = user as main.User;
+    await boot();
   };
 
   const logout = async () => {
@@ -67,12 +76,13 @@ export const useStore = defineStore("main", () => {
   };
 
   return {
+    boot,
     getAccounts,
     getBalances,
     getOperations,
     getTags,
     login,
     logout,
-    state,
+    state: readonly(state),
   } as MainStore;
 });

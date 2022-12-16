@@ -7,6 +7,7 @@ import { User } from "./User.js";
 
 export type State = {
   accounts: Account[];
+  accountsByID: any;
   balances: Balance[];
   operations: Operation[];
   tagKeysByID: any;

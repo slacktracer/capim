@@ -6,11 +6,9 @@ import { useStore } from "./stores/main-store.js";
 
 const runtimeConfig = useRuntimeConfig();
 
-const store = useStore();
+main.loadEnvironmentVariables({ runtimeConfig });
 
-const initialState = await main.boot({ runtimeConfig });
-
-Object.assign(store.state, initialState);
+await useStore().boot();
 </script>
 
 <template>
