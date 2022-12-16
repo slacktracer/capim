@@ -2,8 +2,8 @@ export const getMainStoreDefaultState = () => ({
   accounts: [],
   balances: [],
   operations: [],
-  tagKeysByID: [],
+  tagKeysByID: {},
   tags: { keys: [], values: [] },
-  tagValuesByID: [],
+  tagValuesByID: {},
   user: null,
 });
