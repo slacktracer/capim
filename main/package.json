@@ -20,11 +20,12 @@
   "scripts": {
     "build": "nuxt build",
     "check-types": "tsc-files --noEmit . && nuxi typecheck .",
-    "dev": "nuxt dev",
+    "dev": "nuxt dev --https --ssl-cert ../localhost.pem --ssl-key ../localhost-key.pem",
     "format": "prettier --write .",
     "generate": "nuxt generate",
     "lint": "eslint --cache --fix .",
     "lint-staged": "lint-staged",
+    "no-https": "nuxt dev",
     "postinstall": "nuxt prepare",
     "preview": "nuxt preview"
   },
