@@ -33,4 +33,9 @@ export default defineNuxtConfig({
   runtimeConfig: { public: { baseURL: "" } },
   sourcemap: { client: true },
   ssr: false,
+  vite: {
+    define: {
+      __VUE_OPTIONS_API__: false,
+    },
+  },
 });
