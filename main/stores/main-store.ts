@@ -2,6 +2,8 @@ import { defineStore } from "pinia";
 import type { Ref } from "vue";
 import { reactive, readonly } from "vue";
 
+import { navigateTo } from "#app";
+
 import * as main from "../core/main.js";
 import { getMainStoreDefaultState } from "./get-main-store-default-state.js";
 
@@ -73,7 +75,11 @@ export const useStore = defineStore("main", () => {
     await main.logout();
 
     Object.assign(state, getMainStoreDefaultState());
+
+    navigateTo("/login");
   };
+
+  main.mainEventBus.on("logout", logout);
 
   return {
     boot,

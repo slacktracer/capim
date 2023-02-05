@@ -1,12 +1,23 @@
 import ky from "ky";
 
 import { config } from "./config.js";
+import { mainEventBus } from "./main-event-bus.js";
 
 export const getBalances = async () => {
-  const response = await ky(`${config.baseURL}/balances`, {
-    credentials: "include",
-    method: "GET",
-  }).json();
+  try {
+    const response = await ky(`${config.baseURL}/balances`, {
+      credentials: "include",
+      method: "GET",
+    }).json();
 
-  return response;
+    return response;
+  } catch (error: any) {
+    const { status } = error.response;
+
+    if (status === 401) {
+      mainEventBus.emit("logout");
+    }
+  }
+
+  return [];
 };
