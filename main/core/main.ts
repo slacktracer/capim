@@ -6,6 +6,7 @@ export { getTags } from "./get-tags.js";
 export { loadEnvironmentVariables } from "./load-environment-variables.js";
 export { login } from "./login.js";
 export { logout } from "./logout.js";
+export { mainEventBus } from "./main-event-bus.js";
 export { storage } from "./storage.js";
 export type { Account } from "./types/Account.js";
 export type { Balance } from "./types/Balance.js";
