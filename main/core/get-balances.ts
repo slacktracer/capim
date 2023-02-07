@@ -12,10 +12,12 @@ export const getBalances = async () => {
 
     return response;
   } catch (error: any) {
-    const { status } = error.response;
+    if (error.response) {
+      const { status } = error.response;
 
-    if (status === 401) {
-      mainEventBus.emit("logout");
+      if (status === 401) {
+        mainEventBus.emit("logout");
+      }
     }
   }
 
