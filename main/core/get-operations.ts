@@ -1,13 +1,14 @@
-import ky from "ky";
+import { get } from "./http/get.js";
+import { Operation } from "./types/Operation.js";
 
-import { config } from "./config.js";
+export const getOperations = async (): Promise<Operation[]> => {
+  try {
+    const response = await get(`operations`, {
+      timeout: 60000,
+    }).json();
 
-export const getOperations = async () => {
-  const response = await ky(`${config.baseURL}/operations`, {
-    credentials: "include",
-    method: "GET",
-    timeout: 60000,
-  }).json();
-
-  return response;
+    return response as Operation[];
+  } catch (error) {
+    return [];
+  }
 };
