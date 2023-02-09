@@ -1,16 +1,11 @@
-import ky from "ky";
-
-import { config } from "./config.js";
+import { post } from "./http/post.js";
 import { storage } from "./storage.js";
 import { deleteCookie } from "./utils/delete-cookie.js";
 
-export const logout = async () => {
+export const logout = () => {
   deleteCookie({ name: "secret" });
 
   storage.removeItem("user");
 
-  await ky(`${config.baseURL}/authentication/logout`, {
-    credentials: "include",
-    method: "POST",
-  });
+  post(`authentication/logout`);
 };

@@ -1,6 +1,4 @@
-import ky from "ky";
-
-import { config } from "./config.js";
+import { post } from "./http/post.js";
 import { storage } from "./storage.js";
 
 export const login = async ({
@@ -10,13 +8,11 @@ export const login = async ({
   password: string;
   username: string;
 }) => {
-  const user = await ky(`${config.baseURL}/authentication/login`, {
+  const user = await post("authentication/login", {
     json: {
       password,
       username,
     },
-    credentials: "include",
-    method: "POST",
   }).json();
 
   storage.setItem("user", JSON.stringify(user));
