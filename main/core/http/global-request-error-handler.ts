@@ -1,5 +1,5 @@
 import { mainEventBus } from "../main-event-bus.js";
-import { print } from "../utils/print.js";
+import { print } from "../print.js";
 import { abortAll } from "./abort-all.js";
 
 export const globalRequestErrorHandler = ({
