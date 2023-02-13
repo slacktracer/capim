@@ -1,7 +1,7 @@
-import ky, { type Options as KyOptions } from "ky";
+import type { Options as KyOptions } from "ky";
+import ky from "ky";
 
 import { config } from "../config.js";
-import { globalRequestErrorHandler } from "./global-request-error-handler.js";
 import { ongoingRequestsControllers } from "./ongoing-requests-controllers.js";
 
 export type Options = KyOptions;
@@ -19,13 +19,15 @@ export const makeRequest = (url: string, options: Options = {}) => {
   options.prefixUrl ??= config.baseURL;
   options.signal ??= signal;
 
-  const request = ky(url, options);
+  options.hooks = {
+    afterResponse: [
+      () => {
+        delete ongoingRequestsControllers[thisRequest];
+      },
+    ],
+  };
 
-  request
-    .catch((error) => globalRequestErrorHandler({ error, signal }))
-    .finally(() => {
-      delete ongoingRequestsControllers[thisRequest];
-    });
+  const response = ky(url, options);
 
-  return request;
+  return response;
 };
