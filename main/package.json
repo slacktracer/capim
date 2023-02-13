@@ -31,7 +31,7 @@
     "no-https": "nuxt dev",
     "postinstall": "nuxt prepare",
     "preview": "nuxt preview",
-    "s": "npm run https-dev",
+    "start-using-https": "npm run https-dev",
     "x": "npm run local-client-to-remote-server-proxy & npm run https-dev"
   },
   "type": "module",
