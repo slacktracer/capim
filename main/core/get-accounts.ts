@@ -7,12 +7,8 @@ export const getAccounts = async (): Promise<Account[]> => {
     const response = await get("accounts").json<Account[]>();
 
     return response;
-  } catch (error) {
-    const result = await mainRequestErrorHandler({ error });
-
-    if (result instanceof Error) {
-      throw result;
-    }
+  } catch (error: any) {
+    mainRequestErrorHandler({ error });
 
     return [];
   }

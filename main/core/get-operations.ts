@@ -1,14 +1,17 @@
 import { get } from "./http/get.js";
+import { mainRequestErrorHandler } from "./http/main-request-error-handler.js";
 import { Operation } from "./types/Operation.js";
 
 export const getOperations = async (): Promise<Operation[]> => {
   try {
     const response = await get(`operations`, {
       timeout: 60000,
-    }).json();
+    }).json<Operation[]>();
 
-    return response as Operation[];
-  } catch (error) {
+    return response;
+  } catch (error: any) {
+    mainRequestErrorHandler({ error });
+
     return [];
   }
 };
