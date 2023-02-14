@@ -1,25 +1,33 @@
-import { CoreError } from "../errors/core-error.js";
-import { mainEventBus } from "../main-event-bus.js";
-import { abortAll } from "./abort-all.js";
+import { log } from "../log.js";
+import { http400Handler } from "./http-400-handler.js";
+import { http401Handler } from "./http-401-handler.js";
 
-export const mainRequestErrorHandler = async ({ error }: { error: any }) => {
+const mainRequestErrorHandlerLog = log("MAIN_REQUEST_ERROR_HANDLER");
+
+export const mainRequestErrorHandler = async ({
+  error,
+}: {
+  error: { response: any; status: number };
+}) => {
   if (error.response) {
-    const { status } = error.response;
+    const { response } = error;
+
+    const { status } = response;
 
     if (status === 400) {
-      const { message } = await error.response.json();
+      await http400Handler({ response });
 
-      return new CoreError({ message }, "400 HTTP Error");
+      return;
     }
 
     if (status === 401) {
-      abortAll({ reason: "logout" });
+      http401Handler();
 
-      mainEventBus.emit("logout");
-
-      const { message } = await error.response.json();
-
-      return new CoreError({ message }, "401 HTTP Error");
+      return;
     }
+
+    mainRequestErrorHandlerLog.warn("unhandled HTTP error", status);
   }
+
+  mainRequestErrorHandlerLog.warn("unhandled unknown error", error);
 };
