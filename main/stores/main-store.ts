@@ -29,31 +29,33 @@ export const useStore = defineStore("main", () => {
 
     if (initialState !== false) {
       Object.assign(state, initialState);
+    } else {
+      await logout();
     }
   };
 
   const getAccounts = async () => {
     const accounts = await main.getAccounts();
 
-    state.accounts = accounts as main.Account[];
+    state.accounts = accounts;
   };
 
   const getBalances = async () => {
     const balances = await main.getBalances();
 
-    state.balances = balances as main.Balance[];
+    state.balances = balances;
   };
 
   const getOperations = async () => {
     const operations = await main.getOperations();
 
-    state.operations = operations as main.Operation[];
+    state.operations = operations;
   };
 
   const getTags = async () => {
     const tags = await main.getTags();
 
-    state.tags = tags as { keys: main.TagKey[]; values: main.TagValue[] };
+    state.tags = tags;
   };
 
   const login = async ({
@@ -68,15 +70,17 @@ export const useStore = defineStore("main", () => {
       username: username.value,
     });
 
+    navigateTo("/");
+
     await boot();
   };
 
   const logout = async () => {
-    await main.logout();
+    navigateTo("/login");
 
     Object.assign(state, getMainStoreDefaultState());
 
-    navigateTo("/login");
+    await main.logout();
   };
 
   main.mainEventBus.on("logout", logout);

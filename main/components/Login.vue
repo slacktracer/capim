@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { navigateTo, ref } from "#imports";
+import { ref } from "#imports";
 
 import { useStore } from "../stores/main-store.js";
 
@@ -10,8 +10,6 @@ const username = ref("thiago");
 
 const login = async () => {
   await store.login({ password, username });
-
-  navigateTo("/");
 };
 </script>
 
@@ -22,11 +20,11 @@ const login = async () => {
         <label for="username" class="form-label"> Username </label>
 
         <input
+          id="username"
+          v-model="username"
           autocomplete="username"
           class="form-control"
-          id="username"
           type="text"
-          v-model="username"
         />
       </div>
 
@@ -34,11 +32,11 @@ const login = async () => {
         <label for="password" class="form-label"> Password </label>
 
         <input
+          id="password"
+          v-model="password"
           autocomplete="current-password"
           class="form-control"
-          id="password"
           type="password"
-          v-model="password"
         />
       </div>
 
