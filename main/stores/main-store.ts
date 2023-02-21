@@ -2,90 +2,39 @@ import { defineStore } from "pinia";
 import type { Ref } from "vue";
 import { reactive, readonly } from "vue";
 
-import { navigateTo } from "#app";
-
 import * as main from "../core/main.js";
+import { MainStore } from "../types/MainStore.js";
+import * as actions from "./actions/actions.js";
 import { getMainStoreDefaultState } from "./get-main-store-default-state.js";
-
-type MainStore = {
-  boot: () => Promise<void>;
-  getAccounts: () => Promise<void>;
-  getBalances: () => Promise<void>;
-  getOperations: () => Promise<void>;
-  getTags: () => Promise<void>;
-  login: (args: {
-    password: Ref<string>;
-    username: Ref<string>;
-  }) => Promise<void>;
-  logout: () => Promise<void>;
-  state: main.State;
-};
 
 export const useStore = defineStore("main", () => {
   const state: main.State = reactive(getMainStoreDefaultState());
 
-  const boot = async () => {
-    const initialState = await main.boot();
+  const boot = () => actions.boot(state, storeActions);
 
-    if (initialState !== false) {
-      Object.assign(state, initialState);
-    } else {
-      await logout();
-    }
-  };
+  const getAccounts = () => actions.getAccounts(state);
 
-  const getAccounts = async () => {
-    const accounts = await main.getAccounts();
+  const getBalances = () => actions.getBalances(state);
 
-    state.accounts = accounts;
-  };
+  const getOperations = () => actions.getOperations(state);
 
-  const getBalances = async () => {
-    const balances = await main.getBalances();
+  const getTags = () => actions.getTags(state);
 
-    state.balances = balances;
-  };
-
-  const getOperations = async () => {
-    const operations = await main.getOperations();
-
-    state.operations = operations;
-  };
-
-  const getTags = async () => {
-    const tags = await main.getTags();
-
-    state.tags = tags;
-  };
-
-  const login = async ({
+  const login = ({
     password,
     username,
   }: {
     password: Ref<string>;
     username: Ref<string>;
-  }) => {
-    await main.login({
-      password: password.value,
-      username: username.value,
+  }) =>
+    actions.login(state, storeActions, {
+      password,
+      username,
     });
 
-    navigateTo("/");
+  const logout = () => actions.logout(state);
 
-    await boot();
-  };
-
-  const logout = async () => {
-    navigateTo("/login");
-
-    Object.assign(state, getMainStoreDefaultState());
-
-    await main.logout();
-  };
-
-  main.mainEventBus.on("logout", logout);
-
-  return {
+  const storeActions = {
     boot,
     getAccounts,
     getBalances,
@@ -93,6 +42,12 @@ export const useStore = defineStore("main", () => {
     getTags,
     login,
     logout,
+  };
+
+  main.mainEventBus.on("logout", logout);
+
+  return {
+    ...storeActions,
     state: readonly(state),
   } as MainStore;
 });
