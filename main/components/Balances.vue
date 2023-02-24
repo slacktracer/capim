@@ -1,9 +1,11 @@
 <script lang="ts" setup>
-import { useStore } from "../stores/main-store.js";
+import { useAccountsStore} from "../stores/use-accounts-store.js";
+import { useBalancesStore} from "../stores/use-balances-store.js";
 
-const store = useStore();
+const accountsStore = useAccountsStore();
+const balancesStore = useBalancesStore();
 
-store.getBalances();
+balancesStore.getBalances();
 </script>
 
 <template>
@@ -11,9 +13,9 @@ store.getBalances();
     <h1>Balances</h1>
 
     <pre>{{
-      store.state.balances.map((balance) => ({
+      balancesStore.balances.data.map((balance) => ({
         ...balance,
-        name: store.state.accountsByID[balance.accountID].name,
+        name: accountsStore.accountsByID[balance.accountID].name,
       }))
     }}</pre>
   </div>

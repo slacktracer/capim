@@ -1,15 +1,15 @@
 <script lang="ts" setup>
-import { useStore } from "../stores/main-store.js";
+import { useOperationsStore } from "../stores/use-operations-store.js";
 
-const store = useStore();
+const operationsStore = useOperationsStore();
 
-store.getOperations();
+operationsStore.getOperations();
 </script>
 
 <template>
   <div>
     <h1>Operations</h1>
 
-    <pre>{{ store.state.operations }}</pre>
+    <pre>{{ operationsStore.operations.data }}</pre>
   </div>
 </template>

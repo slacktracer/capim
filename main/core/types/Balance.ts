@@ -1,1 +1,4 @@
-export type Balance = Record<string, any>;
+export type Balance = {
+  accountID: string;
+  total: number;
+};

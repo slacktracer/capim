@@ -1,0 +1,36 @@
+import { defineStore } from "pinia";
+import { Ref } from "vue";
+
+import { navigateTo } from "#app";
+
+import * as main from "../core/main.js";
+import { useBootStore } from "./use-boot-store.js";
+
+export const useAuthenticationStore = defineStore("authentication", () => {
+  const login = async ({
+    password,
+    username,
+  }: {
+    password: Ref<string>;
+    username: Ref<string>;
+  }) => {
+    await main.login({
+      password: password.value,
+      username: username.value,
+    });
+
+    navigateTo("/");
+
+    const bootStore = useBootStore();
+
+    await bootStore.boot();
+  };
+
+  const logout = async () => {
+    navigateTo("/login");
+
+    await main.logout();
+  };
+
+  return { login, logout };
+});

@@ -1,15 +1,15 @@
 <script lang="ts" setup>
-import { ref } from "#imports";
+import { ref } from "vue";
 
-import { useStore } from "../stores/main-store.js";
+import { useAuthenticationStore } from "../stores/use-authentication-store.js";
 
-const store = useStore();
+const authenticationStore = useAuthenticationStore();
 
 const password = ref("???");
 const username = ref("thiago");
 
 const login = async () => {
-  await store.login({ password, username });
+  await authenticationStore.login({ password, username });
 };
 </script>
 

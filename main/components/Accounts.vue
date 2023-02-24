@@ -1,13 +1,13 @@
 <script lang="ts" setup>
-import { useStore } from "../stores/main-store.js";
+import { useAccountsStore} from "../stores/use-accounts-store.js";
 
-const store = useStore();
+const accountsStore = useAccountsStore();
 </script>
 
 <template>
   <div>
     <h1>Accounts</h1>
 
-    <pre>{{ store.state.accounts }}</pre>
+    <pre>{{ accountsStore.accounts.data }}</pre>
   </div>
 </template>

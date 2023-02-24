@@ -1,11 +1,14 @@
 <script lang="ts" setup>
-import { navigateTo } from "#imports";
-import { useStore } from "../stores/main-store.js";
+import { navigateTo } from "#app";
 
-const store = useStore();
+import { useAuthenticationStore } from "../stores/use-authentication-store.js";
+import { useUserStore } from "../stores/use-user-store.js";
+
+const authenticationStore = useAuthenticationStore();
+const userStore = useUserStore()
 
 const logout = async () => {
-  await store.logout();
+  await authenticationStore.logout();
 
   navigateTo("/login");
 };
@@ -23,8 +26,8 @@ const logout = async () => {
       </ul>
     </nav>
     <p>
-      username: {{ store.state.user?.username }} |
-      <a @click.prevent="logout" href="#">Logout</a>
+      username: {{ userStore.user?.username }} |
+      <a href="#" @click.prevent="logout">Logout</a>
     </p>
   </header>
 </template>

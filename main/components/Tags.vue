@@ -1,13 +1,13 @@
 <script lang="ts" setup>
-import { useStore } from "../stores/main-store.js";
+import { useTagsStore} from "../stores/use-tags-store.js";
 
-const store = useStore();
+const tagsStore = useTagsStore();
 </script>
 
 <template>
   <div>
     <h1>Tags</h1>
 
-    <pre>{{ store.state.tags }}</pre>
+    <pre>{{ tagsStore.tags.data }}</pre>
   </div>
 </template>
