@@ -12,10 +12,14 @@ balancesStore.getBalances();
   <div>
     <h1>Balances</h1>
 
+    <div v-if="balancesStore.state.balances.loading">Loading...</div>
+
+    <div v-if="balancesStore.state.balances.error.message">{{ balancesStore.state.balances.error.message }}</div>
+
     <pre>{{
-      balancesStore.balances.data.map((balance) => ({
+      balancesStore.state.balances.data.map((balance) => ({
         ...balance,
-        name: accountsStore.accountsByID[balance.accountID].name,
+        name: accountsStore.state.accountsByID[balance.accountID].name,
       }))
     }}</pre>
   </div>

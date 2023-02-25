@@ -15,7 +15,7 @@ export const getTags = async (): Promise<{
 
     return { keys, values };
   } catch (error: any) {
-    mainRequestErrorHandler({ error });
+    await mainRequestErrorHandler({ error });
 
     return { keys: [], values: [] };
   }

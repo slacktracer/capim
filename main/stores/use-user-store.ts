@@ -16,7 +16,7 @@ export const useUserStore = defineStore("user", () => {
     user.value = undefined;
   };
 
-  main.mainEventBus.on("logout", $reset);
+  main.mainEventBus.on("reset-all", $reset);
 
   return { setUser, user, $reset };
 });

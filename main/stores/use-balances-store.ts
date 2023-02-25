@@ -1,50 +1,54 @@
 import { defineStore } from "pinia";
-import type { Ref } from "vue";
-import { readonly, ref } from "vue";
+import { reactive, readonly } from "vue";
 
+import type { Balance } from "../core/main.js";
 import * as main from "../core/main.js";
-import { Balance } from "../core/main.js";
 
-type BalanceStoreBalances = {
-  data: Balance[];
-  error: {
-    data: Record<string, unknown>;
-    message: string;
+type BalancesStoreState = {
+  balances: {
+    data: Balance[];
+    error: {
+      data: Record<string, unknown>;
+      message: string;
+    };
+    loading: boolean;
   };
 };
 
-export const useBalancesStore = defineStore("balances", () => {
-  const balances: Ref<BalanceStoreBalances> = ref({
+const getInitialBalancesStoreState = () => ({
+  balances: {
     data: [],
     error: {
       data: {},
       message: "",
     },
-  });
+    loading: false,
+  },
+});
+
+export const useBalancesStore = defineStore("balances", () => {
+  const state: BalancesStoreState = reactive(getInitialBalancesStoreState());
 
   const getBalances = async () => {
     try {
-      balances.value.data = await main.getBalances();
+      state.balances.loading = true;
 
-      balances.value.error = { data: {}, message: "" };
+      state.balances.data = await main.getBalances();
+
+      state.balances.error = getInitialBalancesStoreState().balances.error;
     } catch (error: unknown) {
       if (error instanceof Error) {
-        balances.value.error.message = error.message;
+        state.balances.error.message = error.message;
       }
+    } finally {
+      state.balances.loading = false;
     }
   };
 
-  const $reset = () => {
-    balances.value = {
-      data: [],
-      error: {
-        data: {},
-        message: "",
-      },
-    };
-  };
+  const $reset = () =>
+    void Object.assign(state, getInitialBalancesStoreState());
 
-  main.mainEventBus.on("logout", $reset);
+  main.mainEventBus.on("reset-all", $reset);
 
-  return { balances: readonly(balances), getBalances, $reset };
+  return { state: readonly(state), getBalances, $reset };
 });

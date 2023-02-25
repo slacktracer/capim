@@ -8,7 +8,7 @@ export const getBalances = async (): Promise<Balance[]> => {
 
     return response;
   } catch (error: any) {
-    mainRequestErrorHandler({ error });
+    await mainRequestErrorHandler({ error });
 
     return [];
   }

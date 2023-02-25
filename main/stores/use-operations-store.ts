@@ -44,7 +44,7 @@ export const useOperationsStore = defineStore("operations", () => {
     };
   };
 
-  main.mainEventBus.on("logout", $reset);
+  main.mainEventBus.on("reset-all", $reset);
 
   return { getOperations, operations: readonly(operations), $reset };
 });

@@ -61,7 +61,7 @@ export const useTagsStore = defineStore("tags", () => {
     tagValuesByID.value = {};
   };
 
-  main.mainEventBus.on("logout", $reset);
+  main.mainEventBus.on("reset-all", $reset);
 
   return {
     getTags,

@@ -29,8 +29,12 @@ export const useAuthenticationStore = defineStore("authentication", () => {
   const logout = async () => {
     navigateTo("/login");
 
+    main.mainEventBus.emit("reset-all");
+
     await main.logout();
   };
+
+  main.mainEventBus.on("logout", logout);
 
   return { login, logout };
 });

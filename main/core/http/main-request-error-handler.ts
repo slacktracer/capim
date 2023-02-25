@@ -1,6 +1,6 @@
 import { log } from "../log.js";
-import { http400Handler } from "./http-400-handler.js";
-import { http401Handler } from "./http-401-handler.js";
+import { httpError400Handler } from "./http-error-400-handler.js";
+import { httpError401Handler } from "./http-error-401-handler.js";
 
 const mainRequestErrorHandlerLog = log("MAIN_REQUEST_ERROR_HANDLER");
 
@@ -15,13 +15,13 @@ export const mainRequestErrorHandler = async ({
     const { status } = response;
 
     if (status === 400) {
-      await http400Handler({ response });
+      await httpError400Handler({ response });
 
       return;
     }
 
     if (status === 401) {
-      http401Handler();
+      httpError401Handler();
 
       return;
     }

@@ -1,61 +1,60 @@
 import { defineStore } from "pinia";
-import type { Ref } from "vue";
-import { readonly, ref } from "vue";
+import { reactive, readonly } from "vue";
 
-import type { Account } from "../core/main.js";
+import type { Account, AccountsByID } from "../core/main.js";
 import * as main from "../core/main.js";
 
-type AccountStoreAccounts = {
-  data: Account[];
-  error: {
-    data: Record<string, unknown>;
-    message: string;
+type AccountsStoreState = {
+  accountsByID: AccountsByID;
+  accounts: {
+    data: Account[];
+    error: {
+      data: Record<string, unknown>;
+      message: string;
+    };
+    loading: boolean;
   };
 };
 
-export const useAccountsStore = defineStore("accounts", () => {
-  const accounts: Ref<AccountStoreAccounts> = ref({
+const getInitialAccountsStoreState = () => ({
+  accountsByID: {},
+  accounts: {
     data: [],
     error: {
       data: {},
       message: "",
     },
-  });
+    loading: false,
+  },
+});
 
-  const accountsByID: Ref<main.AccountsByID> = ref({});
+export const useAccountsStore = defineStore("accounts", () => {
+  const state: AccountsStoreState = reactive(getInitialAccountsStoreState());
 
   const getAccounts = async () => {
     try {
-      accounts.value.data = (await main.getAccounts()) as Account[];
+      state.accounts.loading = true;
 
-      accounts.value.error = { data: {}, message: "" };
+      state.accounts.data = await main.getAccounts();
 
-      accountsByID.value = main.makeAccountsByID({
-        accounts: accounts.value.data,
+      state.accounts.error = getInitialAccountsStoreState().accounts.error;
+
+      state.accountsByID = main.makeAccountsByID({
+        accounts: state.accounts.data,
       });
     } catch (error: unknown) {
       if (error instanceof Error) {
-        accounts.value.error.message = error.message;
+        state.accounts.error.message = error.message;
       }
+    } finally {
+      state.accounts.loading = false;
     }
   };
 
-  const $reset = () => {
-    accounts.value = {
-      data: [],
-      error: {
-        data: {},
-        message: "",
-      },
-    };
-  };
+  const $reset = () =>
+    void Object.assign(state, getInitialAccountsStoreState());
 
-  main.mainEventBus.on("logout", $reset);
+  main.mainEventBus.on("reset-all", $reset);
 
-  return {
-    accounts: readonly(accounts),
-    accountsByID: readonly(accountsByID),
-    getAccounts,
-    $reset,
-  };
+  return { getAccounts, state: readonly(state), $reset };
 });

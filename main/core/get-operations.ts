@@ -10,7 +10,7 @@ export const getOperations = async (): Promise<Operation[]> => {
 
     return response;
   } catch (error: any) {
-    mainRequestErrorHandler({ error });
+    await mainRequestErrorHandler({ error });
 
     return [];
   }

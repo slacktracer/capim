@@ -8,6 +8,6 @@ const accountsStore = useAccountsStore();
   <div>
     <h1>Accounts</h1>
 
-    <pre>{{ accountsStore.accounts.data }}</pre>
+    <pre>{{ accountsStore.state.accounts.data }}</pre>
   </div>
 </template>
