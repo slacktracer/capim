@@ -1,13 +1,19 @@
 <script lang="ts" setup>
-import { useAccountsStore} from "../stores/use-accounts-store.js";
+import { useAccountsStore } from "../stores/accounts/use-accounts-store.js";
 
 const accountsStore = useAccountsStore();
+
+const { accounts } = accountsStore.state;
 </script>
 
 <template>
   <div>
     <h1>Accounts</h1>
 
-    <pre>{{ accountsStore.state.accounts.data }}</pre>
+    <div v-if="accounts.loading">Loading accounts...</div>
+
+    <div v-if="accounts.error">{{ accounts.error.message }}</div>
+
+    <pre v-if="accounts.ready">{{ accounts.data }}</pre>
   </div>
 </template>

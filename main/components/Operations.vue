@@ -1,15 +1,21 @@
 <script lang="ts" setup>
-import { useOperationsStore } from "../stores/use-operations-store.js";
+import { useOperationsStore } from "../stores/operations/use-operations-store.js";
 
 const operationsStore = useOperationsStore();
 
 operationsStore.getOperations();
+
+const { operations } = operationsStore.state;
 </script>
 
 <template>
   <div>
     <h1>Operations</h1>
 
-    <pre>{{ operationsStore.operations.data }}</pre>
+    <div v-if="operations.loading">Loading operations...</div>
+
+    <div v-if="operations.error">{{ operations.error.message }}</div>
+
+    <pre v-if="operations.ready">{{ operations.data }}</pre>
   </div>
 </template>

@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import { ref } from "vue";
 
-import { useAuthenticationStore } from "../stores/use-authentication-store.js";
+import { useAuthenticationStore } from "../stores/authentication/use-authentication-store.js";
 
 const authenticationStore = useAuthenticationStore();
 

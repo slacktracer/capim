@@ -1,44 +1,29 @@
 import { defineStore } from "pinia";
 import { reactive, readonly } from "vue";
 
-import type { Balance } from "../core/main.js";
-import * as main from "../core/main.js";
-
-type BalancesStoreState = {
-  balances: {
-    data: Balance[];
-    error: {
-      data: Record<string, unknown>;
-      message: string;
-    };
-    loading: boolean;
-  };
-};
-
-const getInitialBalancesStoreState = () => ({
-  balances: {
-    data: [],
-    error: {
-      data: {},
-      message: "",
-    },
-    loading: false,
-  },
-});
+import * as main from "../../core/main.js";
+import { BalancesStoreState } from "../../types/BalancesStoreState.js";
+import { getInitialBalancesStoreState } from "./get-initial-balances-store-state.js";
 
 export const useBalancesStore = defineStore("balances", () => {
   const state: BalancesStoreState = reactive(getInitialBalancesStoreState());
 
   const getBalances = async () => {
-    try {
-      state.balances.loading = true;
+    state.balances.ready = false;
 
+    state.balances.error = false;
+
+    state.balances.loading = true;
+
+    try {
       state.balances.data = await main.getBalances();
 
-      state.balances.error = getInitialBalancesStoreState().balances.error;
+      state.balances.ready = true;
+
+      state.balances.retrievedAt = new Date();
     } catch (error: unknown) {
       if (error instanceof Error) {
-        state.balances.error.message = error.message;
+        state.balances.error = { message: error.message };
       }
     } finally {
       state.balances.loading = false;
