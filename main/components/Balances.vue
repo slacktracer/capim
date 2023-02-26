@@ -24,7 +24,7 @@ const { balances } = balancesStore.state;
     <pre v-if="balances.ready && accounts.ready">{{
       balances.data.map((balance) => ({
         ...balance,
-        name: accountsStore.state.accountsByID[balance.accountID]?.name,
+        name: accountsStore.computed.accountsByID[balance.accountID]?.name,
       }))
     }}</pre>
   </div>

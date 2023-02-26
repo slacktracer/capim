@@ -1,9 +1,6 @@
-import { ComputedRef } from "vue";
-
-import { Account, AccountsByID } from "../core/main.js";
+import { Account } from "../core/main.js";
 
 export type AccountsStoreState = {
-  accountsByID: AccountsByID | ComputedRef<AccountsByID>;
   accounts: {
     data: Account[];
     error:

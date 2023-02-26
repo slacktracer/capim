@@ -8,9 +8,11 @@ import { getInitialAccountsStoreState } from "./get-initial-accounts-store-state
 export const useAccountsStore = defineStore("accounts", () => {
   const state: AccountsStoreState = reactive(getInitialAccountsStoreState());
 
-  state.accountsByID = computed(() =>
-    main.makeAccountsByID({ accounts: state.accounts.data }),
-  );
+  const computedState = {
+    accountsByID: computed(() =>
+      main.makeAccountsByID({ accounts: state.accounts.data }),
+    ),
+  };
 
   const getAccounts = async () => {
     if (state.accounts.ready) {
@@ -43,5 +45,10 @@ export const useAccountsStore = defineStore("accounts", () => {
 
   main.mainEventBus.on("reset-all", $reset);
 
-  return { getAccounts, state: readonly(state), $reset };
+  return {
+    computed: computedState,
+    getAccounts,
+    state: readonly(state),
+    $reset,
+  };
 });
