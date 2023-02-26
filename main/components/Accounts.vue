@@ -14,6 +14,8 @@ const { accounts } = accountsStore.state;
 
     <div v-if="accounts.error">{{ accounts.error.message }}</div>
 
+    <div v-if="accounts.retrievedAt">{{ accounts.retrievedAt.toISOString() }}</div>
+
     <pre v-if="accounts.ready">{{ accounts.data }}</pre>
   </div>
 </template>

@@ -9,6 +9,10 @@ export const useOperationsStore = defineStore("operations", () => {
   const state: OperationStoreState = reactive(getInitialOperationsStoreState());
 
   const getOperations = async () => {
+    if (state.operations.ready) {
+      return;
+    }
+
     state.operations.ready = false;
 
     state.operations.error = false;

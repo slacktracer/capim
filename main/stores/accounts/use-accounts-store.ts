@@ -13,6 +13,10 @@ export const useAccountsStore = defineStore("accounts", () => {
   );
 
   const getAccounts = async () => {
+    if (state.accounts.ready) {
+      return;
+    }
+
     state.accounts.ready = false;
 
     state.accounts.error = false;

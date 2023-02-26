@@ -7,7 +7,7 @@ const balancesStore = useBalancesStore();
 
 balancesStore.getBalances();
 
-const { accounts, accountsByID } = accountsStore.state;
+const { accounts } = accountsStore.state;
 const { balances } = balancesStore.state;
 </script>
 
@@ -19,10 +19,12 @@ const { balances } = balancesStore.state;
 
     <div v-if="balances.error">{{ balances.error.message }}</div>
 
+    <div v-if="balances.retrievedAt">{{ balances.retrievedAt.toISOString() }}</div>
+
     <pre v-if="balances.ready && accounts.ready">{{
       balances.data.map((balance) => ({
         ...balance,
-        name: accountsByID[balance.accountID].name,
+        name: accountsStore.state.accountsByID[balance.accountID]?.name,
       }))
     }}</pre>
   </div>

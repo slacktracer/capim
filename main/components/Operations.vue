@@ -16,6 +16,8 @@ const { operations } = operationsStore.state;
 
     <div v-if="operations.error">{{ operations.error.message }}</div>
 
+    <div v-if="operations.retrievedAt">{{ operations.retrievedAt.toISOString() }}</div>
+
     <pre v-if="operations.ready">{{ operations.data }}</pre>
   </div>
 </template>

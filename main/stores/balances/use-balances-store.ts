@@ -9,6 +9,10 @@ export const useBalancesStore = defineStore("balances", () => {
   const state: BalancesStoreState = reactive(getInitialBalancesStoreState());
 
   const getBalances = async () => {
+    if (state.balances.ready) {
+      return;
+    }
+
     state.balances.ready = false;
 
     state.balances.error = false;
