@@ -5,7 +5,7 @@ import { useAuthenticationStore } from "../stores/authentication/use-authenticat
 import { useUserStore } from "../stores/use-user-store.js";
 
 const authenticationStore = useAuthenticationStore();
-const userStore = useUserStore()
+const userStore = useUserStore();
 
 const logout = async () => {
   await authenticationStore.logout();

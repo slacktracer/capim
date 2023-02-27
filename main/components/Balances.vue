@@ -19,7 +19,9 @@ const { balances } = balancesStore.state;
 
     <div v-if="balances.error">{{ balances.error.message }}</div>
 
-    <div v-if="balances.retrievedAt">{{ balances.retrievedAt.toISOString() }}</div>
+    <div v-if="balances.retrievedAt">
+      {{ balances.retrievedAt.toISOString() }}
+    </div>
 
     <pre v-if="balances.ready && accounts.ready">{{
       balances.data.map((balance) => ({
