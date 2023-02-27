@@ -3,7 +3,7 @@ import { reactive, readonly } from "vue";
 
 import type { Operation } from "../../core/main.js";
 import * as main from "../../core/main.js";
-import { OperationStoreState } from "../../types/OperationsStoreState.js";
+import type { OperationStoreState } from "../../types/OperationsStoreState.js";
 import { loadAsyncDataIntoReactiveState } from "../../utils/load-async-data-into-reactive-state.js";
 import { getInitialOperationsStoreState } from "./get-initial-operations-store-state.js";
 

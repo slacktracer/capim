@@ -1,6 +1,6 @@
 import { get } from "./http/get.js";
 import { mainRequestErrorHandler } from "./http/main-request-error-handler.js";
-import { Balance } from "./types/Balance.js";
+import type { Balance } from "./types/Balance.js";
 
 export const getBalances = async (): Promise<Balance[]> => {
   try {

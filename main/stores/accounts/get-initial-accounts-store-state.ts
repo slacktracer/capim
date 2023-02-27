@@ -1,4 +1,4 @@
-import { AccountsStoreState } from "../../types/AccountsStoreState.js";
+import type { AccountsStoreState } from "../../types/AccountsStoreState.js";
 
 export const getInitialAccountsStoreState = (): AccountsStoreState => ({
   accounts: {

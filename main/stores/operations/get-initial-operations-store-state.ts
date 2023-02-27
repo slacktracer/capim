@@ -1,4 +1,4 @@
-import { OperationStoreState } from "../../types/OperationsStoreState.js";
+import type { OperationStoreState } from "../../types/OperationsStoreState.js";
 
 export const getInitialOperationsStoreState = (): OperationStoreState => ({
   operations: {

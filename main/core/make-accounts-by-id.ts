@@ -1,5 +1,5 @@
-import { Account } from "./types/Account.js";
-import { AccountsByID } from "./types/AccountsByID.js";
+import type { Account } from "./types/Account.js";
+import type { AccountsByID } from "./types/AccountsByID.js";
 
 export const makeAccountsByID = ({
   accounts,

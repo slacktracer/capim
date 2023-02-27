@@ -1,4 +1,4 @@
-import { TagValue } from "./types/TagValue.js";
+import type { TagValue } from "./types/TagValue.js";
 
 export const makeTagValuesByID = ({ tagValues }: { tagValues: TagValue[] }) => {
   const tagValuesByID = tagValues.reduce(

@@ -1,9 +1,9 @@
-import { Account } from "./Account.js";
-import { Balance } from "./Balance.js";
-import { Operation } from "./Operation.js";
-import { TagKey } from "./TagKey.js";
-import { TagValue } from "./TagValue.js";
-import { User } from "./User.js";
+import type { Account } from "./Account.js";
+import type { Balance } from "./Balance.js";
+import type { Operation } from "./Operation.js";
+import type { TagKey } from "./TagKey.js";
+import type { TagValue } from "./TagValue.js";
+import type { User } from "./User.js";
 
 export type State = {
   accounts: Account[];

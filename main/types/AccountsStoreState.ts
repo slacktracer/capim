@@ -1,4 +1,4 @@
-import { Account } from "../core/main.js";
+import type { Account } from "../core/main.js";
 
 export type AccountsStoreState = {
   accounts: {

@@ -1,4 +1,4 @@
-import { Operation } from "../core/main.js";
+import type { Operation } from "../core/main.js";
 
 export type OperationStoreState = {
   operations: {

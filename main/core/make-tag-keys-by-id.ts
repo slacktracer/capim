@@ -1,4 +1,4 @@
-import { TagKey } from "./types/TagKey.js";
+import type { TagKey } from "./types/TagKey.js";
 
 export const makeTagKeysByID = ({ tagKeys }: { tagKeys: TagKey[] }) => {
   const tagKeysByID = tagKeys.reduce(

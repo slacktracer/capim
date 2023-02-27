@@ -1,4 +1,4 @@
-import { BalancesStoreState } from "../../types/BalancesStoreState.js";
+import type { BalancesStoreState } from "../../types/BalancesStoreState.js";
 
 export const getInitialBalancesStoreState = (): BalancesStoreState => ({
   balances: {

@@ -1,6 +1,6 @@
 import { get } from "./http/get.js";
 import { mainRequestErrorHandler } from "./http/main-request-error-handler.js";
-import { Operation } from "./types/Operation.js";
+import type { Operation } from "./types/Operation.js";
 
 export const getOperations = async (): Promise<Operation[]> => {
   try {

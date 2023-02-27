@@ -1,4 +1,4 @@
-import { Balance } from "../core/main.js";
+import type { Balance } from "../core/main.js";
 
 export type BalancesStoreState = {
   balances: {

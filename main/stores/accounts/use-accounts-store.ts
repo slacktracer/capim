@@ -1,9 +1,9 @@
 import { defineStore } from "pinia";
 import { computed, reactive, readonly } from "vue";
 
-import { Account } from "../../core/main.js";
+import type { Account } from "../../core/main.js";
 import * as main from "../../core/main.js";
-import { AccountsStoreState } from "../../types/AccountsStoreState.js";
+import type { AccountsStoreState } from "../../types/AccountsStoreState.js";
 import { loadAsyncDataIntoReactiveState } from "../../utils/load-async-data-into-reactive-state.js";
 import { getInitialAccountsStoreState } from "./get-initial-accounts-store-state.js";
 

@@ -1,7 +1,7 @@
 import { get } from "./http/get.js";
 import { mainRequestErrorHandler } from "./http/main-request-error-handler.js";
-import { TagKey } from "./types/TagKey.js";
-import { TagValue } from "./types/TagValue.js";
+import type { TagKey } from "./types/TagKey.js";
+import type { TagValue } from "./types/TagValue.js";
 
 export const getTags = async (): Promise<{
   keys: TagKey[];
