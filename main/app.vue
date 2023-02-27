@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { useRuntimeConfig } from "#imports";
+import { useRuntimeConfig } from "#imports"; // eslint-disable-line import/order
 
 import * as main from "./core/main.js";
 import { useBootStore } from "./stores/boot/use-boot-store.js";
