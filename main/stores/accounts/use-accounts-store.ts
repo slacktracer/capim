@@ -1,8 +1,10 @@
 import { defineStore } from "pinia";
 import { computed, reactive, readonly } from "vue";
 
+import { Account } from "../../core/main.js";
 import * as main from "../../core/main.js";
 import { AccountsStoreState } from "../../types/AccountsStoreState.js";
+import { loadAsyncDataIntoReactiveState } from "../../utils/load-async-data-into-reactive-state.js";
 import { getInitialAccountsStoreState } from "./get-initial-accounts-store-state.js";
 
 export const useAccountsStore = defineStore("accounts", () => {
@@ -19,25 +21,10 @@ export const useAccountsStore = defineStore("accounts", () => {
       return;
     }
 
-    state.accounts.ready = false;
-
-    state.accounts.error = false;
-
-    state.accounts.loading = true;
-
-    try {
-      state.accounts.data = await main.getAccounts();
-
-      state.accounts.ready = true;
-
-      state.accounts.retrievedAt = new Date();
-    } catch (error: unknown) {
-      if (error instanceof Error) {
-        state.accounts.error = { message: error.message };
-      }
-    } finally {
-      state.accounts.loading = false;
-    }
+    await loadAsyncDataIntoReactiveState<Account[]>({
+      functionToCall: main.getAccounts,
+      stateToMutate: state.accounts,
+    });
   };
 
   const $reset = () =>

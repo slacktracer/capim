@@ -1,8 +1,10 @@
 import { defineStore } from "pinia";
 import { reactive, readonly } from "vue";
 
+import type { Balance } from "../../core/main.js";
 import * as main from "../../core/main.js";
 import { BalancesStoreState } from "../../types/BalancesStoreState.js";
+import { loadAsyncDataIntoReactiveState } from "../../utils/load-async-data-into-reactive-state.js";
 import { getInitialBalancesStoreState } from "./get-initial-balances-store-state.js";
 
 export const useBalancesStore = defineStore("balances", () => {
@@ -13,25 +15,10 @@ export const useBalancesStore = defineStore("balances", () => {
       return;
     }
 
-    state.balances.ready = false;
-
-    state.balances.error = false;
-
-    state.balances.loading = true;
-
-    try {
-      state.balances.data = await main.getBalances();
-
-      state.balances.ready = true;
-
-      state.balances.retrievedAt = new Date();
-    } catch (error: unknown) {
-      if (error instanceof Error) {
-        state.balances.error = { message: error.message };
-      }
-    } finally {
-      state.balances.loading = false;
-    }
+    await loadAsyncDataIntoReactiveState<Balance[]>({
+      functionToCall: main.getBalances,
+      stateToMutate: state.balances,
+    });
   };
 
   const $reset = () =>
