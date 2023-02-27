@@ -1,6 +1,6 @@
 export class CoreError extends Error {
-  private data: Record<string, any>;
-  private date: Date;
+  public data: Record<string, any>;
+  public date: Date;
 
   constructor(
     message: string,
