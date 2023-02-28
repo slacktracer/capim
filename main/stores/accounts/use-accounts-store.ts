@@ -4,7 +4,7 @@ import { computed, reactive, readonly } from "vue";
 import type { Account } from "../../core/main.js";
 import * as main from "../../core/main.js";
 import type { AccountsStoreState } from "../../types/AccountsStoreState.js";
-import { loadAsyncDataIntoReactiveState } from "../../utils/load-async-data-into-reactive-state.js";
+import { loadDataIntoState } from "../../utils/load-data-into-state.js";
 import { getInitialAccountsStoreState } from "./get-initial-accounts-store-state.js";
 
 export const useAccountsStore = defineStore("accounts", () => {
@@ -16,14 +16,14 @@ export const useAccountsStore = defineStore("accounts", () => {
     ),
   };
 
-  const getAccounts = async () => {
+  const getAccounts = () => {
     if (state.accounts.ready) {
       return;
     }
 
-    await loadAsyncDataIntoReactiveState<Account[]>({
-      functionToCall: main.getAccounts,
-      stateToMutate: state.accounts,
+    loadDataIntoState<Account[]>({
+      functionToCall: () => main.getAccounts(),
+      stateToUpdate: state.accounts,
     });
   };
 
