@@ -1,9 +1,9 @@
 import { defineStore } from "pinia";
 import { computed, reactive, readonly } from "vue";
 
-import type { TagKey, TagValue } from "../../core/main.js";
-import * as main from "../../core/main.js";
-import { loadDataIntoState } from "../../utils/load-data-into-state.js";
+import type { TagKey, TagValue } from "../../../core/main.js";
+import * as main from "../../../core/main.js";
+import { loadDataIntoState } from "../../../utils/load-data-into-state.js";
 import { getInitialTagsStoreState } from "./get-initial-tags-store-state.js";
 
 export const useTagsStore = defineStore("tags", () => {

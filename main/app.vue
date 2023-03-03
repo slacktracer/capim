@@ -2,7 +2,7 @@
 import { useRuntimeConfig } from "#imports"; // eslint-disable-line import/order
 
 import * as main from "./core/main.js";
-import { useBootStore } from "./stores/boot/use-boot-store.js";
+import { useBootStore } from "./stores/modules/boot/use-boot-store.js";
 
 const runtimeConfig = useRuntimeConfig();
 

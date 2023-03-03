@@ -1,10 +1,10 @@
 import { defineStore } from "pinia";
 
-import * as main from "../../core/main.js";
+import * as main from "../../../core/main.js";
+import { useUserStore } from "../../use-user-store.js";
 import { useAccountsStore } from "../accounts/use-accounts-store.js";
 import { useAuthenticationStore } from "../authentication/use-authentication-store.js";
 import { useTagsStore } from "../tags/use-tags-store.js";
-import { useUserStore } from "../use-user-store.js";
 
 export const useBootStore = defineStore("boot", () => {
   const boot = () => {

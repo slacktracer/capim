@@ -3,7 +3,7 @@ import type { Ref } from "vue";
 
 import { navigateTo } from "#app";
 
-import * as main from "../../core/main.js";
+import * as main from "../../../core/main.js";
 import { useBootStore } from "../boot/use-boot-store.js";
 
 export const useAuthenticationStore = defineStore("authentication", () => {

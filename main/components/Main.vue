@@ -1,6 +1,6 @@
 <script lang="ts" setup>
-import { useAccountsStore } from "../stores/accounts/use-accounts-store.js";
-import { useTagsStore } from "../stores/tags/use-tags-store.js";
+import { useAccountsStore } from "../stores/modules/accounts/use-accounts-store.js";
+import { useTagsStore } from "../stores/modules/tags/use-tags-store.js";
 
 const accountsStore = useAccountsStore();
 const tagsStore = useTagsStore();
