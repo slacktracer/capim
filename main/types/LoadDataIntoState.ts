@@ -1,15 +1,6 @@
+import type { AsyncDataState } from "./AsyncDataState.js";
+
 export type LoadDataIntoState = <T>(options: {
   functionToCall: () => Promise<T>;
-  stateToUpdate: {
-    data: T;
-    error:
-      | {
-          data?: Record<string, unknown>;
-          message: string;
-        }
-      | false;
-    loading: boolean;
-    ready: boolean;
-    retrievedAt: Date | undefined;
-  };
+  stateToUpdate: AsyncDataState<T>;
 }) => void;

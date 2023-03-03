@@ -1,16 +1,6 @@
 import type { Balance } from "../core/main.js";
+import type { AsyncDataState } from "./AsyncDataState.js";
 
 export type BalancesStoreState = {
-  balances: {
-    data: Balance[];
-    error:
-      | {
-          data?: Record<string, unknown>;
-          message: string;
-        }
-      | false;
-    loading: boolean;
-    ready: boolean;
-    retrievedAt: Date | undefined;
-  };
+  balances: AsyncDataState<Balance[]>;
 };
