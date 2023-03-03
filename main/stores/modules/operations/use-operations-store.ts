@@ -4,7 +4,7 @@ import { reactive, readonly } from "vue";
 import type { Operation } from "../../../core/main.js";
 import * as main from "../../../core/main.js";
 import type { OperationStoreState } from "../../../types/OperationsStoreState.js";
-import { loadDataIntoState } from "../../../utils/load-data-into-state.js";
+import { loadDataIntoState } from "../../utils/load-data-into-state.js";
 import { getInitialOperationsStoreState } from "./get-initial-operations-store-state.js";
 
 export const useOperationsStore = defineStore("operations", () => {
