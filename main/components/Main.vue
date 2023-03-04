@@ -6,7 +6,6 @@ const accountsStore = useAccountsStore();
 const tagsStore = useTagsStore();
 
 const { accounts } = accountsStore.state;
-const { tags } = tagsStore;
 </script>
 
 <template>
@@ -17,8 +16,8 @@ const { tags } = tagsStore;
 
     <div v-if="accounts.error">{{ accounts.error.message }}</div>
 
-    <div v-if="tags.loading">Loading tags...</div>
+    <div v-if="tagsStore.tags.loading">Loading tags...</div>
 
-    <div v-if="tags.error">{{ tags.error.message }}</div>
+    <div v-if="tagsStore.tags.error">{{ tagsStore.tags.error.message }}</div>
   </div>
 </template>

@@ -2,22 +2,20 @@
 import { useTagsStore } from "../stores/modules/tags/use-tags-store.js";
 
 const tagsStore = useTagsStore();
-
-const { tags } = tagsStore;
 </script>
 
 <template>
   <div>
     <h1>Tags</h1>
 
-    <div v-if="tags.loading">Loading tags...</div>
+    <div v-if="tagsStore.tags.loading">Loading tagsStore.tags...</div>
 
-    <div v-if="tags.error">{{ tags.error.message }}</div>
+    <div v-if="tagsStore.tags.error">{{ tagsStore.tags.error.message }}</div>
 
-    <div v-if="tags.retrievedAt">
-      {{ tags.retrievedAt.toISOString() }}
+    <div v-if="tagsStore.tags.retrievedAt">
+      {{ tagsStore.tags.retrievedAt.toISOString() }}
     </div>
 
-    <pre v-if="tags.ready">{{ tags.data }}</pre>
+    <pre v-if="tagsStore.tags.ready">{{ tagsStore.tags.data }}</pre>
   </div>
 </template>

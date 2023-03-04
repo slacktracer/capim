@@ -1,5 +1,5 @@
 import { defineStore } from "pinia";
-import { computed, reactive, readonly } from "vue";
+import { computed, reactive, readonly, toRefs } from "vue";
 
 import type { TagKey, TagValue } from "../../../core/main.js";
 import * as main from "../../../core/main.js";
@@ -9,14 +9,13 @@ import { getInitialTagsStoreState } from "./get-initial-tags-store-state.js";
 export const useTagsStore = defineStore("tags", () => {
   const state = reactive(getInitialTagsStoreState());
 
-  const computedState = {
-    tagKeysByID: computed(() =>
-      main.makeTagKeysByID({ tagKeys: state.tags.data.keys || [] }),
-    ),
-    tagValuesByID: computed(() =>
-      main.makeTagValuesByID({ tagValues: state.tags.data.values || [] }),
-    ),
-  };
+  const tagKeysByID = computed(() =>
+    main.makeTagKeysByID({ tagKeys: state.tags.data.keys || [] }),
+  );
+
+  const tagValuesByID = computed(() =>
+    main.makeTagValuesByID({ tagValues: state.tags.data.values || [] }),
+  );
 
   const getTags = () => {
     if (state.tags.ready) {
@@ -33,5 +32,11 @@ export const useTagsStore = defineStore("tags", () => {
 
   main.mainEventBus.on("reset-all", $reset);
 
-  return { ...computedState, getTags, ...readonly(state), $reset };
+  return {
+    $reset,
+    ...toRefs(readonly(state)),
+    getTags,
+    tagKeysByID,
+    tagValuesByID,
+  };
 });
