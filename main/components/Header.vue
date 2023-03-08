@@ -2,7 +2,7 @@
 import { navigateTo } from "#app";
 
 import { useAuthenticationStore } from "../stores/modules/authentication/use-authentication-store.js";
-import { useUserStore } from "../stores/use-user-store.js";
+import { useUserStore } from "../stores/modules/user/use-user-store.js";
 
 const authenticationStore = useAuthenticationStore();
 const userStore = useUserStore();

@@ -8,7 +8,7 @@ const tagsStore = useTagsStore();
   <div>
     <h1>Tags</h1>
 
-    <div v-if="tagsStore.tags.loading">Loading tagsStore.tags...</div>
+    <div v-if="tagsStore.tags.loading">Loading tags...</div>
 
     <div v-if="tagsStore.tags.error">{{ tagsStore.tags.error.message }}</div>
 
