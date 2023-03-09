@@ -1,21 +1,18 @@
 <script lang="ts" setup>
 import { ref } from "vue";
 
-import { useAuthenticationStore } from "../stores/modules/authentication/use-authentication-store.js";
-
-const authenticationStore = useAuthenticationStore();
+import { login } from "../modules/authentication/login.js";
 
 const password = ref("???");
 const username = ref("thiago");
-
-const login = async () => {
-  await authenticationStore.login({ password, username });
-};
 </script>
 
 <template>
   <div class="login-form-container">
-    <form class="border login-form shadow" @submit.prevent="login">
+    <form
+      class="border login-form shadow"
+      @submit.prevent="login({ password, username })"
+    >
       <div class="mb-3">
         <label for="username" class="form-label"> Username </label>
 

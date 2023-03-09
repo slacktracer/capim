@@ -1,17 +1,8 @@
 <script lang="ts" setup>
-import { navigateTo } from "#app";
-
+import { logout } from "../modules/authentication/logout.js";
 import { useUserStore } from "../modules/user/use-user-store.js";
-import { useAuthenticationStore } from "../stores/modules/authentication/use-authentication-store.js";
 
-const authenticationStore = useAuthenticationStore();
 const userStore = useUserStore();
-
-const logout = async () => {
-  await authenticationStore.logout();
-
-  navigateTo("/login");
-};
 </script>
 
 <template>

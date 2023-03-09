@@ -2,13 +2,16 @@
 import { useRuntimeConfig } from "#imports"; // eslint-disable-line import/order
 
 import * as main from "./core/main.js";
-import { useBootStore } from "./stores/modules/boot/use-boot-store.js";
+import { logout } from "./modules/authentication/logout.js";
+import { boot } from "./modules/boot/boot.js";
 
 const runtimeConfig = useRuntimeConfig();
 
 main.loadEnvironmentVariables({ runtimeConfig });
 
-await useBootStore().boot();
+main.mainEventBus.on("logout", logout);
+
+await boot();
 </script>
 
 <template>
