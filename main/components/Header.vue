@@ -1,8 +1,8 @@
 <script lang="ts" setup>
 import { navigateTo } from "#app";
 
+import { useUserStore } from "../modules/user/use-user-store.js";
 import { useAuthenticationStore } from "../stores/modules/authentication/use-authentication-store.js";
-import { useUserStore } from "../stores/modules/user/use-user-store.js";
 
 const authenticationStore = useAuthenticationStore();
 const userStore = useUserStore();

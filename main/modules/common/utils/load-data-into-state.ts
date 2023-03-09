@@ -1,5 +1,5 @@
-import * as main from "../../core/main.js";
-import type { LoadDataIntoState } from "../../types/LoadDataIntoState.js";
+import * as main from "../../../core/main.js";
+import type { LoadDataIntoState } from "../../../types/LoadDataIntoState.js";
 
 export const loadDataIntoState: LoadDataIntoState = ({
   functionToCall,

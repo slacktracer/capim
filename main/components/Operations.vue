@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { useOperationsStore } from "../stores/modules/operations/use-operations-store.js";
+import { useOperationsStore } from "../modules/operations/use-operations-store.js";
 
 const operationsStore = useOperationsStore();
 

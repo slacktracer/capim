@@ -1,10 +1,10 @@
 import { defineStore } from "pinia";
 import { reactive, readonly } from "vue";
 
-import type { Balance } from "../../../core/main.js";
-import * as main from "../../../core/main.js";
-import type { BalancesStoreState } from "../../../types/BalancesStoreState.js";
-import { loadDataIntoState } from "../../utils/load-data-into-state.js";
+import type { Balance } from "../../core/main.js";
+import * as main from "../../core/main.js";
+import type { BalancesStoreState } from "../../types/BalancesStoreState.js";
+import { loadDataIntoState } from "../common/utils/load-data-into-state.js";
 import { getInitialBalancesStoreState } from "./get-initial-balances-store-state.js";
 
 export const useBalancesStore = defineStore("balances", () => {

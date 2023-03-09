@@ -1,7 +1,7 @@
 import { defineStore } from "pinia";
 import { reactive, readonly, toRefs } from "vue";
 
-import * as main from "../../../core/main.js";
+import * as main from "../../core/main.js";
 import { getInitialUserStoreState } from "./get-initial-user-store-state.js";
 
 export const useUserStore = defineStore("user", () => {

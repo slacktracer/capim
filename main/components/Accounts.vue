@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { useAccountsStore } from "../stores/modules/accounts/use-accounts-store.js";
+import { useAccountsStore } from "../modules/accounts/use-accounts-store.js";
 
 const accountsStore = useAccountsStore();
 

@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { useTagsStore } from "../stores/modules/tags/use-tags-store.js";
+import { useTagsStore } from "../modules/tags/use-tags-store.js";
 
 const tagsStore = useTagsStore();
 </script>

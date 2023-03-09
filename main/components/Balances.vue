@@ -1,6 +1,6 @@
 <script lang="ts" setup>
-import { useAccountsStore } from "../stores/modules/accounts/use-accounts-store.js";
-import { useBalancesStore } from "../stores/modules/balances/use-balances-store.js";
+import { useAccountsStore } from "../modules/accounts/use-accounts-store.js";
+import { useBalancesStore } from "../modules/balances/use-balances-store.js";
 
 const accountsStore = useAccountsStore();
 const balancesStore = useBalancesStore();
