@@ -1,5 +1,3 @@
-import { navigateTo } from "#app";
-
 import * as main from "../../core/main.js";
 import { useAccountsStore } from "../accounts/use-accounts-store.js";
 import { logout } from "../authentication/logout.js";
@@ -10,8 +8,6 @@ export const boot = () => {
   const userIsLoggedIn = main.isUserLoggedIn();
 
   if (userIsLoggedIn) {
-    navigateTo("/");
-
     const accountsStore = useAccountsStore();
     const tagsStore = useTagsStore();
     const userStore = useUserStore();

@@ -1,10 +1,17 @@
 <script lang="ts" setup>
-import { ref } from "vue";
+import { onMounted, ref } from "vue";
 
+import { navigateTo } from "#app";
+
+import { isUserLoggedIn } from "../core/main.js";
 import { login } from "../modules/authentication/login.js";
 
 const password = ref("???");
 const username = ref("thiago");
+
+onMounted(() => {
+  isUserLoggedIn() && navigateTo("/");
+});
 </script>
 
 <template>
@@ -14,7 +21,7 @@ const username = ref("thiago");
       @submit.prevent="login({ password, username })"
     >
       <div class="mb-3">
-        <label for="username" class="form-label"> Username </label>
+        <label class="form-label" for="username"> Username </label>
 
         <input
           id="username"
@@ -26,7 +33,7 @@ const username = ref("thiago");
       </div>
 
       <div class="mb-3">
-        <label for="password" class="form-label"> Password </label>
+        <label class="form-label" for="password"> Password </label>
 
         <input
           id="password"
@@ -37,7 +44,7 @@ const username = ref("thiago");
         />
       </div>
 
-      <button type="submit" class="btn btn-outline-dark">Submit</button>
+      <button class="btn btn-outline-dark" type="submit">Submit</button>
     </form>
   </div>
 </template>
