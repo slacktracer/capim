@@ -4,17 +4,17 @@ import { useTagsStore } from "../modules/tags/use-tags-store.js";
 
 const accountsStore = useAccountsStore();
 const tagsStore = useTagsStore();
-
-const { accounts } = accountsStore.state;
 </script>
 
 <template>
   <div>
     <h1>Capim</h1>
 
-    <div v-if="accounts.loading">Loading accounts...</div>
+    <div v-if="accountsStore.accounts.loading">Loading accounts...</div>
 
-    <div v-if="accounts.error">{{ accounts.error.message }}</div>
+    <div v-if="accountsStore.accounts.error">
+      {{ accountsStore.accounts.error.message }}
+    </div>
 
     <div v-if="tagsStore.tags.loading">Loading tags...</div>
 

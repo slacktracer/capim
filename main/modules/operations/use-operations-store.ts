@@ -1,5 +1,5 @@
 import { defineStore } from "pinia";
-import { reactive, readonly } from "vue";
+import { reactive, readonly, toRefs } from "vue";
 
 import type { Operation } from "../../core/main.js";
 import * as main from "../../core/main.js";
@@ -26,5 +26,9 @@ export const useOperationsStore = defineStore("operations", () => {
 
   main.mainEventBus.on("reset-all", $reset);
 
-  return { getOperations, state: readonly(state), $reset };
+  return {
+    $reset,
+    ...toRefs(readonly(state)),
+    getOperations,
+  };
 });

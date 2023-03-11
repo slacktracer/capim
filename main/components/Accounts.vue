@@ -2,22 +2,24 @@
 import { useAccountsStore } from "../modules/accounts/use-accounts-store.js";
 
 const accountsStore = useAccountsStore();
-
-const { accounts } = accountsStore.state;
 </script>
 
 <template>
   <div>
     <h1>Accounts</h1>
 
-    <div v-if="accounts.loading">Loading accounts...</div>
+    <div v-if="accountsStore.accounts.loading">Loading accounts...</div>
 
-    <div v-if="accounts.error">{{ accounts.error.message }}</div>
-
-    <div v-if="accounts.retrievedAt">
-      {{ accounts.retrievedAt.toISOString() }}
+    <div v-if="accountsStore.accounts.error">
+      {{ accountsStore.accounts.error.message }}
     </div>
 
-    <pre v-if="accounts.ready">{{ accounts.data }}</pre>
+    <div v-if="accountsStore.accounts.retrievedAt">
+      {{ accountsStore.accounts.retrievedAt.toISOString() }}
+    </div>
+
+    <pre v-if="accountsStore.accounts.ready">{{
+      accountsStore.accounts.data
+    }}</pre>
   </div>
 </template>

@@ -1,5 +1,5 @@
 import { defineStore } from "pinia";
-import { computed, reactive, readonly } from "vue";
+import { computed, reactive, readonly, toRefs } from "vue";
 
 import type { Account } from "../../core/main.js";
 import * as main from "../../core/main.js";
@@ -10,11 +10,9 @@ import { getInitialAccountsStoreState } from "./get-initial-accounts-store-state
 export const useAccountsStore = defineStore("accounts", () => {
   const state: AccountsStoreState = reactive(getInitialAccountsStoreState());
 
-  const computedState = {
-    accountsByID: computed(() =>
-      main.makeAccountsByID({ accounts: state.accounts.data }),
-    ),
-  };
+  const accountsByID = computed(() =>
+    main.makeAccountsByID({ accounts: state.accounts.data }),
+  );
 
   const getAccounts = () => {
     if (state.accounts.ready) {
@@ -33,9 +31,9 @@ export const useAccountsStore = defineStore("accounts", () => {
   main.mainEventBus.on("reset-all", $reset);
 
   return {
-    computed: computedState,
-    getAccounts,
-    state: readonly(state),
     $reset,
+    ...toRefs(readonly(state)),
+    accountsByID,
+    getAccounts,
   };
 });

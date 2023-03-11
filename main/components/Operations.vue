@@ -4,22 +4,24 @@ import { useOperationsStore } from "../modules/operations/use-operations-store.j
 const operationsStore = useOperationsStore();
 
 operationsStore.getOperations();
-
-const { operations } = operationsStore.state;
 </script>
 
 <template>
   <div>
     <h1>Operations</h1>
 
-    <div v-if="operations.loading">Loading operations...</div>
+    <div v-if="operationsStore.operations.loading">Loading operations...</div>
 
-    <div v-if="operations.error">{{ operations.error.message }}</div>
-
-    <div v-if="operations.retrievedAt">
-      {{ operations.retrievedAt.toISOString() }}
+    <div v-if="operationsStore.operations.error">
+      {{ operationsStore.operations.error.message }}
     </div>
 
-    <pre v-if="operations.ready">{{ operations.data }}</pre>
+    <div v-if="operationsStore.operations.retrievedAt">
+      {{ operationsStore.operations.retrievedAt.toISOString() }}
+    </div>
+
+    <pre v-if="operationsStore.operations.ready">{{
+      operationsStore.operations.data
+    }}</pre>
   </div>
 </template>
