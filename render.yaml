@@ -1,0 +1,7 @@
+services:
+  - type: web
+    name: capim
+    env: static
+    branch: main
+    buildCommand: npm run build
+    staticPublishPath: main/output/public
