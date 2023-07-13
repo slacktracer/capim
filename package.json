@@ -1,5 +1,5 @@
 {
-  "devDependencies": {
+  "dependencies": {
     "eslint-plugin-simple-import-sort": "^10.0.0",
     "husky": "^8.0.3",
     "lint-staged": "^13.2.3"
@@ -14,7 +14,6 @@
     "start": "npm run dev --workspace main",
     "x": "npm run x --workspace main"
   },
-  "version": "1.0.0",
   "workspaces": [
     "main",
     "tests"
