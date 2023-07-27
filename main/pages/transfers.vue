@@ -1,3 +1,3 @@
 <template>
-  <h1>Transfers</h1>
+  <Transfers />
 </template>
