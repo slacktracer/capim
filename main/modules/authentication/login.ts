@@ -1,4 +1,4 @@
-import { navigateTo } from "#app";
+import { navigateTo } from "#app"; // eslint-disable-line import/order
 
 import * as main from "../../core/main.js";
 import { boot } from "../boot/boot.js";

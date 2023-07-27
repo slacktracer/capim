@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import { onMounted, ref } from "vue";
 
-import { navigateTo } from "#app";
+import { navigateTo } from "#app"; // eslint-disable-line import/order
 
 import { isUserLoggedIn } from "../core/main.js";
 import { login } from "../modules/authentication/login.js";

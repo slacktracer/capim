@@ -22,4 +22,5 @@ const server = makeServer({ cert, key, proxy, target });
 
 server.listen(2099, "capim.local");
 
+// eslint-disable-next-line no-console
 console.log("Proxy is on!");
