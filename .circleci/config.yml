@@ -1,0 +1,22 @@
+version: 2.1
+
+jobs:
+  lint:
+    docker:
+      - image: cimg/node:20.4.0
+    steps:
+      - checkout
+      - restore_cache:
+          keys:
+            - node-deps-v1-{{ .Branch }}-{{checksum "package-lock.json"}}
+      - run: npm ci
+      - save_cache:
+          key: node-deps-v1-{{ .Branch }}-{{checksum "package-lock.json"}}
+          paths:
+            - ~/.npm
+      - run: npm run lint
+
+workflows:
+  lint_and_test:
+    jobs:
+      - lint
