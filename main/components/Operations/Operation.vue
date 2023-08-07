@@ -23,7 +23,7 @@ const category = computed(
 
 <template>
   <NuxtLink class="operation" :to="`/operations/${operation.operationID}`">
-    <div class="datetime">
+    <div class="time">
       <div>
         {{ format(new Date(props.operation.at), "HH:mm") }}
       </div>
@@ -72,7 +72,7 @@ const category = computed(
   background: hsla(303, 100%, 50%, 0.5);
 }
 
-.datetime {
+.time {
   display: flex;
   flex-direction: column;
   justify-content: center;
