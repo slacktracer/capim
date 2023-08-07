@@ -9,7 +9,11 @@ const operationsStore = useOperationsStore();
 
 operationsStore.getOperations();
 
-const retrievedAt = ref(formatDistanceToNowStrict(new Date()));
+const retrievedAt = ref(
+  formatDistanceToNowStrict(
+    operationsStore.operations.retrievedAt || new Date(),
+  ),
+);
 
 setInterval(() => {
   retrievedAt.value = formatDistanceToNowStrict(
