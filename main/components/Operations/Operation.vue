@@ -32,7 +32,12 @@ const category = computed(
     <div class="category-and-comments">
       <div class="category">{{ category }}</div>
 
-      <div class="comments">{{ props.operation.comments }}</div>
+      <div class="comments">
+        <span v-if="props.operation.comments">{{
+          props.operation.comments
+        }}</span>
+        <i v-else class="no-comments">No comments</i>
+      </div>
     </div>
 
     <div class="amount-and-account">
@@ -70,6 +75,10 @@ const category = computed(
 
 .comments {
   font-size: 0.9rem;
+}
+
+.no-comments {
+  color: gray;
 }
 
 .amount {
