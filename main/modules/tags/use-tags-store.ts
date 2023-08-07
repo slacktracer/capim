@@ -17,6 +17,12 @@ export const useTagsStore = defineStore("tags", () => {
     main.makeTagValuesByID({ tagValues: state.tags.data.values || [] }),
   );
 
+  const mainTagKeysIDs = computed(() =>
+    main.getMainTagKeysIDs({
+      tagKeys: state.tags.data.keys || [],
+    }),
+  );
+
   const getTags = () => {
     if (state.tags.ready) {
       return;
@@ -35,6 +41,7 @@ export const useTagsStore = defineStore("tags", () => {
   return {
     $reset,
     ...toRefs(readonly(state)),
+    mainTagKeysIDs,
     getTags,
     tagKeysByID,
     tagValuesByID,

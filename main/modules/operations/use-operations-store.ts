@@ -1,8 +1,9 @@
 import { defineStore } from "pinia";
-import { reactive, readonly, toRefs } from "vue";
+import { computed, reactive, readonly, toRefs } from "vue";
 
 import type { Operation } from "../../core/main.js";
 import * as main from "../../core/main.js";
+import { makeOperationsByDate } from "../../core/make-operations-by-date.js";
 import type { OperationStoreState } from "../../types/OperationsStoreState.js";
 import { loadDataIntoState } from "../common/utils/load-data-into-state.js";
 import { getInitialOperationsStoreState } from "./get-initial-operations-store-state.js";
@@ -21,6 +22,10 @@ export const useOperationsStore = defineStore("operations", () => {
     });
   };
 
+  const operationsByDate = computed(() =>
+    makeOperationsByDate({ operations: state.operations.data ?? [] }),
+  );
+
   const $reset = () =>
     void Object.assign(state, getInitialOperationsStoreState());
 
@@ -30,5 +35,6 @@ export const useOperationsStore = defineStore("operations", () => {
     $reset,
     ...toRefs(readonly(state)),
     getOperations,
+    operationsByDate,
   };
 });

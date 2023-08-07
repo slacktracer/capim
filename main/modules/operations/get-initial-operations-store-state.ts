@@ -4,4 +4,5 @@ import { getInitialAsyncDataState } from "../common/utils/get-initial-async-data
 
 export const getInitialOperationsStoreState = (): OperationStoreState => ({
   operations: getInitialAsyncDataState<Operation[]>(),
+  operationsByDate: [],
 });
