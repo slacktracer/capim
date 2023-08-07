@@ -22,7 +22,7 @@ const category = computed(
 </script>
 
 <template>
-  <div class="operation">
+  <NuxtLink class="operation" :to="`/operations/${operation.operationID}`">
     <div class="datetime">
       <div>
         {{ format(new Date(props.operation.at), "HH:mm") }}
@@ -47,14 +47,29 @@ const category = computed(
         {{ accountStore.accountsByID[props.operation.accountID].name }}
       </div>
     </div>
-  </div>
+  </NuxtLink>
 </template>
 
 <style scoped>
 .operation {
+  color: var(--bs-body-color);
   display: flex;
   gap: 1rem;
   padding: 0.5rem;
+  text-decoration: none;
+}
+
+.operation:hover {
+  background: hsla(0, 0%, 95%, 1);
+}
+
+.operation:focus {
+  background: hsla(0, 0%, 95%, 1);
+  outline: none;
+}
+
+.operation:active {
+  background: hsla(303, 100%, 50%, 0.5);
 }
 
 .datetime {
