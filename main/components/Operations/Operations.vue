@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import { formatDistanceToNowStrict } from "date-fns";
-import { ref } from "vue";
+import { onMounted, ref } from "vue";
 
 import { useOperationsStore } from "../../modules/operations/use-operations-store.js";
 import Operation from "./Operation.vue";
@@ -20,6 +20,23 @@ setInterval(() => {
     operationsStore.operations.retrievedAt || new Date(),
   );
 }, 60 * 1000);
+
+onMounted(() => {
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach((entry) => {
+      if (
+        operationsStore.operationsByDateInSegments.length &&
+        entry.isIntersecting
+      ) {
+        operationsStore.increaseAmountOfOperationsToRender();
+      }
+    });
+  });
+
+  const target = document.querySelector(".loading");
+
+  observer.observe(target!);
+});
 </script>
 
 <template>
@@ -42,7 +59,7 @@ setInterval(() => {
 
     <section>
       <div
-        v-for="[date, operations] in operationsStore.operationsByDate"
+        v-for="[date, operations] in operationsStore.operationsByDateInSegments"
         :key="date"
       >
         <div class="date">
@@ -62,6 +79,13 @@ setInterval(() => {
         </div>
       </div>
     </section>
+
+    <div
+      class="loading"
+      @click="operationsStore.increaseAmountOfOperationsToRender()"
+    >
+      loading
+    </div>
   </div>
 </template>
 
@@ -86,5 +110,9 @@ setInterval(() => {
 .operations-separator {
   border-top: 1px dotted gray;
   margin-block: 0;
+}
+
+.loading {
+  text-align: center;
 }
 </style>
