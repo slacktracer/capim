@@ -1,24 +1,14 @@
 <script lang="ts" setup>
 import { format } from "date-fns";
-import { computed } from "vue";
 
 import type { Operation } from "../../core/types/Operation.js";
 import { useAccountsStore } from "../../modules/accounts/use-accounts-store.js";
-import { useTagsStore } from "../../modules/tags/use-tags-store.js";
 
 const props = defineProps<{
   operation: Operation;
 }>();
 
 const accountStore = useAccountsStore();
-const tagStore = useTagsStore();
-
-const category = computed(
-  () =>
-    tagStore.tagValuesByID[
-      props.operation.tags[tagStore.mainTagKeysIDs.categoryTagKeyID!]
-    ].name,
-);
 </script>
 
 <template>
@@ -30,7 +20,7 @@ const category = computed(
     </div>
 
     <div class="category-and-comments">
-      <div class="category">{{ category }}</div>
+      <div class="category">{{ props.operation.categoryID }}</div>
 
       <div class="comments">
         <span v-if="props.operation.comments">{{
