@@ -12,13 +12,13 @@ import { getInitialOperationsStoreState } from "./get-initial-operations-store-s
 export const useOperationsStore = defineStore("operations", () => {
   const state: OperationStoreState = reactive(getInitialOperationsStoreState());
 
-  const getOperations = () => {
+  const getOperations = ({ from, to }: { from: string; to: string }) => {
     if (state.operations.ready) {
       return;
     }
 
     loadDataIntoState<Operation[]>({
-      functionToCall: () => main.getOperations(),
+      functionToCall: () => main.getOperations({ from, to }),
       stateToUpdate: state.operations,
     });
   };

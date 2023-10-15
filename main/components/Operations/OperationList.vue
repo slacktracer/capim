@@ -7,7 +7,15 @@ import OperationListItem from "./OperationListItem.vue";
 
 const operationsStore = useOperationsStore();
 
-operationsStore.getOperations();
+const urlSearchParams = new URLSearchParams(window.location.search);
+
+const searchParamFrom = urlSearchParams.get("from");
+const searchParamTo = urlSearchParams.get("to");
+
+operationsStore.getOperations({
+  from: searchParamFrom ? new Date(searchParamFrom).toISOString() : undefined,
+  to: searchParamTo ? new Date(searchParamTo).toISOString() : undefined,
+});
 
 const retrievedAt = ref(
   formatDistanceToNowStrict(
