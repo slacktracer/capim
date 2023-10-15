@@ -3,7 +3,7 @@ import { formatDistanceToNowStrict } from "date-fns";
 import { onMounted, ref } from "vue";
 
 import { useOperationsStore } from "../../modules/operations/use-operations-store.js";
-import Operation from "./Operation.vue";
+import OperationListItem from "./OperationListItem.vue";
 
 const operationsStore = useOperationsStore();
 
@@ -70,7 +70,7 @@ onMounted(() => {
           v-for="(operation, index) in operations"
           :key="operation.operationID"
         >
-          <Operation :operation="operation" />
+          <OperationListItem :operation="operation" />
 
           <hr
             v-if="index !== operations.length - 1"

@@ -1,7 +1,7 @@
 <script lang="ts" setup>
-import FullOperation from "../../components/Operations/FullOperation.vue";
+import Operation from "../../components/Operations/Operation.vue";
 </script>
 
 <template>
-  <FullOperation></FullOperation>
+  <Operation></Operation>
 </template>

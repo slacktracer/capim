@@ -1,6 +1,8 @@
 <script lang="ts" setup>
 import { definePageMeta } from "#imports";
 
+import Main from "../components/Main.vue"; // eslint-disable-line import/order
+
 definePageMeta({
   alias: "/",
 });

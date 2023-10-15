@@ -1,6 +1,9 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 // @ts-ignore
 export default defineNuxtConfig({
+  components: {
+    dirs: [],
+  },
   css: ["bootstrap/dist/css/bootstrap.min.css"],
   hooks: {
     // What is going on here? Had to set as _any_ because tsc-files. But fails only for "lint staged".
