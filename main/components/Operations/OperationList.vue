@@ -4,17 +4,13 @@ import { onMounted, ref } from "vue";
 
 import { useOperationsStore } from "../../modules/operations/use-operations-store.js";
 import OperationListItem from "./OperationListItem.vue";
+import OperationsDatetimeRangeSelector from "./OperationsDatetimeRangeSelector.vue";
 
 const operationsStore = useOperationsStore();
 
-const urlSearchParams = new URLSearchParams(window.location.search);
-
-const searchParamFrom = urlSearchParams.get("from");
-const searchParamTo = urlSearchParams.get("to");
-
 operationsStore.getOperations({
-  from: searchParamFrom ? new Date(searchParamFrom).toISOString() : undefined,
-  to: searchParamTo ? new Date(searchParamTo).toISOString() : undefined,
+  from: operationsStore.datetimeRange[0],
+  to: operationsStore.datetimeRange[1],
 });
 
 const retrievedAt = ref(
@@ -51,6 +47,8 @@ onMounted(() => {
   <div>
     <section class="header">
       <h1>Operations</h1>
+
+      <OperationsDatetimeRangeSelector />
 
       <div v-if="operationsStore.operations.loading">Loading operations...</div>
 
@@ -91,9 +89,7 @@ onMounted(() => {
     <div
       class="loading"
       @click="operationsStore.increaseAmountOfOperationsToRender()"
-    >
-      loading
-    </div>
+    ></div>
   </div>
 </template>
 

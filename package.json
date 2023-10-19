@@ -13,6 +13,7 @@
     "p": "npm run local-client-to-remote-server-proxy --workspace main",
     "s": "npm run start-using-https --workspace main",
     "start": "npm run dev --workspace main",
+    "test": "npm run test --workspace tests",
     "x": "npm run x --workspace main"
   },
   "workspaces": [

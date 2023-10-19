@@ -1,18 +1,17 @@
 import { get } from "./http/get.js";
 import { mainRequestErrorHandler } from "./http/main-request-error-handler.js";
+import type { DatetimeRangeInput } from "./types/DatetimeRangeInput.js";
 import type { Operation } from "./types/Operation.js";
+import { setSearchParamsOnURL } from "./utils/set-search-params-on-url.js";
 
 export const getOperations = async ({
   from,
   to,
-}: {
-  from: string;
-  to: string;
-}): Promise<Operation[]> => {
+}: DatetimeRangeInput = {}): Promise<Operation[]> => {
   try {
-    const queryString = new URLSearchParams({ from, to }).toString();
+    const searchParamsString = setSearchParamsOnURL({ from, to });
 
-    const response = await get(`operations?${queryString}`, {
+    const response = await get(`operations${searchParamsString}`, {
       timeout: 60000,
     }).json<Operation[]>();
 
