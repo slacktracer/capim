@@ -1,4 +1,5 @@
 import { defineStore } from "pinia";
+import { partial } from "ramda";
 import type { Ref } from "vue";
 import { computed, reactive, readonly, ref, toRefs, watch } from "vue";
 
@@ -9,6 +10,7 @@ import type { DatetimeRangeInput } from "../../core/types/DatetimeRangeInput.js"
 import type { OperationStoreState } from "../../types/OperationsStoreState.js";
 import { loadDataIntoState } from "../common/utils/load-data-into-state.js";
 import { getInitialOperationsStoreState } from "./get-initial-operations-store-state.js";
+import { setDatetimeRange } from "./set-datetime-range.js";
 
 export const useOperationsStore = defineStore("operations", () => {
   const state: OperationStoreState = reactive(getInitialOperationsStoreState());
@@ -46,14 +48,8 @@ export const useOperationsStore = defineStore("operations", () => {
     );
   };
 
-  const setDatetimeRange = ({ from, to }: DatetimeRangeInput) => {
-    if (typeof from === "string") {
-      state.datetimeRange[0] = from;
-    }
-
-    if (typeof to === "string") {
-      state.datetimeRange[1] = to;
-    }
+  const actions = {
+    setDatetimeRange: partial(setDatetimeRange, [state]),
   };
 
   const $reset = () =>
@@ -63,11 +59,11 @@ export const useOperationsStore = defineStore("operations", () => {
 
   return {
     $reset,
+    ...actions,
     ...toRefs(readonly(state)),
     getOperations,
     increaseAmountOfOperationsToRender,
     operationsByDate,
     operationsByDateInSegments,
-    setDatetimeRange,
   };
 });
