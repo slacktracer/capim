@@ -2,11 +2,16 @@
 import { formatDistanceToNowStrict } from "date-fns";
 import { onMounted, ref } from "vue";
 
+import { getSearchParamsFromURL } from "../../core/utils/get-search-params-from-url.js";
 import { useOperationsStore } from "../../modules/operations/use-operations-store.js";
 import OperationListItem from "./OperationListItem.vue";
 import OperationsDatetimeRangeSelector from "./OperationsDatetimeRangeSelector.vue";
 
 const operationsStore = useOperationsStore();
+
+const { from, to } = getSearchParamsFromURL();
+
+operationsStore.setDatetimeRange({ from, to });
 
 operationsStore.getOperations({
   from: operationsStore.datetimeRange[0],
