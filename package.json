@@ -1,23 +1,19 @@
 {
   "devDependencies": {
-    "eslint-plugin-simple-import-sort": "^10.0.0",
     "husky": "^8.0.3",
     "lint-staged": "^13.2.3"
   },
   "name": "capim",
   "scripts": {
-    "build": "npm ci && npm run generate --workspace main",
-    "lint": "npm run lint --prefix main",
+    "build": "npm ci && npm run generate --prefix main",
+    "install": "npm install --prefix main && npm install --prefix tests",
+    "lint": "npm run lint --prefix main && npm run lint --prefix tests",
     "lint-staged": "lint-staged",
     "prepare": "husky install",
-    "p": "npm run local-client-to-remote-server-proxy --workspace main",
-    "s": "npm run start-using-https --workspace main",
-    "start": "npm run dev --workspace main",
-    "test": "npm run test --workspace tests",
-    "x": "npm run x --workspace main"
-  },
-  "workspaces": [
-    "main",
-    "tests"
-  ]
+    "p": "npm run local-client-to-remote-server-proxy --prefix main",
+    "s": "npm run start-using-https --prefix main",
+    "start": "npm run dev --prefix main",
+    "test": "npm run test --prefix tests",
+    "x": "npm run x --prefix main"
+  }
 }
