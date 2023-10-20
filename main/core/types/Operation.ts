@@ -6,6 +6,10 @@ export type Operation = {
   amount: number;
   amountPerUnit: number;
   at: string;
+  category: {
+    categoryID: string;
+    name: string;
+  };
   comments: string;
   createdAt: string;
   operationID: string;

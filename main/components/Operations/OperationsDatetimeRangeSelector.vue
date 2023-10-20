@@ -22,26 +22,32 @@ const updateDatetimeRange = (event: Event) => {
 
 <template>
   <form class="operations-datetime-range-selector" @submit.prevent="submit()">
-    <div>
-      <!--      From:-->
-      <input
-        class="form-control"
-        name="from"
-        type="date"
-        :value="operationsStore.datetimeRange[0]"
-        @input="updateDatetimeRange"
-      />
-    </div>
+    <div class="datetime-selectors">
+      <div>
+        From:
+        <br />
 
-    <div>
-      <!--      To:-->
-      <input
-        class="form-control"
-        name="to"
-        type="date"
-        :value="operationsStore.datetimeRange[1]"
-        @input="updateDatetimeRange"
-      />
+        <input
+          class="form-control"
+          name="from"
+          type="date"
+          :value="operationsStore.datetimeRange[0]"
+          @input="updateDatetimeRange"
+        />
+      </div>
+
+      <div>
+        To:
+        <br />
+
+        <input
+          class="form-control"
+          name="to"
+          type="date"
+          :value="operationsStore.datetimeRange[1]"
+          @input="updateDatetimeRange"
+        />
+      </div>
     </div>
 
     <div><button class="btn btn-primary" type="submit">Search</button></div>
@@ -50,11 +56,16 @@ const updateDatetimeRange = (event: Event) => {
 
 <style scoped>
 .operations-datetime-range-selector {
-  align-items: center;
-  border: 1px dashed lightgray;
+  align-items: end;
   display: flex;
+  flex-wrap: wrap;
   gap: 1rem;
   margin-bottom: 1rem;
-  padding: 1rem;
+  padding-block: 1rem;
+}
+
+.datetime-selectors {
+  display: flex;
+  gap: 1rem;
 }
 </style>

@@ -55,13 +55,18 @@ onMounted(() => {
 
       <OperationsDatetimeRangeSelector />
 
-      <div v-if="operationsStore.operations.loading">Loading operations...</div>
-
       <div v-if="operationsStore.operations.error">
         {{ operationsStore.operations.error.message }}
       </div>
 
-      <div v-if="operationsStore.operations.retrievedAt">
+      <div v-if="operationsStore.operations.loading">Loading operations...</div>
+
+      <div
+        v-if="
+          !operationsStore.operations.loading &&
+          operationsStore.operations.retrievedAt
+        "
+      >
         Retrieved
         {{ retrievedAt }}
         ago
@@ -101,7 +106,7 @@ onMounted(() => {
 <style scoped>
 .header {
   margin-bottom: 1rem;
-  margin-inline: 0.5rem;
+  margin-inline: 1rem;
 }
 
 .date {
