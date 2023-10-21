@@ -1,11 +1,12 @@
 import { defineStore } from "pinia";
-import { partial } from "ramda";
 import type { Ref } from "vue";
 import { computed, reactive, readonly, ref, toRefs, watch } from "vue";
 
 import * as main from "../../core/main.js";
 import { makeOperationsByDate } from "../../core/make-operations-by-date.js";
+import type { DatetimeRangeRecord } from "../../core/types/DatetimeRangeRecord.js";
 import type { OperationStoreState } from "../../types/OperationsStoreState.js";
+import { injectState } from "../common/utils/inject-state.js";
 import { getInitialOperationsStoreState } from "./get-initial-operations-store-state.js";
 import { getOperations } from "./get-operations.js";
 import { setDatetimeRange } from "./set-datetime-range.js";
@@ -14,8 +15,14 @@ export const useOperationsStore = defineStore("operations", () => {
   const state: OperationStoreState = reactive(getInitialOperationsStoreState());
 
   const actions = {
-    getOperations: partial(getOperations, [state]),
-    setDatetimeRange: partial(setDatetimeRange, [state]),
+    getOperations: injectState<OperationStoreState, DatetimeRangeRecord>(
+      getOperations,
+      state,
+    ),
+    setDatetimeRange: injectState<OperationStoreState, DatetimeRangeRecord>(
+      setDatetimeRange,
+      state,
+    ),
   };
 
   const operationsByDate = computed(() =>

@@ -1,13 +1,12 @@
-import type { DatetimeRangeInput } from "../../core/types/DatetimeRangeInput.js";
+import type { DatetimeRangeRecord } from "../../core/types/DatetimeRangeRecord.js";
 import { setSearchParamsOnURL } from "../../core/utils/set-search-params-on-url.js";
 import type { OperationStoreState } from "../../types/OperationsStoreState.js";
-import { memoisedGetOperations } from "./get-operations/memoised-get-operations.js";
+import { memoisedGetOperations } from "./memoised-get-operations.js";
 
 export const getOperations = (
-  state: OperationStoreState,
-  { from, to }: DatetimeRangeInput,
+  input: DatetimeRangeRecord & { state: OperationStoreState },
 ) => {
-  setSearchParamsOnURL({ from, to });
+  setSearchParamsOnURL({ from: input.from, to: input.to });
 
-  return memoisedGetOperations(state, { from, to });
+  return memoisedGetOperations(input);
 };

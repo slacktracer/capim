@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import type { DatetimeRangeInput } from "../../core/types/DatetimeRangeInput.js";
+import type { DatetimeRangeRecord } from "../../core/types/DatetimeRangeRecord.js";
 import { useOperationsStore } from "../../modules/operations/use-operations-store.js";
 
 const operationsStore = useOperationsStore();
@@ -15,7 +15,7 @@ const updateDatetimeRange = (event: Event) => {
   if (event.target) {
     const { name: key, value } = event.target as HTMLInputElement;
 
-    operationsStore.setDatetimeRange({ [key]: value } as DatetimeRangeInput);
+    operationsStore.setDatetimeRange({ [key]: value } as DatetimeRangeRecord);
   }
 };
 </script>
@@ -56,7 +56,7 @@ const updateDatetimeRange = (event: Event) => {
 
 <style scoped>
 .operations-datetime-range-selector {
-  align-items: end;
+  align-items: flex-end;
   display: flex;
   flex-wrap: wrap;
   gap: 1rem;
