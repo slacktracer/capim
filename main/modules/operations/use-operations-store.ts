@@ -1,6 +1,5 @@
 import { defineStore } from "pinia";
-import type { Ref } from "vue";
-import { computed, reactive, readonly, ref, toRefs, watch } from "vue";
+import { computed, reactive, readonly, toRefs } from "vue";
 
 import * as main from "../../core/main.js";
 import { makeOperationsByDate } from "../../core/make-operations-by-date.js";
@@ -31,26 +30,6 @@ export const useOperationsStore = defineStore("operations", () => {
     }),
   );
 
-  const operationsByDateInSegments: Ref<
-    OperationStoreState["operationsByDateInSegments"]
-  > = ref([]);
-
-  watch(state.operations, () => {
-    operationsByDateInSegments.value = operationsByDate.value.slice(
-      0,
-      state.amountOfOperationsToRender,
-    );
-  });
-
-  const increaseAmountOfOperationsToRender = () => {
-    state.amountOfOperationsToRender += 90;
-
-    operationsByDateInSegments.value = operationsByDate.value.slice(
-      0,
-      state.amountOfOperationsToRender,
-    );
-  };
-
   const $reset = () =>
     void Object.assign(state, getInitialOperationsStoreState());
 
@@ -60,8 +39,6 @@ export const useOperationsStore = defineStore("operations", () => {
     $reset,
     ...actions,
     ...toRefs(readonly(state)),
-    increaseAmountOfOperationsToRender,
     operationsByDate,
-    operationsByDateInSegments,
   };
 });

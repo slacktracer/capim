@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import { formatDistanceToNowStrict } from "date-fns";
-import { onMounted, ref } from "vue";
+import { ref } from "vue";
 
 import { getSearchParamsFromURL } from "../../core/utils/get-search-params-from-url.js";
 import { useOperationsStore } from "../../modules/operations/use-operations-store.js";
@@ -29,23 +29,6 @@ setInterval(() => {
     operationsStore.operations.retrievedAt || new Date(),
   );
 }, 60 * 1000);
-
-onMounted(() => {
-  const observer = new IntersectionObserver((entries) => {
-    entries.forEach((entry) => {
-      if (
-        operationsStore.operationsByDateInSegments.length &&
-        entry.isIntersecting
-      ) {
-        operationsStore.increaseAmountOfOperationsToRender();
-      }
-    });
-  });
-
-  const target = document.querySelector(".loading");
-
-  observer.observe(target!);
-});
 </script>
 
 <template>
@@ -75,7 +58,7 @@ onMounted(() => {
 
     <section>
       <div
-        v-for="[date, operations] in operationsStore.operationsByDateInSegments"
+        v-for="[date, operations] in operationsStore.operationsByDate"
         :key="date"
       >
         <div class="date">
@@ -95,11 +78,6 @@ onMounted(() => {
         </div>
       </div>
     </section>
-
-    <div
-      class="loading"
-      @click="operationsStore.increaseAmountOfOperationsToRender()"
-    ></div>
   </div>
 </template>
 
@@ -122,11 +100,7 @@ onMounted(() => {
 }
 
 .operations-separator {
-  border-top: 1px dotted gray;
+  border-top: 1px dotted hsla(0, 0%, 95%, 1);
   margin-block: 0;
-}
-
-.loading {
-  text-align: center;
 }
 </style>
