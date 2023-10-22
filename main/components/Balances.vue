@@ -9,7 +9,7 @@ balancesStore.getBalances();
 </script>
 
 <template>
-  <div>
+  <div class="header">
     <h1>Balances</h1>
 
     <div v-if="balancesStore.balances.loading">Loading balances...</div>
@@ -30,3 +30,10 @@ balancesStore.getBalances();
     }}</pre>
   </div>
 </template>
+
+<style scoped>
+.header {
+  margin-bottom: 1rem;
+  margin-inline: 1rem;
+}
+</style>

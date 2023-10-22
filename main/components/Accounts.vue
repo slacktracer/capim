@@ -5,7 +5,7 @@ const accountsStore = useAccountsStore();
 </script>
 
 <template>
-  <div>
+  <div class="header">
     <h1>Accounts</h1>
 
     <div v-if="accountsStore.accounts.loading">Loading accounts...</div>
@@ -23,3 +23,10 @@ const accountsStore = useAccountsStore();
     }}</pre>
   </div>
 </template>
+
+<style scoped>
+.header {
+  margin-bottom: 1rem;
+  margin-inline: 1rem;
+}
+</style>

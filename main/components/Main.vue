@@ -7,7 +7,7 @@ const tagsStore = useTagsStore();
 </script>
 
 <template>
-  <div>
+  <div class="header">
     <h1>Capim</h1>
 
     <div v-if="accountsStore.accounts.loading">Loading accounts...</div>
@@ -21,3 +21,10 @@ const tagsStore = useTagsStore();
     <div v-if="tagsStore.tags.error">{{ tagsStore.tags.error.message }}</div>
   </div>
 </template>
+
+<style scoped>
+.header {
+  margin-bottom: 1rem;
+  margin-inline: 1rem;
+}
+</style>

@@ -5,7 +5,7 @@ const tagsStore = useTagsStore();
 </script>
 
 <template>
-  <div>
+  <div class="header">
     <h1>Tags</h1>
 
     <div v-if="tagsStore.tags.loading">Loading tags...</div>
@@ -19,3 +19,10 @@ const tagsStore = useTagsStore();
     <pre v-if="tagsStore.tags.ready">{{ tagsStore.tags.data }}</pre>
   </div>
 </template>
+
+<style scoped>
+.header {
+  margin-bottom: 1rem;
+  margin-inline: 1rem;
+}
+</style>
