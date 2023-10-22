@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import { format } from "date-fns";
 
-import type { Operation } from "../../core/types/Operation.js";
+import type { Operation } from "../../core/main.js";
 import { useAccountsStore } from "../../modules/accounts/use-accounts-store.js";
 
 const props = defineProps<{
