@@ -2,13 +2,19 @@ import { memoizeWith } from "ramda";
 
 import type { Operation } from "../../core/main.js";
 import * as main from "../../core/main.js";
+import type { GetOperationsActionInput } from "../../types/GetOperationsActionInput.js";
 
 export const memoisedGetOperations = memoizeWith<
   (
-    input: main.DatetimeRangeRecord,
+    input: GetOperationsActionInput & { invalidateCount: number },
   ) => Promise<{ data: Operation[]; retrievedAt: Date }>
 >(
-  ({ from, to }: main.DatetimeRangeRecord) => `${from}::${to}`,
+  ({
+    from,
+    to,
+    invalidateCount,
+  }: GetOperationsActionInput & { invalidateCount: number }) =>
+    `${from}::${to}::${invalidateCount}`,
   async (input) =>
     main.wrapWithRetrievedAt({ data: await main.getOperations(input) }),
 );
