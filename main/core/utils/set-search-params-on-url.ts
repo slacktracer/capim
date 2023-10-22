@@ -9,7 +9,7 @@ export const setSearchParamsOnURL = (data = {}) => {
     }
   }
 
-  history.pushState({}, "", url);
+  history.replaceState({}, "", url.href);
 
   return url.search;
 };
