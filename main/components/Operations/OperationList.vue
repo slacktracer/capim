@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import { formatDistanceToNowStrict } from "date-fns";
-import { ref } from "vue";
+import { ref, watch } from "vue";
 
 import { getSearchParamsFromURL } from "../../core/utils/get-search-params-from-url.js";
 import { useOperationsStore } from "../../modules/operations/use-operations-store.js";
@@ -18,17 +18,28 @@ operationsStore.getOperations({
   to: operationsStore.datetimeRange[1],
 });
 
-const retrievedAt = ref(
-  formatDistanceToNowStrict(
-    operationsStore.operations.retrievedAt || new Date(),
-  ),
-);
+const retrievedAt = ref("");
 
-setInterval(() => {
+let intervalID: ReturnType<typeof setInterval>;
+
+const setRetrievedAtDistanceToNowStrict = () => {
   retrievedAt.value = formatDistanceToNowStrict(
     operationsStore.operations.retrievedAt || new Date(),
   );
-}, 60 * 1000);
+
+  if (intervalID) {
+    clearInterval(intervalID);
+  }
+
+  intervalID = setInterval(setRetrievedAtDistanceToNowStrict, 11 * 1000);
+};
+
+setRetrievedAtDistanceToNowStrict();
+
+watch(
+  () => operationsStore.operations.retrievedAt,
+  setRetrievedAtDistanceToNowStrict,
+);
 </script>
 
 <template>
