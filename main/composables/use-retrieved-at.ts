@@ -21,7 +21,7 @@ export const useRetrievedAt = <Collection extends AsyncDataState<unknown>>({
       clearInterval(intervalID);
     }
 
-    intervalID = setInterval(setRetrievedAtDistanceToNowStrict, 11 * 1000);
+    intervalID = setInterval(setRetrievedAtDistanceToNowStrict, 5 * 1000);
   };
 
   setRetrievedAtDistanceToNowStrict();
