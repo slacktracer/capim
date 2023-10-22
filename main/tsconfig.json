@@ -1,6 +1,7 @@
 {
   "compilerOptions": {
-    "exactOptionalPropertyTypes": true
+    "exactOptionalPropertyTypes": true,
+    "noErrorTruncation": true
   },
   // https://nuxt.com/docs/guide/concepts/typescript
   "extends": "./.nuxt/tsconfig.json"

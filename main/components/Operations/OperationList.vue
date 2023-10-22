@@ -1,9 +1,9 @@
 <script lang="ts" setup>
-import { formatDistanceToNowStrict } from "date-fns";
-import { ref, watch } from "vue";
-
+import { useRetrievedAt } from "../../composables/use-retrieved-at.js";
+import type { Operation } from "../../core/types/Operation.js";
 import { getSearchParamsFromURL } from "../../core/utils/get-search-params-from-url.js";
 import { useOperationsStore } from "../../modules/operations/use-operations-store.js";
+import type { UseRetrievedAtOf } from "../../types/UseRetrievedAtOf.js";
 import OperationListItem from "./OperationListItem.vue";
 import OperationsDatetimeRangeSelector from "./OperationsDatetimeRangeSelector.vue";
 
@@ -18,28 +18,9 @@ operationsStore.getOperations({
   to: operationsStore.datetimeRange[1],
 });
 
-const retrievedAt = ref("");
-
-let intervalID: ReturnType<typeof setInterval>;
-
-const setRetrievedAtDistanceToNowStrict = () => {
-  retrievedAt.value = formatDistanceToNowStrict(
-    operationsStore.operations.retrievedAt || new Date(),
-  );
-
-  if (intervalID) {
-    clearInterval(intervalID);
-  }
-
-  intervalID = setInterval(setRetrievedAtDistanceToNowStrict, 11 * 1000);
-};
-
-setRetrievedAtDistanceToNowStrict();
-
-watch(
-  () => operationsStore.operations.retrievedAt,
-  setRetrievedAtDistanceToNowStrict,
-);
+const retrievedAt = useRetrievedAt<UseRetrievedAtOf<Operation[]>>({
+  collection: operationsStore.operations,
+});
 </script>
 
 <template>
