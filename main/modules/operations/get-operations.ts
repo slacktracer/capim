@@ -1,18 +1,19 @@
-import * as main from "../../core/main.js";
+import type * as main from "../../core/main.js";
 import type { GetOperationsActionInput } from "../../types/GetOperationsActionInput.js";
 import type { OperationStoreState } from "../../types/OperationsStoreState.js";
 import { newLoadDataIntoState } from "../common/utils/new-load-data-into-state.js";
+import { setSearchParams } from "../common/utils/set-search-params.js";
 import { memoisedGetOperations } from "./memoised-get-operations.js";
 
 let invalidateCount = 0;
 
-export const getOperations = ({
+export const getOperations = async ({
   from,
   invalidate,
   to,
   state,
 }: GetOperationsActionInput & { state: OperationStoreState }) => {
-  main.setSearchParamsOnURL({ from, to });
+  await setSearchParams({ data: { from, to }, router: state.router });
 
   if (invalidate) {
     invalidateCount += 1;

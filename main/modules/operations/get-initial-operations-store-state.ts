@@ -1,4 +1,5 @@
 import { lightFormat, startOfYear } from "date-fns/fp";
+import type { Router } from "vue-router";
 
 import type * as main from "../../core/main.js";
 import type { OperationStoreState } from "../../types/OperationsStoreState.js";
@@ -9,4 +10,5 @@ export const getInitialOperationsStoreState = (): OperationStoreState => ({
   operation: getInitialAsyncDataState<main.Operation>(),
   operations: getInitialAsyncDataState<main.Operation[]>(),
   operationsByDate: [],
+  router: {} as Router,
 });
