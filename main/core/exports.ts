@@ -17,5 +17,6 @@ export { makeTagValuesByID } from "./make-tag-values-by-id.js";
 export { storage } from "./storage.js";
 export { filterOutFalsyEntries } from "./utils/filter-out-falsy-entries.js";
 export { getLocalUserInfo } from "./utils/get-local-user-info.js";
+export { getSearchParamsFromURL } from "./utils/get-search-params-from-url.js";
 export { isUserLoggedIn } from "./utils/is-user-logged-in.js";
 export { wrapWithRetrievedAt } from "./utils/wrap-with-retrieved-at.js";

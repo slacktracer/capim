@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import { useRetrievedAt } from "../../composables/use-retrieved-at.js";
+import { core } from "../../core/core.js";
 import type { Operation } from "../../core/types/Operation.js";
-import { getSearchParamsFromURL } from "../../core/utils/get-search-params-from-url.js";
 import { useOperationsStore } from "../../modules/operations/use-operations-store.js";
 import type { UseRetrievedAtOf } from "../../types/UseRetrievedAtOf.js";
 import OperationListItem from "./OperationListItem.vue";
@@ -9,7 +9,7 @@ import OperationsDatetimeRangeSelector from "./OperationsDatetimeRangeSelector.v
 
 const operationsStore = useOperationsStore();
 
-const { from, to } = getSearchParamsFromURL();
+const { from, to } = core.getSearchParamsFromURL();
 
 operationsStore.setDatetimeRange({ from, to });
 
