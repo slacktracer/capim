@@ -3,7 +3,7 @@
     "no-restricted-imports": [
       "error",
       {
-        "patterns": ["**/core/*", "!**/core/main.js"]
+        "patterns": ["**/core/*", "!**/core/core.js", "!**/core/types"]
       }
     ]
   }

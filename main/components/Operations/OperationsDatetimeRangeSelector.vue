@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import type * as main from "../../core/main.js";
+import type { DatetimeRangeRecord } from "../../core/types/DatetimeRangeRecord.js";
 import { useOperationsStore } from "../../modules/operations/use-operations-store.js";
 import SearchButton from "./SearchButton.vue";
 
@@ -19,7 +19,7 @@ const updateDatetimeRange = (event: Event) => {
 
     operationsStore.setDatetimeRange({
       [key]: value,
-    } as main.DatetimeRangeRecord);
+    } as DatetimeRangeRecord);
   }
 };
 </script>

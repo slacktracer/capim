@@ -1,4 +1,5 @@
-import type { TagKey, TagValue } from "../core/main.js";
+import type { TagKey } from "../core/types/TagKey.js";
+import type { TagValue } from "../core/types/TagValue.js";
 import type { AsyncDataState } from "./AsyncDataState.js";
 
 export type TagsStoreState = {

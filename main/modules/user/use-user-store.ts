@@ -1,7 +1,7 @@
 import { defineStore } from "pinia";
 import { reactive, readonly, toRefs } from "vue";
 
-import * as main from "../../core/main.js";
+import { core } from "../../core/core.js";
 import { getInitialUserStoreState } from "./get-initial-user-store-state.js";
 
 export const useUserStore = defineStore("user", () => {
@@ -13,7 +13,7 @@ export const useUserStore = defineStore("user", () => {
 
   const $reset = () => void Object.assign(state, getInitialUserStoreState());
 
-  main.mainEventBus.on("reset-all", $reset);
+  core.mainEventBus.on("reset-all", $reset);
 
   return {
     $reset,

@@ -1,4 +1,4 @@
-import type * as main from "../../core/main.js";
+import type { Operation } from "../../core/types/Operation.js";
 import type { GetOperationsActionInput } from "../../types/GetOperationsActionInput.js";
 import type { OperationStoreState } from "../../types/OperationsStoreState.js";
 import { newLoadDataIntoState } from "../common/utils/new-load-data-into-state.js";
@@ -19,7 +19,7 @@ export const getOperations = async ({
     invalidateCount += 1;
   }
 
-  newLoadDataIntoState<main.Operation[]>({
+  newLoadDataIntoState<Operation[]>({
     functionToCall: () => memoisedGetOperations({ from, to, invalidateCount }),
     stateToUpdate: state.operations,
   });

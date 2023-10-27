@@ -17,14 +17,15 @@
     "sourceType": "module"
   },
   "plugins": ["@typescript-eslint", "simple-import-sort"],
+  "root": true,
   "rules": {
     "no-restricted-imports": [
       "error",
       {
         "patterns": [
           {
-            "group": ["*/core/*", "!*/core/main.js"],
-            "message": "All imports from core must be made through core/main.js."
+            "group": ["**/core/*", "!**/core/core.js", "!**/core/types"],
+            "message": "All imports from core must be made through core/core.js."
           }
         ]
       }

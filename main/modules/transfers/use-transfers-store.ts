@@ -1,8 +1,8 @@
 import { defineStore } from "pinia";
 import { reactive, readonly, toRefs } from "vue";
 
-import type { Transfer } from "../../core/main.js";
-import * as main from "../../core/main.js";
+import { core } from "../../core/core.js";
+import type { Transfer } from "../../core/types/Transfer.js";
 import { loadDataIntoState } from "../common/utils/load-data-into-state.js";
 import { getInitialTransfersStoreState } from "./get-initial-transfers-store-state.js";
 
@@ -15,7 +15,7 @@ export const useTransfersStore = defineStore("transfers", () => {
     }
 
     loadDataIntoState<Transfer[]>({
-      functionToCall: () => main.getTransfers(),
+      functionToCall: () => core.getTransfers(),
       stateToUpdate: state.transfers,
     });
   };
@@ -23,7 +23,7 @@ export const useTransfersStore = defineStore("transfers", () => {
   const $reset = () =>
     void Object.assign(state, getInitialTransfersStoreState());
 
-  main.mainEventBus.on("reset-all", $reset);
+  core.mainEventBus.on("reset-all", $reset);
 
   return {
     $reset,

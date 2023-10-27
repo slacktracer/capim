@@ -1,8 +1,9 @@
 import { defineStore } from "pinia";
 import { computed, reactive, readonly, toRefs } from "vue";
 
-import type { TagKey, TagValue } from "../../core/main.js";
-import * as main from "../../core/main.js";
+import { core } from "../../core/core.js";
+import type { TagKey } from "../../core/types/TagKey.js";
+import type { TagValue } from "../../core/types/TagValue.js";
 import { loadDataIntoState } from "../common/utils/load-data-into-state.js";
 import { getInitialTagsStoreState } from "./get-initial-tags-store-state.js";
 
@@ -10,15 +11,15 @@ export const useTagsStore = defineStore("tags", () => {
   const state = reactive(getInitialTagsStoreState());
 
   const tagKeysByID = computed(() =>
-    main.makeTagKeysByID({ tagKeys: state.tags.data.keys || [] }),
+    core.makeTagKeysByID({ tagKeys: state.tags.data.keys || [] }),
   );
 
   const tagValuesByID = computed(() =>
-    main.makeTagValuesByID({ tagValues: state.tags.data.values || [] }),
+    core.makeTagValuesByID({ tagValues: state.tags.data.values || [] }),
   );
 
   const mainTagKeysIDs = computed(() =>
-    main.getMainTagKeysIDs({
+    core.getMainTagKeysIDs({
       tagKeys: state.tags.data.keys || [],
     }),
   );
@@ -29,14 +30,14 @@ export const useTagsStore = defineStore("tags", () => {
     }
 
     loadDataIntoState<{ keys: TagKey[]; values: TagValue[] }>({
-      functionToCall: () => main.getTags(),
+      functionToCall: () => core.getTags(),
       stateToUpdate: state.tags,
     });
   };
 
   const $reset = () => void Object.assign(state, getInitialTagsStoreState());
 
-  main.mainEventBus.on("reset-all", $reset);
+  core.mainEventBus.on("reset-all", $reset);
 
   return {
     $reset,

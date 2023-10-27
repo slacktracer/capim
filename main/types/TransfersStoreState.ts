@@ -1,4 +1,4 @@
-import type { Transfer } from "../core/main.js";
+import type { Transfer } from "../core/types/Transfer.js";
 import type { AsyncDataState } from "./AsyncDataState.js";
 
 export type TransfersStoreState = {

@@ -1,6 +1,6 @@
 import { navigateTo } from "#app";
 
-import * as main from "../../core/main.js";
+import { core } from "../../core/core.js";
 import { boot } from "../boot/boot.js";
 
 export const login = async ({
@@ -10,7 +10,7 @@ export const login = async ({
   password: string;
   username: string;
 }) => {
-  await main.login({
+  await core.login({
     password,
     username,
   });

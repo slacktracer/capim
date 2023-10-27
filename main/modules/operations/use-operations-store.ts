@@ -2,7 +2,7 @@ import { defineStore } from "pinia";
 import { computed, readonly, toRefs } from "vue";
 import { useRouter } from "vue-router";
 
-import * as main from "../../core/main.js";
+import { core } from "../../core/core.js";
 import type { GetOperationActionInput } from "../../types/GetOperationActionInput.js";
 import type { GetOperationsActionInput } from "../../types/GetOperationsActionInput.js";
 import type { OperationStoreState } from "../../types/OperationsStoreState.js";
@@ -38,7 +38,7 @@ export const useOperationsStore = defineStore("operations", () => {
   };
 
   const operationsByDate = computed(() =>
-    main.makeOperationsByDate({
+    core.makeOperationsByDate({
       operations: state.operations.data ?? [],
     }),
   );
@@ -46,7 +46,7 @@ export const useOperationsStore = defineStore("operations", () => {
   const $reset = () =>
     void Object.assign(state, getInitialOperationsStoreState());
 
-  main.mainEventBus.on("reset-all", $reset);
+  core.mainEventBus.on("reset-all", $reset);
 
   return {
     $reset,

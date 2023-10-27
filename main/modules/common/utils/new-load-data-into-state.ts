@@ -1,4 +1,4 @@
-import * as main from "../../../core/main.js";
+import { core } from "../../../core/core.js";
 import type { NewLoadDataIntoState } from "../../../types/NewLoadDataIntoState.js";
 
 export const newLoadDataIntoState: NewLoadDataIntoState = ({
@@ -21,7 +21,7 @@ export const newLoadDataIntoState: NewLoadDataIntoState = ({
     })
 
     .catch((reason: unknown) => {
-      if (reason instanceof main.CoreError) {
+      if (reason instanceof core.CoreError) {
         stateToUpdate.error = { data: reason.data, message: reason.message };
       }
     })

@@ -1,7 +1,7 @@
 import { memoizeWith } from "ramda";
 
-import type { Operation } from "../../core/main.js";
-import * as main from "../../core/main.js";
+import { core } from "../../core/core.js";
+import type { Operation } from "../../core/types/Operation.js";
 import type { GetOperationsActionInput } from "../../types/GetOperationsActionInput.js";
 
 export const memoisedGetOperations = memoizeWith<
@@ -16,5 +16,5 @@ export const memoisedGetOperations = memoizeWith<
   }: GetOperationsActionInput & { invalidateCount: number }) =>
     `${from}::${to}::${invalidateCount}`,
   async (input) =>
-    main.wrapWithRetrievedAt({ data: await main.getOperations(input) }),
+    core.wrapWithRetrievedAt({ data: await core.getOperations(input) }),
 );

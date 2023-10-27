@@ -1,7 +1,7 @@
 import type { Raw } from "vue";
 import type { Router } from "vue-router";
 
-import type { Operation } from "../core/main.js";
+import type { Operation } from "../core/types/Operation.js";
 import type { AsyncDataState } from "./AsyncDataState.js";
 
 export type OperationStoreState = {

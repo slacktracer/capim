@@ -1,8 +1,8 @@
 import { defineStore } from "pinia";
 import { reactive, readonly, toRefs } from "vue";
 
-import type { Balance } from "../../core/main.js";
-import * as main from "../../core/main.js";
+import { core } from "../../core/core.js";
+import type { Balance } from "../../core/types/Balance.js";
 import type { BalancesStoreState } from "../../types/BalancesStoreState.js";
 import { loadDataIntoState } from "../common/utils/load-data-into-state.js";
 import { getInitialBalancesStoreState } from "./get-initial-balances-store-state.js";
@@ -16,7 +16,7 @@ export const useBalancesStore = defineStore("balances", () => {
     }
 
     loadDataIntoState<Balance[]>({
-      functionToCall: () => main.getBalances(),
+      functionToCall: () => core.getBalances(),
       stateToUpdate: state.balances,
     });
   };
@@ -24,7 +24,7 @@ export const useBalancesStore = defineStore("balances", () => {
   const $reset = () =>
     void Object.assign(state, getInitialBalancesStoreState());
 
-  main.mainEventBus.on("reset-all", $reset);
+  core.mainEventBus.on("reset-all", $reset);
 
   return {
     $reset,

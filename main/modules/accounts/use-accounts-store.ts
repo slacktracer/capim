@@ -1,8 +1,8 @@
 import { defineStore } from "pinia";
 import { computed, reactive, readonly, toRefs } from "vue";
 
-import type { Account } from "../../core/main.js";
-import * as main from "../../core/main.js";
+import { core } from "../../core/core.js";
+import type { Account } from "../../core/types/Account.js";
 import type { AccountsStoreState } from "../../types/AccountsStoreState.js";
 import { loadDataIntoState } from "../common/utils/load-data-into-state.js";
 import { getInitialAccountsStoreState } from "./get-initial-accounts-store-state.js";
@@ -11,7 +11,7 @@ export const useAccountsStore = defineStore("accounts", () => {
   const state: AccountsStoreState = reactive(getInitialAccountsStoreState());
 
   const accountsByID = computed(() =>
-    main.makeAccountsByID({ accounts: state.accounts.data }),
+    core.makeAccountsByID({ accounts: state.accounts.data }),
   );
 
   const getAccounts = () => {
@@ -20,7 +20,7 @@ export const useAccountsStore = defineStore("accounts", () => {
     }
 
     loadDataIntoState<Account[]>({
-      functionToCall: () => main.getAccounts(),
+      functionToCall: () => core.getAccounts(),
       stateToUpdate: state.accounts,
     });
   };
@@ -28,7 +28,7 @@ export const useAccountsStore = defineStore("accounts", () => {
   const $reset = () =>
     void Object.assign(state, getInitialAccountsStoreState());
 
-  main.mainEventBus.on("reset-all", $reset);
+  core.mainEventBus.on("reset-all", $reset);
 
   return {
     $reset,

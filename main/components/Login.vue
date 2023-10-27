@@ -1,16 +1,16 @@
 <script lang="ts" setup>
 import { onMounted, ref } from "vue";
 
-import { navigateTo } from "#app"; // eslint-disable-line import/order
+import { navigateTo } from "#app";
 
-import { isUserLoggedIn } from "../core/main.js";
+import { core } from "../core/core.js";
 import { login } from "../modules/authentication/login.js";
 
 const password = ref("???");
 const username = ref("thiago");
 
 onMounted(() => {
-  isUserLoggedIn() && navigateTo("/");
+  core.isUserLoggedIn() && navigateTo("/");
 });
 </script>
 

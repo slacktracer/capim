@@ -1,7 +1,7 @@
 import { unref } from "vue";
 import type { Router } from "vue-router";
 
-import { filterOutFalsyEntries } from "../../../core/main.js";
+import { core } from "../../../core/core.js";
 
 export const setSearchParams = ({
   data,
@@ -16,7 +16,7 @@ export const setSearchParams = ({
     path: currentRoute.path,
     query: {
       ...currentRoute.query,
-      ...filterOutFalsyEntries({ object: data }),
+      ...core.filterOutFalsyEntries({ object: data }),
     },
   });
 };

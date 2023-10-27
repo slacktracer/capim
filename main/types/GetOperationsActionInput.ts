@@ -1,5 +1,5 @@
-import type * as main from "../core/main.js";
+import type { DatetimeRangeRecord } from "../core/types/DatetimeRangeRecord.js";
 
-export type GetOperationsActionInput = main.DatetimeRangeRecord & {
+export type GetOperationsActionInput = DatetimeRangeRecord & {
   invalidate?: boolean;
 };

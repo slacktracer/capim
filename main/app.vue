@@ -3,15 +3,15 @@ import "bootstrap/dist/js/bootstrap.esm.js";
 
 import { useRuntimeConfig } from "#imports"; // eslint-disable-line import/order
 
-import * as main from "./core/main.js";
+import { core } from "./core/core.js";
 import { logout } from "./modules/authentication/logout.js";
 import { boot } from "./modules/boot/boot.js";
 
 const runtimeConfig = useRuntimeConfig();
 
-main.loadEnvironmentVariables({ runtimeConfig });
+core.loadEnvironmentVariables({ runtimeConfig });
 
-main.mainEventBus.on("logout", logout);
+core.mainEventBus.on("logout", logout);
 
 await boot();
 </script>
