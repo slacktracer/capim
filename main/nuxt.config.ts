@@ -35,6 +35,7 @@ export default defineNuxtConfig({
   modules: ["@pinia/nuxt"],
   runtimeConfig: { public: { baseURL: "" } },
   sourcemap: { client: true },
+  spaLoadingTemplate: "spa-loading-template.html",
   ssr: false,
   vite: {
     define: {
