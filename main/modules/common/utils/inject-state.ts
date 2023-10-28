@@ -1,7 +1,6 @@
-export const injectState =
-  <State, Input extends object>(
-    fun: (...input: [Input & { state: State }, ...unknown[]]) => unknown,
-    state: State,
-  ) =>
-  (input: Input, ...rest: unknown[]): ReturnType<typeof fun> =>
+import type { InjectState } from "../../../types/InjectState.js";
+
+export const injectState: InjectState =
+  (fun, state) =>
+  (input, ...rest) =>
     fun(Object.assign(input, { state }), ...rest);

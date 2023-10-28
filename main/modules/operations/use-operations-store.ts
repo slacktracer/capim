@@ -3,9 +3,10 @@ import { computed, reactive, readonly, toRefs } from "vue";
 import { useRouter } from "vue-router";
 
 import { core } from "../../core/core.js";
-import type { GetOperationActionInput } from "../../types/GetOperationActionInput.js";
-import type { GetOperationsActionInput } from "../../types/GetOperationsActionInput.js";
+import type { GetOperation } from "../../types/GetOperation.js";
+import type { GetOperations } from "../../types/GetOperations.js";
 import type { OperationStoreState } from "../../types/OperationsStoreState.js";
+import type { SetDatetimeRange } from "../../types/SetDatetimeRange.js";
 import { injectState } from "../common/utils/inject-state.js";
 import { getInitialOperationsStoreState } from "./get-initial-operations-store-state.js";
 import { getOperation } from "./get-operation.js";
@@ -20,18 +21,18 @@ export const useOperationsStore = defineStore("operations", () => {
   );
 
   const actions = {
-    getOperation: injectState<OperationStoreState, GetOperationActionInput>(
+    getOperation: injectState<GetOperation, OperationStoreState>(
       getOperation,
       state,
     ),
-    getOperations: injectState<OperationStoreState, GetOperationsActionInput>(
+    getOperations: injectState<GetOperations, OperationStoreState>(
       getOperations,
       state,
     ),
-    setDatetimeRange: injectState<
-      OperationStoreState,
-      GetOperationsActionInput
-    >(setDatetimeRange, state),
+    setDatetimeRange: injectState<SetDatetimeRange, OperationStoreState>(
+      setDatetimeRange,
+      state,
+    ),
   };
 
   const operationsByDate = computed(() =>

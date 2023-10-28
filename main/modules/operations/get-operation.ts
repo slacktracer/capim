@@ -1,16 +1,15 @@
 import type { Operation } from "../../core/types/Operation.js";
-import type { GetOperationActionInput } from "../../types/GetOperationActionInput.js";
-import type { OperationStoreState } from "../../types/OperationsStoreState.js";
+import type { GetOperation } from "../../types/GetOperation.js";
 import { newLoadDataIntoState } from "../common/utils/new-load-data-into-state.js";
 import { memoisedGetOperation } from "./memoised-get-operation.js";
 
 let invalidateCount = 0;
 
-export const getOperation = ({
+export const getOperation: GetOperation = ({
   invalidate,
   operationID,
   state,
-}: GetOperationActionInput & { state: OperationStoreState }) => {
+}) => {
   if (invalidate) {
     invalidateCount += 1;
   }

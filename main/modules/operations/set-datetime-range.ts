@@ -1,11 +1,6 @@
-import type { DatetimeRangeRecord } from "../../core/types/DatetimeRangeRecord.js";
-import type { OperationStoreState } from "../../types/OperationsStoreState.js";
+import type { SetDatetimeRange } from "../../types/SetDatetimeRange.js";
 
-export const setDatetimeRange = ({
-  from,
-  to,
-  state,
-}: DatetimeRangeRecord & { state: OperationStoreState }) => {
+export const setDatetimeRange: SetDatetimeRange = ({ from, to, state }) => {
   if (typeof from === "string") {
     state.datetimeRange[0] = from;
   }
