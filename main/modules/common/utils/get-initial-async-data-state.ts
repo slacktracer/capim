@@ -1,8 +1,8 @@
-import type { GetInitialAsyncDataState } from "../../../types/GetInitialAsyncDataState.js";
+import type { AsyncDataState } from "../../../types/AsyncDataState.js";
 
-export const getInitialAsyncDataState: GetInitialAsyncDataState = <T>(
+export const getInitialAsyncDataState = <T>(
   { dataShape } = { dataShape: <T>[] },
-) => ({
+): AsyncDataState<T> => ({
   data: dataShape,
   error: false,
   loading: false,

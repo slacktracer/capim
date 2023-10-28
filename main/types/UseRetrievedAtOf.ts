@@ -1,3 +1,3 @@
 import type { AsyncDataState } from "./AsyncDataState.js";
 
-export type UseRetrievedAtOf<Collection> = AsyncDataState<Readonly<Collection>>;
+export type UseRetrievedAtOf<Data> = AsyncDataState<Readonly<Data>>;
