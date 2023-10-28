@@ -1,19 +1,11 @@
 import { memoizeWith } from "ramda";
 
 import { core } from "../../core/core.js";
-import type { Operation } from "../../core/types/Operation.js";
-import type { GetOperationActionInput } from "../../types/GetOperationActionInput.js";
+import type { MemoisedGetOperation } from "../../types/MemoisedGetOperation.js";
 
-export const memoisedGetOperation = memoizeWith<
-  (
-    input: GetOperationActionInput & { invalidateCount: number },
-  ) => Promise<{ data: Operation; retrievedAt: Date }>
->(
-  ({
-    invalidateCount,
-    operationID,
-  }: GetOperationActionInput & { invalidateCount: number }) =>
-    `${operationID}::${invalidateCount}`,
-  async (input) =>
-    core.wrapWithRetrievedAt({ data: await core.getOperation(input) }),
-);
+export const memoisedGetOperation: MemoisedGetOperation =
+  memoizeWith<MemoisedGetOperation>(
+    ({ invalidateCount, operationID }) => `${operationID}::${invalidateCount}`,
+    async (input) =>
+      core.wrapWithRetrievedAt({ data: await core.getOperation(input) }),
+  );
