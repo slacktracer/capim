@@ -15,6 +15,7 @@ export { makeOperationsByDate } from "./make-operations-by-date.js";
 export { makeTagKeysByID } from "./make-tag-keys-by-id.js";
 export { makeTagValuesByID } from "./make-tag-values-by-id.js";
 export { storage } from "./storage.js";
+export { didSwitchTo } from "./utils/did-switch-to.js";
 export { filterOutFalsyEntries } from "./utils/filter-out-falsy-entries.js";
 export { getLocalUserInfo } from "./utils/get-local-user-info.js";
 export { getSearchParamsFromURL } from "./utils/get-search-params-from-url.js";

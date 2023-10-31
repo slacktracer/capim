@@ -1,14 +1,22 @@
 <script lang="ts" setup>
 import { computed } from "vue";
+import VueMultiselect from "vue-multiselect";
 import { useRoute } from "vue-router";
 
+import { useEditableResource } from "../../composables/use-editable-resource.js";
 import { useRetrievedAt } from "../../composables/use-retrieved-at.js";
 import type { Operation } from "../../core/types/Operation.js";
+import { useAccountsStore } from "../../modules/accounts/use-accounts-store.js";
+import { makeEditableOperation } from "../../modules/operations/make-editable-operation.js";
 import { useOperationsStore } from "../../modules/operations/use-operations-store.js";
+import type { AsyncDataState } from "../../types/AsyncDataState.js";
+import type { EditableOperation } from "../../types/EditableOperation.js";
+import type { MakeEditableOperation } from "../../types/MakeEditableOperation.js";
 import type { UseRetrievedAtOf } from "../../types/UseRetrievedAtOf.js";
 
 const route = useRoute();
 
+const accountsStore = useAccountsStore();
 const operationsStore = useOperationsStore();
 
 if (typeof route.params.id === "string") {
@@ -19,17 +27,20 @@ const retrievedAt = useRetrievedAt<UseRetrievedAtOf<Operation>>({
   collection: operationsStore.operation,
 });
 
-const editableOperation = computed(() => {
-  const editableOperation: Operation & {
-    atDate: string;
-    atTime: string;
-  } = {
-    ...operationsStore.operation.data,
-    atDate: operationsStore.operation.data?.at?.slice(0, 10),
-    atTime: operationsStore.operation.data?.at?.slice(11, 16),
-  };
+const accountList = computed(() =>
+  accountsStore.accounts.data.map(({ accountID, name }) => ({
+    accountID,
+    name,
+  })),
+);
 
-  return editableOperation;
+const editableOperation: EditableOperation = useEditableResource<
+  EditableOperation,
+  MakeEditableOperation,
+  AsyncDataState<Operation>
+>({
+  makeEditableResource: makeEditableOperation,
+  resource: operationsStore.operation,
 });
 </script>
 
@@ -58,7 +69,7 @@ const editableOperation = computed(() => {
 
     <section v-if="operationsStore.operation.ready === true" class="operation">
       <form>
-        <fieldset disabled>
+        <fieldset>
           <div class="at mb-3">
             <input
               id="atDate"
@@ -75,12 +86,11 @@ const editableOperation = computed(() => {
           </div>
 
           <div class="mb-3">
-            <input
-              id="accountName"
-              v-model="editableOperation.account.name"
-              class="form-control"
-              type="text"
-            />
+            <VueMultiselect
+              v-model="editableOperation.account"
+              label="name"
+              :options="accountList"
+            ></VueMultiselect>
           </div>
 
           <div class="mb-3">
@@ -112,6 +122,8 @@ const editableOperation = computed(() => {
         </fieldset>
       </form>
     </section>
+
+    <pre style="margin-inline: 1rem">{{ editableOperation }}</pre>
   </div>
 </template>
 

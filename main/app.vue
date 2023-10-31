@@ -1,5 +1,6 @@
 <script lang="ts" setup>
 import "bootstrap/dist/js/bootstrap.esm.js";
+import "vue-multiselect/dist/vue-multiselect.css";
 
 import { useRuntimeConfig } from "#imports"; // eslint-disable-line import/order
 

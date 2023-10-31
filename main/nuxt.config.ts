@@ -37,9 +37,11 @@ export default defineNuxtConfig({
   sourcemap: { client: true },
   spaLoadingTemplate: "spa-loading-template.html",
   ssr: false,
-  vite: {
-    define: {
-      __VUE_OPTIONS_API__: false,
-    },
-  },
+  // Had to do this to use VueMultiselect: https://github.com/shentao/vue-multiselect/issues/1643#issuecomment-1375423164
+  // vite: {
+  //   define: {
+  //     __VUE_OPTIONS_API__: false,
+  //   },
+  // },
+  // Need to try the other proposed solution: https://github.com/shentao/vue-multiselect/issues/1643#issuecomment-1473030489
 });
