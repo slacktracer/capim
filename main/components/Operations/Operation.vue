@@ -77,6 +77,7 @@ const editableOperation: EditableOperation = useEditableResource<
               class="form-control"
               type="date"
             />
+
             <input
               id="atTime"
               v-model="editableOperation.atTime"
@@ -95,20 +96,50 @@ const editableOperation: EditableOperation = useEditableResource<
 
           <div class="mb-3">
             <input
-              id="categoryName"
+              id="category"
               v-model="editableOperation.category.name"
               class="form-control"
               type="text"
             />
           </div>
 
-          <div class="mb-3">
-            <input
-              id="amount"
-              v-model="editableOperation.amount"
-              class="form-control"
-              type="text"
-            />
+          <div class="amount mb-3">
+            <label>
+              Type
+
+              <select
+                id="type"
+                v-model="editableOperation.type"
+                class="form-control"
+              >
+                <option value="Expense">Expense</option>
+                <option value="Income">Income</option>
+              </select>
+            </label>
+
+            <label>
+              Units
+
+              <input
+                id="unitCount"
+                v-model="editableOperation.unitCount"
+                class="form-control"
+                max="999"
+                min="0"
+                type="number"
+              />
+            </label>
+
+            <label>
+              Amount
+
+              <input
+                id="amount"
+                v-model="editableOperation.amount"
+                class="form-control"
+                type="text"
+              />
+            </label>
           </div>
 
           <div class="mb-3">
@@ -145,5 +176,34 @@ const editableOperation: EditableOperation = useEditableResource<
 
 .at input {
   text-align: center;
+}
+
+.amount {
+  display: flex;
+  gap: 1rem;
+}
+
+.amount #type {
+  width: min-content;
+}
+
+.amount #unitCount {
+  flex-basis: 6.75em;
+  width: min-content;
+  text-align: center;
+}
+
+.amount #amount {
+  text-align: right;
+}
+</style>
+
+<style>
+/* TODO
+    Learn how to restyle most (maybe most) of VueMultiselect
+    This is a quite nitpicking start.
+*/
+.multiselect__tags {
+  min-height: 38px;
 }
 </style>
