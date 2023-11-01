@@ -3,6 +3,7 @@ import { computed } from "vue";
 import VueMultiselect from "vue-multiselect";
 import { useRoute } from "vue-router";
 
+import { useCurrencyFormat } from "../../composables/use-currency-format.js";
 import { useEditableResource } from "../../composables/use-editable-resource.js";
 import { useRetrievedAt } from "../../composables/use-retrieved-at.js";
 import type { Operation } from "../../core/types/Operation.js";
@@ -50,6 +51,11 @@ const editableOperation: EditableOperation = useEditableResource<
 >({
   makeEditableResource: makeEditableOperation,
   resource: operationsStore.operation,
+});
+
+const formattedAmount = useCurrencyFormat({
+  object: editableOperation,
+  property: "formattedAmount",
 });
 </script>
 
@@ -143,9 +149,15 @@ const editableOperation: EditableOperation = useEditableResource<
 
               <input
                 id="amount"
-                v-model="editableOperation.amount"
+                autocomplete="off"
                 class="form-control"
+                inputmode="numeric"
                 type="text"
+                :value="formattedAmount"
+                @input="
+                  (event) =>
+                    (formattedAmount = (event.target as HTMLInputElement).value)
+                "
               />
             </label>
           </div>
@@ -161,6 +173,8 @@ const editableOperation: EditableOperation = useEditableResource<
         </fieldset>
       </form>
     </section>
+
+    <pre style="margin-inline: 1rem">{{ editableOperation }}</pre>
   </div>
 </template>
 
