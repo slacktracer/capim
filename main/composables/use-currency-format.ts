@@ -22,7 +22,7 @@ export const useCurrencyFormat: UseCurrencyFormat = ({ object, property }) => {
         object[property] = "0.00";
       }
 
-      object[property] = newValue.replace(notADigit, "");
+      object[property] = Number(newValue.replace(notADigit, ""));
     },
   });
 };

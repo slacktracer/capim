@@ -154,6 +154,7 @@ const formattedAmount = useCurrencyFormat({
                 inputmode="numeric"
                 type="text"
                 :value="formattedAmount"
+                @focus="(event) => (event.target as HTMLInputElement).select()"
                 @input="
                   (event) =>
                     (formattedAmount = (event.target as HTMLInputElement).value)
