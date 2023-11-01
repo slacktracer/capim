@@ -1,7 +1,7 @@
-import type { OperationStoreState } from "./OperationsStoreState.js";
+import type { OperationsStoreState } from "./OperationsStoreState.js";
 
 export type SetDatetimeRange = (input: {
   from?: string | undefined;
   to?: string | undefined;
-  state: OperationStoreState;
+  state: OperationsStoreState;
 }) => void;

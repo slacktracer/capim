@@ -4,7 +4,7 @@ import type { Router } from "vue-router";
 import type { Operation } from "../core/types/Operation.js";
 import type { AsyncDataState } from "./AsyncDataState.js";
 
-export type OperationStoreState = {
+export type OperationsStoreState = {
   datetimeRange: [string, string];
   operation: AsyncDataState<Operation>;
   operations: AsyncDataState<Operation[]>;

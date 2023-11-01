@@ -1,8 +1,4 @@
-export const wrapWithRetrievedAt = <Collection>({
-  data,
-}: {
-  data: Collection;
-}) => ({
+export const wrapWithRetrievedAt = <Type>({ data }: { data: Type }) => ({
   data,
   retrievedAt: new Date(),
 });

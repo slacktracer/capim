@@ -1,7 +1,7 @@
-import type { OperationStoreState } from "./OperationsStoreState.js";
+import type { OperationsStoreState } from "./OperationsStoreState.js";
 
 export type GetOperation = (input: {
   invalidate?: boolean;
   operationID: string;
-  state: OperationStoreState;
+  state: OperationsStoreState;
 }) => void;
