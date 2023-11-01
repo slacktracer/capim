@@ -1,6 +1,7 @@
 export { CoreError } from "./errors/core-error.js";
 export { getAccounts } from "./get-accounts.js";
 export { getBalances } from "./get-balances.js";
+export { getCategories } from "./get-categories.js";
 export { getMainTagKeysIDs } from "./get-main-tag-keys-ids.js";
 export { getOperation } from "./get-operation.js";
 export { getOperations } from "./get-operations.js";

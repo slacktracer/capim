@@ -7,6 +7,7 @@ import { useEditableResource } from "../../composables/use-editable-resource.js"
 import { useRetrievedAt } from "../../composables/use-retrieved-at.js";
 import type { Operation } from "../../core/types/Operation.js";
 import { useAccountsStore } from "../../modules/accounts/use-accounts-store.js";
+import { useCategoriesStore } from "../../modules/categories/use-categories-store.js";
 import { makeEditableOperation } from "../../modules/operations/make-editable-operation.js";
 import { useOperationsStore } from "../../modules/operations/use-operations-store.js";
 import type { AsyncDataState } from "../../types/AsyncDataState.js";
@@ -17,6 +18,7 @@ import type { UseRetrievedAtOf } from "../../types/UseRetrievedAtOf.js";
 const route = useRoute();
 
 const accountsStore = useAccountsStore();
+const categoriesStore = useCategoriesStore();
 const operationsStore = useOperationsStore();
 
 if (typeof route.params.id === "string") {
@@ -30,6 +32,13 @@ const retrievedAt = useRetrievedAt<UseRetrievedAtOf<Operation>>({
 const accountList = computed(() =>
   accountsStore.accounts.data.map(({ accountID, name }) => ({
     accountID,
+    name,
+  })),
+);
+
+const categoryList = computed(() =>
+  categoriesStore.categories.data.map(({ categoryID, name }) => ({
+    categoryID,
     name,
   })),
 );
@@ -95,12 +104,11 @@ const editableOperation: EditableOperation = useEditableResource<
           </div>
 
           <div class="mb-3">
-            <input
-              id="category"
-              v-model="editableOperation.category.name"
-              class="form-control"
-              type="text"
-            />
+            <VueMultiselect
+              v-model="editableOperation.category"
+              label="name"
+              :options="categoryList"
+            ></VueMultiselect>
           </div>
 
           <div class="amount mb-3">
@@ -153,8 +161,6 @@ const editableOperation: EditableOperation = useEditableResource<
         </fieldset>
       </form>
     </section>
-
-    <pre style="margin-inline: 1rem">{{ editableOperation }}</pre>
   </div>
 </template>
 
