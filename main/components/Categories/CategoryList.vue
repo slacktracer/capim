@@ -37,12 +37,9 @@ const retrievedAt = useRetrievedAt<UseRetrievedAt<Category[]>>({
     </section>
 
     <main>
-      <div
-        v-for="(category, index) in categoriesStore.categories.data"
-        :key="category.categoryID"
-      >
-        {{ String(index + 1).padStart(3, "0") }}) {{ category.name }}
-      </div>
+      <pre v-if="categoriesStore.categories.ready">{{
+        categoriesStore.categories.data
+      }}</pre>
     </main>
   </div>
 </template>
