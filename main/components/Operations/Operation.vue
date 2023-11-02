@@ -8,6 +8,7 @@ import { useRetrievedAt } from "../../composables/use-retrieved-at.js";
 import type { Operation } from "../../core/types/Operation.js";
 import { useAccountsStore } from "../../modules/accounts/use-accounts-store.js";
 import { useCategoriesStore } from "../../modules/categories/use-categories-store.js";
+import { formatAsLocalisedCurrency } from "../../modules/common/utils/format-as-localised-currency.js";
 import { makeEditableOperation } from "../../modules/operations/make-editable-operation.js";
 import { useOperationsStore } from "../../modules/operations/use-operations-store.js";
 import type { AsyncDataState } from "../../types/AsyncDataState.js";
@@ -56,9 +57,25 @@ const editableOperation: EditableOperation = useEditableResource<
   resource: operationsStore.operation,
 });
 
-const onAmountChange = (newValue: number) =>
+const amount = computed(() =>
+  formatAsLocalisedCurrency({
+    currency: "BRL",
+    locales: "pt-BR",
+    number:
+      (editableOperation.amountPerUnit / 100) * editableOperation.unitCount,
+  }),
+);
+
+const onAmountChange = (newValue: number) => {
+  editableOperation.amountPerUnit =
+    editableOperation.type === "Expense" ? newValue * -1 : newValue;
+  editableOperation.amount =
+    editableOperation.amountPerUnit * editableOperation.unitCount;
+};
+
+const onUnitCountChange = () =>
   (editableOperation.amount =
-    editableOperation.type === "Expense" ? newValue * -1 : newValue);
+    editableOperation.amountPerUnit * editableOperation.unitCount);
 </script>
 
 <template>
@@ -84,114 +101,131 @@ const onAmountChange = (newValue: number) =>
       </div>
     </section>
 
-    <section v-if="operationsStore.operation.ready === true" class="operation">
-      <form>
-        <fieldset>
-          <div class="at mb-3">
-            <input
-              id="atDate"
-              v-model="editableOperation.atDate"
-              class="form-control"
-              type="date"
-            />
+    <div class="operation">
+      <div class="date">
+        <input
+          id="atDate"
+          v-model="editableOperation.atDate"
+          class="form-control"
+          type="date"
+        />
+      </div>
+
+      <div class="time">
+        <input
+          id="atTime"
+          v-model="editableOperation.atTime"
+          class="form-control"
+          type="time"
+        />
+      </div>
+
+      <div class="account">
+        <VueMultiselect
+          v-model="editableOperation.account"
+          label="name"
+          :options="accountList"
+          placeholder="Select an account"
+        ></VueMultiselect>
+      </div>
+
+      <div class="category">
+        <VueMultiselect
+          v-model="editableOperation.category"
+          label="name"
+          :option-height="56"
+          :options="categoryList"
+          placeholder="Select a category"
+        >
+          <template #option="props">
+            <CategorySelectorOption
+              :option="props.option"
+            ></CategorySelectorOption>
+          </template>
+        </VueMultiselect>
+      </div>
+
+      <div class="type">
+        <label>
+          Type
+
+          <select
+            id="type"
+            v-model="editableOperation.type"
+            class="form-control"
+          >
+            <option value="Expense">Expense</option>
+            <option value="Income">Income</option>
+          </select>
+        </label>
+      </div>
+
+      <div class="amount">
+        <div class="amountPerUnit">
+          <label>
+            Amount
 
             <input
-              id="atTime"
-              v-model="editableOperation.atTime"
+              id="unitCount"
               class="form-control"
-              type="time"
+              disabled
+              type="text"
+              :value="amount"
             />
-          </div>
+          </label>
+        </div>
+      </div>
 
-          <div class="mb-3">
-            <VueMultiselect
-              v-model="editableOperation.account"
-              label="name"
-              :options="accountList"
-              placeholder="Select an account"
-            ></VueMultiselect>
-          </div>
+      <div class="units">
+        <label>
+          Units
 
-          <div class="mb-3">
-            <VueMultiselect
-              v-model="editableOperation.category"
-              label="name"
-              :option-height="56"
-              :options="categoryList"
-              placeholder="Select a category"
-            >
-              <template #option="props">
-                <CategorySelectorOption
-                  :option="props.option"
-                ></CategorySelectorOption>
-              </template>
-            </VueMultiselect>
-          </div>
+          <input
+            id="unitCount"
+            v-model="editableOperation.unitCount"
+            class="form-control"
+            max="999"
+            min="1"
+            type="number"
+            @change="onUnitCountChange"
+          />
+        </label>
+      </div>
 
-          <div class="amount mb-3">
-            <label>
-              Type
+      <div class="amountPerUnit">
+        <label>
+          Amount per unit
 
-              <select
-                id="type"
-                v-model="editableOperation.type"
-                class="form-control"
-              >
-                <option value="Expense">Expense</option>
-                <option value="Income">Income</option>
-              </select>
-            </label>
+          <AmountInput
+            id="amount"
+            :amount="editableOperation.amountPerUnit"
+            class="form-control"
+            @change="onAmountChange"
+          ></AmountInput>
+        </label>
+      </div>
 
-            <label>
-              Units
+      <div class="comments">
+        <textarea
+          id="comments"
+          v-model="editableOperation.comments"
+          class="form-control"
+          rows="3"
+        ></textarea>
+      </div>
 
-              <input
-                id="unitCount"
-                v-model="editableOperation.unitCount"
-                class="form-control"
-                max="999"
-                min="1"
-                type="number"
-              />
-            </label>
-
-            <label>
-              Amount
-
-              <AmountInput
-                id="amount"
-                :amount="editableOperation.amount"
-                class="form-control"
-                @change="onAmountChange"
-              ></AmountInput>
-            </label>
-          </div>
-
-          <div class="mb-3">
-            <textarea
-              id="comments"
-              v-model="editableOperation.comments"
-              class="form-control"
-              rows="3"
-            ></textarea>
-          </div>
-
-          <div class="mb-3">
-            <div class="form-check">
-              <input
-                id="confirmed"
-                v-model="editableOperation.confirmed"
-                class="form-check-input"
-                type="checkbox"
-              />
-              <label class="form-check-label" for="confirmed">
-                Confirmed
-              </label>
-            </div>
-          </div>
-        </fieldset>
-      </form>
-    </section>
+      <div class="confirmed">
+        <div class="form-check">
+          <input
+            id="confirmed"
+            v-model="editableOperation.confirmed"
+            class="form-check-input"
+            type="checkbox"
+          />
+          <label class="form-check-label" for="confirmed"> Confirmed </label>
+        </div>
+      </div>
+    </div>
 
     <Debug>
       {{ editableOperation }}
@@ -210,32 +244,72 @@ const onAmountChange = (newValue: number) =>
   margin-inline: 1rem;
 }
 
-.at {
-  display: flex;
+.operation {
+  display: grid;
   gap: 1rem;
+  grid-template-areas:
+    "date date time"
+    "account account account"
+    "category category category"
+    "type amount amount"
+    "units amountPerUnit amountPerUnit"
+    "comments comments comments"
+    "confirmed confirmed confirmed";
 }
 
-.at input {
-  text-align: center;
+.date {
+  grid-area: date;
+}
+
+.time {
+  grid-area: time;
+}
+
+.account {
+  grid-area: account;
+}
+
+.category {
+  grid-area: category;
+}
+
+.type {
+  grid-area: type;
 }
 
 .amount {
-  display: flex;
-  gap: 1rem;
+  grid-area: amount;
 }
 
-.amount #type {
-  width: min-content;
+.units {
+  grid-area: units;
 }
 
-.amount #unitCount {
-  flex-basis: 6.75em;
-  width: min-content;
+.amountPerUnit {
+  grid-area: amountPerUnit;
+}
+
+.comments {
+  grid-area: comments;
+}
+
+.confirmed {
+  grid-area: confirmed;
+}
+
+.date input,
+.time input,
+.units input {
   text-align: center;
 }
 
-.amount #amount {
+.amount input,
+.amountPerUnit input {
   text-align: right;
+}
+
+label {
+  width: 100%;
 }
 </style>
 
