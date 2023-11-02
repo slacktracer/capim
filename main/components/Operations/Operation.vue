@@ -161,6 +161,20 @@ const editableOperation: EditableOperation = useEditableResource<
               rows="3"
             ></textarea>
           </div>
+
+          <div class="mb-3">
+            <div class="form-check">
+              <input
+                id="confirmed"
+                v-model="editableOperation.confirmed"
+                class="form-check-input"
+                type="checkbox"
+              />
+              <label class="form-check-label" for="confirmed">
+                Confirmed
+              </label>
+            </div>
+          </div>
         </fieldset>
       </form>
     </section>

@@ -15,6 +15,7 @@ export type Operation = {
     name: string;
   };
   comments: string;
+  confirmed: boolean;
   createdAt: string;
   operationID: string;
   tags: Record<TagKey["tagKeyID"], TagValue["tagValueID"]>;
