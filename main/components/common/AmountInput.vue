@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import { computed, ref } from "vue";
 
-import { formatAsLocalisedCurrency } from "../modules/common/utils/format-as-localised-currency.js";
+import { formatAsLocalisedCurrency } from "../../modules/common/utils/format-as-localised-currency.js";
 
 const emit = defineEmits<{ change: [newValue: number] }>();
 

@@ -14,7 +14,7 @@ import type { AsyncDataState } from "../../types/AsyncDataState.js";
 import type { EditableOperation } from "../../types/EditableOperation.js";
 import type { MakeEditableOperation } from "../../types/MakeEditableOperation.js";
 import type { UseRetrievedAt } from "../../types/UseRetrievedAt.js";
-import AmountInput from "../AmountInput.vue";
+import AmountInput from "../common/AmountInput.vue";
 import Debug from "../common/Debug.vue";
 
 const route = useRoute();
