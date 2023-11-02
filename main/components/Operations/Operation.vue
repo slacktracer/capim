@@ -15,6 +15,7 @@ import type { EditableOperation } from "../../types/EditableOperation.js";
 import type { MakeEditableOperation } from "../../types/MakeEditableOperation.js";
 import type { UseRetrievedAt } from "../../types/UseRetrievedAt.js";
 import AmountInput from "../AmountInput.vue";
+import Debug from "../common/Debug.vue";
 
 const route = useRoute();
 
@@ -181,7 +182,9 @@ const onAmountChange = (newValue: number) =>
       </form>
     </section>
 
-    <pre style="margin-inline: 1rem">{{ editableOperation }}</pre>
+    <Debug>
+      {{ editableOperation }}
+    </Debug>
   </div>
 </template>
 
