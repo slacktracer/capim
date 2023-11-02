@@ -52,6 +52,10 @@ const editableOperation: EditableOperation = useEditableResource<
   makeEditableResource: makeEditableOperation,
   resource: operationsStore.operation,
 });
+
+const onAmountChange = (newValue: number) =>
+  (editableOperation.amount =
+    editableOperation.type === "Expense" ? newValue * -1 : newValue);
 </script>
 
 <template>
@@ -146,9 +150,7 @@ const editableOperation: EditableOperation = useEditableResource<
                 id="amount"
                 :amount="editableOperation.amount"
                 class="form-control"
-                @change="
-                  (newValue: number) => (editableOperation.amount = newValue)
-                "
+                @change="onAmountChange"
               ></AmountInput>
             </label>
           </div>

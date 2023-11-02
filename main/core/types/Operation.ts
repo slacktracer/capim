@@ -19,7 +19,7 @@ export type Operation = {
   createdAt: string;
   operationID: string;
   tags: Record<TagKey["tagKeyID"], TagValue["tagValueID"]>;
-  type: string;
+  type: "Expense" | "Income";
   unitCount: number;
   updatedAt: string | null;
   userID: string;
