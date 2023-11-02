@@ -150,7 +150,7 @@ const onAmountChange = (newValue: number) =>
                 v-model="editableOperation.unitCount"
                 class="form-control"
                 max="999"
-                min="0"
+                min="1"
                 type="number"
               />
             </label>
