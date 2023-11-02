@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { computed } from "vue";
+import { computed, ref } from "vue";
 
 import { formatAsLocalisedCurrency } from "../modules/common/utils/format-as-localised-currency.js";
 
@@ -9,10 +9,18 @@ const props = defineProps<{
   amount: number;
 }>();
 
+const edgeCases = /^(0?\D\d{1,2}|\d{1,3}|\D)$/;
+
+const forceComputation = ref(0);
+
 const notADigit = /\D/g;
 
 const formattedAmount = computed({
   get() {
+    //  I NEED this, OK? =P
+    // eslint-disable-next-line no-unused-expressions
+    forceComputation.value;
+
     const formattedAmountAsString = String(props.amount).replace(notADigit, "");
 
     const formattedAmountAsNumber = Number(formattedAmountAsString) / 100;
@@ -31,6 +39,18 @@ const formattedAmount = computed({
     emit("change", Number(newValue.replace(notADigit, "")));
   },
 });
+
+const onFocus = (event: Event) => (event.target as HTMLInputElement).select();
+
+const onInput = (event: Event) => {
+  const value = (event.target as HTMLInputElement).value;
+
+  if (value.match(edgeCases)) {
+    forceComputation.value += 1;
+  }
+
+  formattedAmount.value = value;
+};
 </script>
 
 <template>
@@ -39,9 +59,7 @@ const formattedAmount = computed({
     inputmode="numeric"
     type="text"
     :value="formattedAmount"
-    @focus="(event) => (event.target as HTMLInputElement).select()"
-    @input="
-      (event) => (formattedAmount = (event.target as HTMLInputElement).value)
-    "
+    @focus="onFocus"
+    @input="onInput"
   />
 </template>
