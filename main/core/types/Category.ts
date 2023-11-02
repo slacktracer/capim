@@ -3,6 +3,10 @@ export type Category = {
   createdAt: string;
   createdAtTimezone: string;
   deleted: boolean;
+  group: {
+    groupID: string;
+    name: string;
+  };
   groupID: string;
   name: string;
   updatedAt: string;

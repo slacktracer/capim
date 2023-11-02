@@ -16,6 +16,7 @@ import type { MakeEditableOperation } from "../../types/MakeEditableOperation.js
 import type { UseRetrievedAt } from "../../types/UseRetrievedAt.js";
 import AmountInput from "../common/AmountInput.vue";
 import Debug from "../common/Debug.vue";
+import CategorySelectorOption from "./CategorySelectorOption.vue";
 
 const route = useRoute();
 
@@ -39,8 +40,9 @@ const accountList = computed(() =>
 );
 
 const categoryList = computed(() =>
-  categoriesStore.categories.data.map(({ categoryID, name }) => ({
+  categoriesStore.categories.data.map(({ categoryID, group, name }) => ({
     categoryID,
+    group,
     name,
   })),
 );
@@ -106,6 +108,7 @@ const onAmountChange = (newValue: number) =>
               v-model="editableOperation.account"
               label="name"
               :options="accountList"
+              placeholder="Select an account"
             ></VueMultiselect>
           </div>
 
@@ -113,8 +116,16 @@ const onAmountChange = (newValue: number) =>
             <VueMultiselect
               v-model="editableOperation.category"
               label="name"
+              :option-height="56"
               :options="categoryList"
-            ></VueMultiselect>
+              placeholder="Select a category"
+            >
+              <template #option="props">
+                <CategorySelectorOption
+                  :option="props.option"
+                ></CategorySelectorOption>
+              </template>
+            </VueMultiselect>
           </div>
 
           <div class="amount mb-3">
