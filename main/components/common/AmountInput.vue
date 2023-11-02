@@ -6,7 +6,7 @@ import { formatAsLocalisedCurrency } from "../../modules/common/utils/format-as-
 const emit = defineEmits<{ change: [newValue: number] }>();
 
 const props = defineProps<{
-  amount: number;
+  amount: number | undefined;
 }>();
 
 const edgeCases = /^(0?\D\d{1,2}|\d{1,3}|\D)$/;
