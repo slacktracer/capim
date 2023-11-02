@@ -11,6 +11,5 @@ export const makeEditableOperation: MakeEditableOperation = ({
     ...rawOperation,
     atDate: rawOperation.at.slice(0, 10),
     atTime: rawOperation.at.slice(11, 16),
-    formattedAmount: Math.abs(rawOperation.amount),
   };
 };

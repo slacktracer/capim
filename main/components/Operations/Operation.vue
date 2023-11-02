@@ -3,7 +3,6 @@ import { computed } from "vue";
 import VueMultiselect from "vue-multiselect";
 import { useRoute } from "vue-router";
 
-import { useCurrencyFormat } from "../../composables/use-currency-format.js";
 import { useEditableResource } from "../../composables/use-editable-resource.js";
 import { useRetrievedAt } from "../../composables/use-retrieved-at.js";
 import type { Operation } from "../../core/types/Operation.js";
@@ -15,6 +14,7 @@ import type { AsyncDataState } from "../../types/AsyncDataState.js";
 import type { EditableOperation } from "../../types/EditableOperation.js";
 import type { MakeEditableOperation } from "../../types/MakeEditableOperation.js";
 import type { UseRetrievedAtOf } from "../../types/UseRetrievedAtOf.js";
+import AmountInput from "../AmountInput.vue";
 
 const route = useRoute();
 
@@ -51,11 +51,6 @@ const editableOperation: EditableOperation = useEditableResource<
 >({
   makeEditableResource: makeEditableOperation,
   resource: operationsStore.operation,
-});
-
-const formattedAmount = useCurrencyFormat({
-  object: editableOperation,
-  property: "formattedAmount",
 });
 </script>
 
@@ -147,19 +142,14 @@ const formattedAmount = useCurrencyFormat({
             <label>
               Amount
 
-              <input
+              <AmountInput
                 id="amount"
-                autocomplete="off"
+                :amount="editableOperation.amount"
                 class="form-control"
-                inputmode="numeric"
-                type="text"
-                :value="formattedAmount"
-                @focus="(event) => (event.target as HTMLInputElement).select()"
-                @input="
-                  (event) =>
-                    (formattedAmount = (event.target as HTMLInputElement).value)
+                @change="
+                  (newValue: number) => (editableOperation.amount = newValue)
                 "
-              />
+              ></AmountInput>
             </label>
           </div>
 
