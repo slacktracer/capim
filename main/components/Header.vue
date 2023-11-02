@@ -42,7 +42,7 @@ const userStore = useUserStore();
       </div>
 
       <div>
-        username: {{ userStore.user?.username }} |
+        {{ userStore.user?.username }} |
         <a href="#" @click.prevent="logout">Logout</a>
       </div>
     </nav>
