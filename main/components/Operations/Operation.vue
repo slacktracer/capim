@@ -13,7 +13,7 @@ import { useOperationsStore } from "../../modules/operations/use-operations-stor
 import type { AsyncDataState } from "../../types/AsyncDataState.js";
 import type { EditableOperation } from "../../types/EditableOperation.js";
 import type { MakeEditableOperation } from "../../types/MakeEditableOperation.js";
-import type { UseRetrievedAtOf } from "../../types/UseRetrievedAtOf.js";
+import type { UseRetrievedAt } from "../../types/UseRetrievedAt.js";
 import AmountInput from "../AmountInput.vue";
 
 const route = useRoute();
@@ -26,7 +26,7 @@ if (typeof route.params.id === "string") {
   operationsStore.getOperation({ operationID: route.params.id });
 }
 
-const retrievedAt = useRetrievedAt<UseRetrievedAtOf<Operation>>({
+const retrievedAt = useRetrievedAt<UseRetrievedAt<Operation>>({
   collection: operationsStore.operation,
 });
 

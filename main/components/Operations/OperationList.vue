@@ -3,7 +3,7 @@ import { useRetrievedAt } from "../../composables/use-retrieved-at.js";
 import { core } from "../../core/core.js";
 import type { Operation } from "../../core/types/Operation.js";
 import { useOperationsStore } from "../../modules/operations/use-operations-store.js";
-import type { UseRetrievedAtOf } from "../../types/UseRetrievedAtOf.js";
+import type { UseRetrievedAt } from "../../types/UseRetrievedAt.js";
 import OperationListItem from "./OperationListItem.vue";
 import OperationsDatetimeRangeSelector from "./OperationsDatetimeRangeSelector.vue";
 
@@ -18,7 +18,7 @@ operationsStore.getOperations({
   to: operationsStore.datetimeRange[1],
 });
 
-const retrievedAt = useRetrievedAt<UseRetrievedAtOf<Operation[]>>({
+const retrievedAt = useRetrievedAt<UseRetrievedAt<Operation[]>>({
   collection: operationsStore.operations,
 });
 </script>
