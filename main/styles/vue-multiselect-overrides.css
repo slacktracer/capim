@@ -1,0 +1,43 @@
+.multiselect {
+  min-height: 38px;
+}
+
+.multiselect__single {
+  margin-bottom: 3px;
+}
+
+.multiselect__tags {
+  min-height: 38px;
+}
+
+.multiselect__tag {
+  background: hsla(303, 100%, 50%, 0.5);
+}
+
+.multiselect__current {
+  min-height: 38px;
+}
+
+.multiselect__placeholder {
+  margin-bottom: 5px;
+  position: relative;
+  top: -3px;
+}
+
+.multiselect__option {
+  min-height: 38px;
+}
+
+.multiselect__option::after {
+  line-height: 38px;
+}
+
+.multiselect__option--highlight {
+  background: hsla(303, 100%, 50%, 0.5);
+  color: #333333;
+}
+
+.multiselect__option--highlight::after {
+  background: transparent;
+  color: #333333;
+}

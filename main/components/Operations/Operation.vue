@@ -317,13 +317,3 @@ label {
   width: 100%;
 }
 </style>
-
-<style>
-/* TODO
-    Learn how to restyle most (maybe most) of VueMultiselect
-    This is a quite nitpicking start.
-*/
-.multiselect__tags {
-  min-height: 38px;
-}
-</style>
