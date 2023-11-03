@@ -9,6 +9,7 @@ import type { Operation } from "../../core/types/Operation.js";
 import { useAccountsStore } from "../../modules/accounts/use-accounts-store.js";
 import { useCategoriesStore } from "../../modules/categories/use-categories-store.js";
 import { formatAsLocalisedCurrency } from "../../modules/common/utils/format-as-localised-currency.js";
+import { makeScrollToSelectedOnOpen } from "../../modules/common/utils/make-scroll-to-selected-on-open.js";
 import { makeEditableOperation } from "../../modules/operations/make-editable-operation.js";
 import { useOperationsStore } from "../../modules/operations/use-operations-store.js";
 import type { AsyncDataState } from "../../types/AsyncDataState.js";
@@ -126,6 +127,8 @@ const onUnitCountChange = () =>
           label="name"
           :options="accountList"
           placeholder="Select an account"
+          track-by="accountID"
+          @open="makeScrollToSelectedOnOpen({ selector: '.account' })"
         ></VueMultiselect>
       </div>
 
@@ -136,6 +139,8 @@ const onUnitCountChange = () =>
           :option-height="56"
           :options="categoryList"
           placeholder="Select a category"
+          track-by="categoryID"
+          @open="makeScrollToSelectedOnOpen({ selector: '.category' })"
         >
           <template #option="props">
             <CategorySelectorOption
