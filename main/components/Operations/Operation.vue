@@ -69,19 +69,16 @@ const amount = computed(() =>
   }),
 );
 
-const onAmountChange = (newValue: number) => {
-  editableOperation.amountPerUnit =
-    editableOperation.type === "Expense" ? newValue * -1 : newValue;
-  updateAmounts();
-};
-
 const updateAmounts = () => {
-  const multiplier = editableOperation.type === "Expense" ? -1 : 1;
+  const { amountPerUnit, type } = editableOperation;
 
-  editableOperation.amountPerUnit *= multiplier;
+  const absoluteAmountPerUnit = Math.abs(amountPerUnit);
+
+  editableOperation.amountPerUnit =
+    type === "Expense" ? -absoluteAmountPerUnit : absoluteAmountPerUnit;
 
   editableOperation.amount =
-    editableOperation.unitCount * editableOperation.amountPerUnit * multiplier;
+    editableOperation.unitCount * editableOperation.amountPerUnit;
 };
 </script>
 
@@ -192,7 +189,7 @@ const updateAmounts = () => {
           <AmountInput
             :amount="editableOperation.amountPerUnit"
             class="form-control"
-            @change="onAmountChange"
+            @change="updateAmounts"
           ></AmountInput>
         </label>
       </div>
