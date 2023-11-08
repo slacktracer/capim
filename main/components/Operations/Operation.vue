@@ -5,6 +5,7 @@ import { useRoute } from "vue-router";
 
 import { useEditableResource } from "../../composables/use-editable-resource.js";
 import { useRetrievedAt } from "../../composables/use-retrieved-at.js";
+import { core } from "../../core/core.js";
 import type { Operation } from "../../core/types/Operation.js";
 import { useAccountsStore } from "../../modules/accounts/use-accounts-store.js";
 import { useCategoriesStore } from "../../modules/categories/use-categories-store.js";
@@ -62,21 +63,26 @@ const amount = computed(() =>
   formatAsLocalisedCurrency({
     currency: "BRL",
     locales: "pt-BR",
-    number:
+    number: Math.abs(
       (editableOperation.amountPerUnit / 100) * editableOperation.unitCount,
+    ),
   }),
 );
 
 const onAmountChange = (newValue: number) => {
   editableOperation.amountPerUnit =
     editableOperation.type === "Expense" ? newValue * -1 : newValue;
-  editableOperation.amount =
-    editableOperation.amountPerUnit * editableOperation.unitCount;
+  updateAmounts();
 };
 
-const onUnitCountChange = () =>
-  (editableOperation.amount =
-    editableOperation.amountPerUnit * editableOperation.unitCount);
+const updateAmounts = () => {
+  const multiplier = editableOperation.type === "Expense" ? -1 : 1;
+
+  editableOperation.amountPerUnit *= multiplier;
+
+  editableOperation.amount =
+    editableOperation.unitCount * editableOperation.amountPerUnit * multiplier;
+};
 </script>
 
 <template>
@@ -105,7 +111,6 @@ const onUnitCountChange = () =>
     <div class="operation">
       <div class="date">
         <input
-          id="atDate"
           v-model="editableOperation.atDate"
           class="form-control"
           type="date"
@@ -114,7 +119,6 @@ const onUnitCountChange = () =>
 
       <div class="time">
         <input
-          id="atTime"
           v-model="editableOperation.atTime"
           class="form-control"
           type="time"
@@ -155,9 +159,9 @@ const onUnitCountChange = () =>
           Type
 
           <select
-            id="type"
             v-model="editableOperation.type"
             class="form-control"
+            @change="updateAmounts"
           >
             <option value="Expense">Expense</option>
             <option value="Income">Income</option>
@@ -165,34 +169,18 @@ const onUnitCountChange = () =>
         </label>
       </div>
 
-      <div class="amount">
-        <div class="amountPerUnit">
-          <label>
-            Amount
-
-            <input
-              id="unitCount"
-              class="form-control"
-              disabled
-              type="text"
-              :value="amount"
-            />
-          </label>
-        </div>
-      </div>
-
       <div class="units">
         <label>
           Units
 
           <input
-            id="unitCount"
             v-model="editableOperation.unitCount"
             class="form-control"
             max="999"
             min="1"
             type="number"
-            @change="onUnitCountChange"
+            @change="updateAmounts"
+            @focus="core.selectInputContent"
           />
         </label>
       </div>
@@ -202,7 +190,6 @@ const onUnitCountChange = () =>
           Amount per unit
 
           <AmountInput
-            id="amount"
             :amount="editableOperation.amountPerUnit"
             class="form-control"
             @change="onAmountChange"
@@ -210,9 +197,21 @@ const onUnitCountChange = () =>
         </label>
       </div>
 
+      <div class="amount">
+        <label>
+          Total
+
+          <input
+            class="form-control-plaintext form-control-sm"
+            readonly
+            type="text"
+            :value="amount"
+          />
+        </label>
+      </div>
+
       <div class="comments">
         <textarea
-          id="comments"
           v-model="editableOperation.comments"
           class="form-control"
           rows="3"
@@ -222,7 +221,6 @@ const onUnitCountChange = () =>
       <div class="confirmed">
         <div class="form-check">
           <input
-            id="confirmed"
             v-model="editableOperation.confirmed"
             class="form-check-input"
             type="checkbox"
@@ -256,8 +254,8 @@ const onUnitCountChange = () =>
     "date date time"
     "account account account"
     "category category category"
-    "type amount amount"
-    "units amountPerUnit amountPerUnit"
+    "type units amountPerUnit"
+    "amount amount amount"
     "comments comments comments"
     "confirmed confirmed confirmed";
 }
@@ -284,6 +282,7 @@ const onUnitCountChange = () =>
 
 .amount {
   grid-area: amount;
+  text-align: right;
 }
 
 .units {

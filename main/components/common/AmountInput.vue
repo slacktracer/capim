@@ -1,6 +1,7 @@
 <script lang="ts" setup>
 import { computed, ref } from "vue";
 
+import { core } from "../../core/core.js";
 import { formatAsLocalisedCurrency } from "../../modules/common/utils/format-as-localised-currency.js";
 
 const emit = defineEmits<{ change: [newValue: number] }>();
@@ -40,8 +41,6 @@ const formattedAmount = computed({
   },
 });
 
-const onFocus = (event: Event) => (event.target as HTMLInputElement).select();
-
 const onInput = (event: Event) => {
   const value = (event.target as HTMLInputElement).value;
 
@@ -59,7 +58,7 @@ const onInput = (event: Event) => {
     inputmode="numeric"
     type="text"
     :value="formattedAmount"
-    @focus="onFocus"
+    @focus="core.selectInputContent"
     @input="onInput"
   />
 </template>
