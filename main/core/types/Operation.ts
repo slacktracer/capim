@@ -14,6 +14,7 @@ export type Operation = {
     categoryID: string;
     name: string;
   };
+  categoryID: string;
   comments: string;
   confirmed: boolean;
   createdAt: string;

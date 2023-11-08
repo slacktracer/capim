@@ -1,4 +1,5 @@
 <script lang="ts" setup>
+import type { ComputedRef } from "vue";
 import { computed } from "vue";
 import VueMultiselect from "vue-multiselect";
 import { useRoute } from "vue-router";
@@ -13,7 +14,9 @@ import { formatAsLocalisedCurrency } from "../../modules/common/utils/format-as-
 import { makeScrollToSelectedOnOpen } from "../../modules/common/utils/make-scroll-to-selected-on-open.js";
 import { makeEditableOperation } from "../../modules/operations/make-editable-operation.js";
 import { useOperationsStore } from "../../modules/operations/use-operations-store.js";
+import type { AccountSelectorListItem } from "../../types/AccountSelectorListItem.js";
 import type { AsyncDataState } from "../../types/AsyncDataState.js";
+import type { CategorySelectorListItem } from "../../types/CategorySelectorListItem.js";
 import type { EditableOperation } from "../../types/EditableOperation.js";
 import type { MakeEditableOperation } from "../../types/MakeEditableOperation.js";
 import type { UseRetrievedAt } from "../../types/UseRetrievedAt.js";
@@ -35,14 +38,14 @@ const retrievedAt = useRetrievedAt<UseRetrievedAt<Operation>>({
   collection: operationsStore.operation,
 });
 
-const accountList = computed(() =>
+const accountList: ComputedRef<AccountSelectorListItem[]> = computed(() =>
   accountsStore.accounts.data.map(({ accountID, name }) => ({
     accountID,
     name,
   })),
 );
 
-const categoryList = computed(() =>
+const categoryList: ComputedRef<CategorySelectorListItem[]> = computed(() =>
   categoriesStore.categories.data.map(({ categoryID, group, name }) => ({
     categoryID,
     group,
@@ -68,6 +71,14 @@ const amount = computed(() =>
     ),
   }),
 );
+
+const updateAccount = (account: AccountSelectorListItem) => {
+  editableOperation.accountID = account.accountID;
+};
+
+const updateCategory = (category: CategorySelectorListItem) => {
+  editableOperation.categoryID = category.categoryID;
+};
 
 const updateAmounts = () => {
   const { amountPerUnit, type } = editableOperation;
@@ -131,6 +142,7 @@ const updateAmounts = () => {
             placeholder="Select an account"
             track-by="accountID"
             @open="makeScrollToSelectedOnOpen({ selector: '.account' })"
+            @select="updateAccount"
           ></VueMultiselect>
         </div>
 
@@ -143,6 +155,7 @@ const updateAmounts = () => {
             placeholder="Select a category"
             track-by="categoryID"
             @open="makeScrollToSelectedOnOpen({ selector: '.category' })"
+            @select="updateCategory"
           >
             <template #option="props">
               <CategorySelectorOption
