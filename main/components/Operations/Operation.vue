@@ -80,13 +80,18 @@ const updateCategory = (category: CategorySelectorListItem) => {
   editableOperation.categoryID = category.categoryID;
 };
 
-const updateAmounts = () => {
-  const { amountPerUnit, type } = editableOperation;
+const updateAmounts = (input: number | Event) => {
+  const inputIsNumber = typeof input === "number";
 
-  const absoluteAmountPerUnit = Math.abs(amountPerUnit);
+  const typeIsExpense = editableOperation.type === "Expense";
 
-  editableOperation.amountPerUnit =
-    type === "Expense" ? -absoluteAmountPerUnit : absoluteAmountPerUnit;
+  const absoluteNewAmountPerUnit = Math.abs(
+    inputIsNumber ? input : editableOperation.amountPerUnit,
+  );
+
+  editableOperation.amountPerUnit = typeIsExpense
+    ? -absoluteNewAmountPerUnit
+    : absoluteNewAmountPerUnit;
 
   editableOperation.amount =
     editableOperation.unitCount * editableOperation.amountPerUnit;
