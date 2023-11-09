@@ -215,10 +215,11 @@ const updateAmounts = (input: number | Event) => {
 
         <div class="amount">
           <label>
-            <span class="small">Total</span>
+            Total
 
             <input
-              class="form-control-plaintext form-control-sm"
+              class="form-control"
+              disabled
               readonly
               type="text"
               :value="amount"
@@ -299,7 +300,12 @@ const updateAmounts = (input: number | Event) => {
 
 .amount {
   grid-area: amount;
-  text-align: right;
+}
+
+.amount label {
+  align-items: center;
+  display: flex;
+  gap: 1rem;
 }
 
 .units {
