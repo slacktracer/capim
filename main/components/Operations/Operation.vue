@@ -122,127 +122,131 @@ const updateAmounts = (input: number | Event) => {
     </section>
 
     <form>
-      <fieldset class="operation" :disabled="operationsStore.operation.loading">
-        <div class="date">
-          <input
-            v-model="editableOperation.atDate"
-            class="form-control"
-            type="date"
-          />
-        </div>
-
-        <div class="time">
-          <input
-            v-model="editableOperation.atTime"
-            class="form-control"
-            type="time"
-          />
-        </div>
-
-        <div class="account">
-          <VueMultiselect
-            v-model="editableOperation.account"
-            label="name"
-            :options="accountList"
-            placeholder="Select an account"
-            track-by="accountID"
-            @open="makeScrollToSelectedOnOpen({ selector: '.account' })"
-            @select="updateAccount"
-          ></VueMultiselect>
-        </div>
-
-        <div class="category">
-          <VueMultiselect
-            v-model="editableOperation.category"
-            label="name"
-            :option-height="56"
-            :options="categoryList"
-            placeholder="Select a category"
-            track-by="categoryID"
-            @open="makeScrollToSelectedOnOpen({ selector: '.category' })"
-            @select="updateCategory"
-          >
-            <template #option="props">
-              <CategorySelectorOption
-                :option="props.option"
-              ></CategorySelectorOption>
-            </template>
-          </VueMultiselect>
-        </div>
-
-        <div class="type">
-          <label>
-            Type
-
-            <select
-              v-model="editableOperation.type"
+      <fieldset :disabled="operationsStore.operation.loading">
+        <div class="operation">
+          <div class="date">
+            <input
+              v-model="editableOperation.atDate"
               class="form-control"
-              @change="updateAmounts"
+              type="date"
+            />
+          </div>
+
+          <div class="time">
+            <input
+              v-model="editableOperation.atTime"
+              class="form-control"
+              type="time"
+            />
+          </div>
+
+          <div class="account">
+            <VueMultiselect
+              v-model="editableOperation.account"
+              label="name"
+              :options="accountList"
+              placeholder="Select an account"
+              track-by="accountID"
+              @open="makeScrollToSelectedOnOpen({ selector: '.account' })"
+              @select="updateAccount"
+            ></VueMultiselect>
+          </div>
+
+          <div class="category">
+            <VueMultiselect
+              v-model="editableOperation.category"
+              label="name"
+              :option-height="56"
+              :options="categoryList"
+              placeholder="Select a category"
+              track-by="categoryID"
+              @open="makeScrollToSelectedOnOpen({ selector: '.category' })"
+              @select="updateCategory"
             >
-              <option value="Expense">Expense</option>
-              <option value="Income">Income</option>
-            </select>
-          </label>
-        </div>
+              <template #option="props">
+                <CategorySelectorOption
+                  :option="props.option"
+                ></CategorySelectorOption>
+              </template>
+            </VueMultiselect>
+          </div>
 
-        <div class="units">
-          <label>
-            Units
+          <div class="type">
+            <label>
+              Type
 
-            <input
-              v-model="editableOperation.unitCount"
+              <select
+                v-model="editableOperation.type"
+                class="form-control"
+                @change="updateAmounts"
+              >
+                <option value="Expense">Expense</option>
+                <option value="Income">Income</option>
+              </select>
+            </label>
+          </div>
+
+          <div class="units">
+            <label>
+              Units
+
+              <input
+                v-model="editableOperation.unitCount"
+                class="form-control"
+                max="999"
+                min="1"
+                type="number"
+                @change="updateAmounts"
+                @focus="core.selectInputContent"
+              />
+            </label>
+          </div>
+
+          <div class="amountPerUnit">
+            <label>
+              Amount per unit
+
+              <AmountInput
+                :amount="editableOperation.amountPerUnit"
+                class="form-control"
+                @change="updateAmounts"
+              ></AmountInput>
+            </label>
+          </div>
+
+          <div class="amount">
+            <label>
+              Total
+
+              <input
+                class="form-control"
+                disabled
+                readonly
+                type="text"
+                :value="amount"
+              />
+            </label>
+          </div>
+
+          <div class="comments">
+            <textarea
+              v-model="editableOperation.comments"
               class="form-control"
-              max="999"
-              min="1"
-              type="number"
-              @change="updateAmounts"
-              @focus="core.selectInputContent"
-            />
-          </label>
-        </div>
+              rows="2"
+            ></textarea>
+          </div>
 
-        <div class="amountPerUnit">
-          <label>
-            Amount per unit
-
-            <AmountInput
-              :amount="editableOperation.amountPerUnit"
-              class="form-control"
-              @change="updateAmounts"
-            ></AmountInput>
-          </label>
-        </div>
-
-        <div class="amount">
-          <label>
-            Total
-
-            <input
-              class="form-control"
-              disabled
-              readonly
-              type="text"
-              :value="amount"
-            />
-          </label>
-        </div>
-
-        <div class="comments">
-          <textarea
-            v-model="editableOperation.comments"
-            class="form-control"
-            rows="2"
-          ></textarea>
-        </div>
-
-        <div class="confirmed">
-          <div class="form-check">
-            <input
-              v-model="editableOperation.confirmed"
-              class="form-check-input"
-              type="checkbox"
-            />
-            <label class="form-check-label" for="confirmed"> Confirmed </label>
+          <div class="confirmed">
+            <div class="form-check">
+              <input
+                v-model="editableOperation.confirmed"
+                class="form-check-input"
+                type="checkbox"
+              />
+              <label class="form-check-label" for="confirmed">
+                Confirmed
+              </label>
+            </div>
           </div>
         </div>
       </fieldset>
