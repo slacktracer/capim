@@ -96,6 +96,9 @@ const updateAmounts = (input: number | Event) => {
   editableOperation.amount =
     editableOperation.unitCount * editableOperation.amountPerUnit;
 };
+
+const save = () =>
+  window.alert("Saved!\nNah, just kidding. Not saved at all...");
 </script>
 
 <template>
@@ -121,7 +124,7 @@ const updateAmounts = (input: number | Event) => {
       </div>
     </section>
 
-    <form>
+    <form @submit.prevent="save">
       <fieldset :disabled="operationsStore.operation.loading">
         <div class="operation">
           <div class="date">
@@ -248,6 +251,10 @@ const updateAmounts = (input: number | Event) => {
               </label>
             </div>
           </div>
+        </div>
+
+        <div style="padding: 1rem; text-align: right">
+          <button class="btn btn-primary" type="submit">Save</button>
         </div>
       </fieldset>
     </form>
