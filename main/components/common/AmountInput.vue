@@ -10,8 +10,6 @@ const props = defineProps<{
   amount: number | undefined;
 }>();
 
-const edgeCases = /^(0?\D\d{1,2}|\d{1,3}|\D)$/;
-
 const forceComputation = ref(0);
 
 const notADigit = /\D/g;
@@ -44,9 +42,7 @@ const formattedAmount = computed({
 const onInput = (event: Event) => {
   const value = (event.target as HTMLInputElement).value;
 
-  if (value.match(edgeCases)) {
-    forceComputation.value += 1;
-  }
+  forceComputation.value += 1;
 
   formattedAmount.value = value;
 };
