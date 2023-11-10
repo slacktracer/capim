@@ -8,13 +8,11 @@ import { useEditableResource } from "../../composables/use-editable-resource.js"
 import { useRetrievedAt } from "../../composables/use-retrieved-at.js";
 import { core } from "../../core/core.js";
 import type { Operation } from "../../core/types/Operation.js";
-import { useAccountsStore } from "../../modules/accounts/use-accounts-store.js";
 import { useCategoriesStore } from "../../modules/categories/use-categories-store.js";
 import { formatAsLocalisedCurrency } from "../../modules/common/utils/format-as-localised-currency.js";
 import { makeScrollToSelectedOnOpen } from "../../modules/common/utils/make-scroll-to-selected-on-open.js";
 import { makeEditableOperation } from "../../modules/operations/make-editable-operation.js";
 import { useOperationsStore } from "../../modules/operations/use-operations-store.js";
-import type { AccountSelectorListItem } from "../../types/AccountSelectorListItem.js";
 import type { AsyncDataState } from "../../types/AsyncDataState.js";
 import type { CategorySelectorListItem } from "../../types/CategorySelectorListItem.js";
 import type { EditableOperation } from "../../types/EditableOperation.js";
@@ -22,11 +20,11 @@ import type { MakeEditableOperation } from "../../types/MakeEditableOperation.js
 import type { UseRetrievedAt } from "../../types/UseRetrievedAt.js";
 import AmountInput from "../common/AmountInput.vue";
 import Debug from "../common/Debug.vue";
+import AccountSelector from "./AccountSelect.vue";
 import CategorySelectorOption from "./CategorySelectorOption.vue";
 
 const route = useRoute();
 
-const accountsStore = useAccountsStore();
 const categoriesStore = useCategoriesStore();
 const operationsStore = useOperationsStore();
 
@@ -37,13 +35,6 @@ if (typeof route.params.id === "string") {
 const retrievedAt = useRetrievedAt<UseRetrievedAt<Operation>>({
   collection: operationsStore.operation,
 });
-
-const accountList: ComputedRef<AccountSelectorListItem[]> = computed(() =>
-  accountsStore.accounts.data.map(({ accountID, name }) => ({
-    accountID,
-    name,
-  })),
-);
 
 const categoryList: ComputedRef<CategorySelectorListItem[]> = computed(() =>
   categoriesStore.categories.data.map(({ categoryID, group, name }) => ({
@@ -72,10 +63,6 @@ const amount = computed(() =>
   }),
 );
 
-const updateAccount = (account: AccountSelectorListItem) => {
-  editableOperation.accountID = account.accountID;
-};
-
 const updateCategory = (category: CategorySelectorListItem) => {
   editableOperation.categoryID = category.categoryID;
 };
@@ -99,6 +86,10 @@ const updateAmounts = (input: number | Event) => {
 
 const save = () =>
   window.alert("Saved!\nNah, just kidding. Not saved at all...");
+
+const updateAccount = (accountID: string) => {
+  editableOperation.accountID = accountID;
+};
 </script>
 
 <template>
@@ -144,15 +135,11 @@ const save = () =>
           </div>
 
           <div class="account">
-            <VueMultiselect
-              v-model="editableOperation.account"
-              label="name"
-              :options="accountList"
-              placeholder="Select an account"
-              track-by="accountID"
-              @open="makeScrollToSelectedOnOpen({ selector: '.account' })"
-              @select="updateAccount"
-            ></VueMultiselect>
+            <AccountSelector
+              class="form-select"
+              :selected-account="editableOperation.accountID"
+              @account-selected="updateAccount"
+            ></AccountSelector>
           </div>
 
           <div class="category">
