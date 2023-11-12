@@ -161,8 +161,10 @@ const updateCategory = (category: CategorySelectOption | null) => {
             <MySelect
               v-slot="{ option }"
               :filter="categorySelectFilter"
+              label="name"
               :options="categoryList"
               property="categoryID"
+              :selected-option="editableOperation.category"
               @option-selected="updateCategory"
             >
               <b>{{ option.name }}</b>

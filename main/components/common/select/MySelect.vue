@@ -14,8 +14,10 @@ const props = defineProps<{
     options: Record<string, any>[];
     search: string;
   }) => Record<string, any>[];
+  label: string;
   options: Record<string, any>[];
   property: string;
+  selectedOption: Record<string, any>;
 }>();
 
 const filteredOptions: Record<string, any> = computed(() =>
@@ -24,13 +26,13 @@ const filteredOptions: Record<string, any> = computed(() =>
 
 const showOptions = ref(false);
 
-const selectedOption: Ref<Record<string, any> | null> = ref(null);
+const _selectedOption: Ref<Record<string, any> | null> = ref(null);
 
 const search: Ref<string> = ref("");
 
 const handleClickEvent = () => {
   setTimeout(async () => {
-    emit("optionSelected", toRaw(unref(selectedOption)));
+    emit("optionSelected", toRaw(unref(_selectedOption)));
 
     await toggle({ showOptions });
     // This was my last resort...
@@ -41,7 +43,7 @@ const handleClickEvent = () => {
 const handleKeydownEvents = (event: KeyboardEvent) => {
   if (event.target) {
     if (event.code === "Enter") {
-      emit("optionSelected", toRaw(unref(selectedOption)));
+      emit("optionSelected", toRaw(unref(_selectedOption)));
     }
 
     if (event.code === "Tab" && event.shiftKey) {
@@ -72,7 +74,7 @@ const submit = () => {
   <div class="my-select">
     <form @submit.prevent="submit">
       <button class="form-select toggle" type="submit">
-        {{ selectedOption?.name ?? "Select category" }}
+        {{ props.selectedOption?.[props.label] ?? "Select category" }}
       </button>
     </form>
 
@@ -101,7 +103,7 @@ const submit = () => {
             @keydown="handleKeydownEvents"
           >
             <input
-              v-model="selectedOption"
+              v-model="_selectedOption"
               class="option-input"
               name="options"
               type="radio"
