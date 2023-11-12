@@ -4,6 +4,7 @@ import { endKeydownEventHandler } from "./end-keydown-event-handler.js";
 import { homeKeydownEventHandler } from "./home-keydown-event-handler.js";
 import { pageDownKeydownEventHandler } from "./page-down-keydown-event-handler.js";
 import { pageUpKeydownEventHandler } from "./page-up-keydown-event-handler.js";
+import { tabKeydownEventHandler } from "./tab-keydown-event-handler.js";
 
 const keydownEventHandlers = {
   ArrowDown: arrowDownKeydownEventHandler,
@@ -12,6 +13,7 @@ const keydownEventHandlers = {
   Home: homeKeydownEventHandler,
   PageDown: pageDownKeydownEventHandler,
   PageUp: pageUpKeydownEventHandler,
+  Tab: tabKeydownEventHandler,
 };
 
 export const keydownEventHandler = (event: KeyboardEvent) => {

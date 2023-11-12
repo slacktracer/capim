@@ -3,7 +3,7 @@ import type { Ref } from "vue";
 import { ref } from "vue";
 
 import { keydownEventHandler } from "./keydown-event-handler.js";
-import { makeToggle } from "./toggle.js";
+import { toggle } from "./toggle.js";
 
 const props = defineProps<{ options: Record<string, any>[] }>();
 
@@ -11,10 +11,22 @@ const selectedOption: Ref<Record<string, any> | null> = ref(null);
 
 const showOptions = ref(false);
 
-const toggle = makeToggle({ showOptions });
+const escapeKeydownEventHandler = (event: KeyboardEvent) => {
+  if (event.target && event.code === "Escape") {
+    event.preventDefault();
+    event.stopPropagation();
+
+    const toggle = document.querySelector(".toggle") as HTMLElement;
+
+    if (toggle) {
+      toggle.click();
+      toggle.focus();
+    }
+  }
+};
 
 const submit = () => {
-  toggle();
+  toggle({ showOptions });
 };
 </script>
 
@@ -26,7 +38,11 @@ const submit = () => {
       </button>
     </form>
 
-    <div v-if="showOptions" class="border rounded select">
+    <div
+      v-if="showOptions"
+      class="border rounded select"
+      @keydown="escapeKeydownEventHandler"
+    >
       <div>Search</div>
 
       <ul class="options">

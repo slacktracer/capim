@@ -3,61 +3,43 @@ import { createPopper } from "@popperjs/core";
 import type { Ref } from "vue";
 import { nextTick } from "vue";
 
+import { handleOutsideInteraction } from "./handle-outside-interaction.js";
+
 let popperInstance: Instance;
 
-export const makeToggle = ({ showOptions }: { showOptions: Ref<boolean> }) => {
-  const checkIfClickedElementIsInsideTheSelectElement = async (
-    event: Event,
-  ) => {
-    if (event.target) {
-      const clickedElementIsInsideTheSelectElement = document
-        .querySelector(".select")
-        ?.contains(event.target as Node);
+export const toggle = async ({
+  showOptions,
+}: {
+  showOptions: Ref<boolean>;
+}) => {
+  showOptions.value = !showOptions.value;
 
-      if (!clickedElementIsInsideTheSelectElement) {
-        await toggle({ force: false });
-      }
-    }
-  };
+  await nextTick();
 
-  const toggle = async ({ force }: { force?: boolean } = {}) => {
-    showOptions.value = force ?? !showOptions.value;
+  if (showOptions.value) {
+    window.addEventListener("click", handleOutsideInteraction);
 
-    await nextTick();
-
-    if (showOptions.value) {
-      window.addEventListener(
-        "click",
-        checkIfClickedElementIsInsideTheSelectElement,
-      );
-
-      popperInstance = createPopper(
-        document.querySelector(".toggle")!,
-        document.querySelector(".select")!,
-        {
-          modifiers: [
-            {
-              name: "offset",
-              options: {
-                offset: [0, 8],
-              },
+    popperInstance = createPopper(
+      document.querySelector(".toggle")!,
+      document.querySelector(".select")!,
+      {
+        modifiers: [
+          {
+            name: "offset",
+            options: {
+              offset: [0, 8],
             },
-          ],
-        },
-      );
+          },
+        ],
+      },
+    );
 
-      await popperInstance.update();
-    } else {
-      window.removeEventListener(
-        "click",
-        checkIfClickedElementIsInsideTheSelectElement,
-      );
+    await popperInstance.update();
+  } else {
+    window.removeEventListener("click", handleOutsideInteraction);
 
-      if (popperInstance) {
-        popperInstance.destroy();
-      }
+    if (popperInstance) {
+      popperInstance.destroy();
     }
-  };
-
-  return toggle;
+  }
 };
