@@ -16,8 +16,5 @@
     "start": "npm run dev --prefix main",
     "test": "npm run test --prefix tests",
     "x": "npm run x --prefix main"
-  },
-  "dependencies": {
-    "@popperjs/core": "^2.11.8"
   }
 }

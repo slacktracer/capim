@@ -46,19 +46,17 @@ const submit = () => {
 </script>
 
 <template>
-  <div>
+  <div class="my-select">
     <form @submit.prevent="submit">
       <button class="form-select toggle" type="submit">
         {{ selectedOption?.name ?? "Select category" }}
       </button>
     </form>
 
-    <div
-      v-if="showOptions"
-      class="border rounded select"
-      @keydown="handleKeydownEvents"
-    >
-      <div>Search</div>
+    <div v-if="showOptions" class="border rounded select">
+      <div style="padding: 1rem">
+        <input class="form-control" placeholder="Search" type="text" />
+      </div>
 
       <ul class="options">
         <li
@@ -94,6 +92,10 @@ const submit = () => {
 </template>
 
 <style scoped>
+.my-select {
+  position: relative;
+}
+
 .toggle {
   text-align: left;
   width: 100%;
@@ -102,6 +104,9 @@ const submit = () => {
 .select {
   background: white;
   overflow-y: hidden;
+  position: absolute;
+  top: 38px;
+  width: 100%;
 }
 
 .options {
