@@ -143,10 +143,15 @@ const updateCategory = (categoryID: string) => {
 
           <div class="category">
             <MySelect
+              v-slot="{ option }"
               :options="categoryList"
               property="categoryID"
               @option-selected="updateCategory"
-            ></MySelect>
+            >
+              <b>{{ option.name }}</b>
+
+              <span class="small">{{ option.group.name }}</span>
+            </MySelect>
           </div>
 
           <div class="type">

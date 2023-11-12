@@ -84,9 +84,7 @@ const submit = () => {
             />
 
             <span class="option-content">
-              <b>{{ option.name }}</b>
-
-              <span class="small">{{ option.group.name }}</span>
+              <slot :option="option"></slot>
             </span>
           </label>
         </li>
