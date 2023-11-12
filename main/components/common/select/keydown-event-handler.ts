@@ -1,5 +1,5 @@
-import { arrowDownKeydownEventHandler } from "./arrowDownKeydownEventHandler.js";
-import { arrowUpKeydownEventHandler } from "./arrowUpKeydownEventHandler.js";
+import { arrowDownKeydownEventHandler } from "./arrow-down-keydown-event-handler.js";
+import { arrowUpKeydownEventHandler } from "./arrow-up-keydown-event-handler.js";
 import { endKeydownEventHandler } from "./end-keydown-event-handler.js";
 import { homeKeydownEventHandler } from "./home-keydown-event-handler.js";
 import { pageDownKeydownEventHandler } from "./page-down-keydown-event-handler.js";
