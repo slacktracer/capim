@@ -2,26 +2,31 @@
 import type { Ref } from "vue";
 import { ref } from "vue";
 
-import { keydownEventHandler } from "./keydown-event-handler.js";
+import { keydownEventHandlers } from "./keydown-event-handler.js";
 import { toggle } from "./toggle.js";
 
-const props = defineProps<{ options: Record<string, any>[] }>();
+const emit = defineEmits<{
+  optionSelected: [option: string];
+}>();
+
+const props = defineProps<{
+  options: Record<string, any>[];
+  property: string;
+}>();
 
 const selectedOption: Ref<Record<string, any> | null> = ref(null);
 
 const showOptions = ref(false);
 
-const escapeKeydownEventHandler = (event: KeyboardEvent) => {
-  if (event.target && event.code === "Escape") {
-    event.preventDefault();
-    event.stopPropagation();
-
-    const toggle = document.querySelector(".toggle") as HTMLElement;
-
-    if (toggle) {
-      toggle.click();
-      toggle.focus();
+const eventHandlers = (event: KeyboardEvent) => {
+  if (event.target) {
+    if (event.code === "Enter") {
+      emit("optionSelected", selectedOption.value?.[props.property]);
     }
+
+    keydownEventHandlers[event.code as keyof typeof keydownEventHandlers]?.({
+      event,
+    });
   }
 };
 
@@ -41,25 +46,25 @@ const submit = () => {
     <div
       v-if="showOptions"
       class="border rounded select"
-      @keydown="escapeKeydownEventHandler"
+      @keydown="eventHandlers"
     >
       <div>Search</div>
 
       <ul class="options">
         <li
           v-for="option in props.options"
-          :id="`list-item-${option.categoryID}`"
-          :key="option.categoryID"
+          :id="`list-item-${option[props.property]}`"
+          :key="option[props.property]"
           role="option"
         >
           <label
             class="option"
-            :for="`option-${option.categoryID}`"
+            :for="`option-${option[props.property]}`"
             tabindex="0"
-            @keydown="keydownEventHandler"
+            @keydown="eventHandlers"
           >
             <input
-              :id="`option-${option.categoryID}`"
+              :id="`option-${option[props.property]}`"
               v-model="selectedOption"
               class="option-input"
               name="options"

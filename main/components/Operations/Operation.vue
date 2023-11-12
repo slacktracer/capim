@@ -85,6 +85,10 @@ const save = () =>
 const updateAccount = (accountID: string) => {
   editableOperation.accountID = accountID;
 };
+
+const updateCategory = (categoryID: string) => {
+  editableOperation.categoryID = categoryID;
+};
 </script>
 
 <template>
@@ -138,7 +142,11 @@ const updateAccount = (accountID: string) => {
           </div>
 
           <div class="category">
-            <MySelect :options="categoryList"></MySelect>
+            <MySelect
+              :options="categoryList"
+              property="categoryID"
+              @option-selected="updateCategory"
+            ></MySelect>
           </div>
 
           <div class="type">
