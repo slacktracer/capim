@@ -1,12 +1,12 @@
 <script lang="ts" setup>
 import type { Ref } from "vue";
-import { computed, ref, unref } from "vue";
+import { computed, ref, toRaw, unref } from "vue";
 
 import { keydownEventHandlers } from "./keydown-event-handler.js";
 import { toggle } from "./toggle.js";
 
 const emit = defineEmits<{
-  optionSelected: [option: string];
+  optionSelected: [selectedOption: any | null];
 }>();
 
 const props = defineProps<{
@@ -30,7 +30,7 @@ const search: Ref<string> = ref("");
 
 const handleClickEvent = () => {
   setTimeout(async () => {
-    emit("optionSelected", selectedOption.value?.[props.property]);
+    emit("optionSelected", toRaw(unref(selectedOption)));
 
     await toggle({ showOptions });
     // This was my last resort...
@@ -41,7 +41,7 @@ const handleClickEvent = () => {
 const handleKeydownEvents = (event: KeyboardEvent) => {
   if (event.target) {
     if (event.code === "Enter") {
-      emit("optionSelected", selectedOption.value?.[props.property]);
+      emit("optionSelected", toRaw(unref(selectedOption)));
     }
 
     if (event.code === "Tab" && event.shiftKey) {

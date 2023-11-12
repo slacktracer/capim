@@ -99,8 +99,11 @@ const categorySelectFilter = ({
   search: string;
 }) => options.filter((option) => option.name.includes(search));
 
-const updateCategory = (categoryID: string) => {
-  editableOperation.categoryID = categoryID;
+const updateCategory = (category: CategorySelectOption | null) => {
+  if (category) {
+    editableOperation.categoryID = category.categoryID;
+    editableOperation.category = category;
+  }
 };
 </script>
 
