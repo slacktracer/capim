@@ -27,6 +27,7 @@ const showOptions = ref(false);
 const selectedOption: Ref<Record<string, any> | null> = ref(null);
 
 const search: Ref<string> = ref("");
+
 const handleClickEvent = () => {
   setTimeout(async () => {
     emit("optionSelected", selectedOption.value?.[props.property]);
@@ -36,10 +37,24 @@ const handleClickEvent = () => {
     // Hopefully I wil be able to "fix" it someday...
   }, 10);
 };
+
 const handleKeydownEvents = (event: KeyboardEvent) => {
   if (event.target) {
     if (event.code === "Enter") {
       emit("optionSelected", selectedOption.value?.[props.property]);
+    }
+
+    if (event.code === "Tab" && event.shiftKey) {
+      event.preventDefault();
+      event.stopPropagation();
+
+      const search = document.querySelector(".search") as HTMLElement;
+
+      if (search) {
+        search.focus();
+      }
+
+      return;
     }
 
     keydownEventHandlers[event.code as keyof typeof keydownEventHandlers]?.({
@@ -65,7 +80,7 @@ const submit = () => {
       <div style="padding: 1rem">
         <input
           v-model="search"
-          class="form-control"
+          class="form-control search"
           placeholder="Search"
           type="text"
         />
