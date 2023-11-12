@@ -1,7 +1,6 @@
 <script lang="ts" setup>
 import type { ComputedRef } from "vue";
 import { computed } from "vue";
-import VueMultiselect from "vue-multiselect";
 import { useRoute } from "vue-router";
 
 import { useEditableResource } from "../../composables/use-editable-resource.js";
@@ -10,22 +9,30 @@ import { core } from "../../core/core.js";
 import type { Operation } from "../../core/types/Operation.js";
 import { useCategoriesStore } from "../../modules/categories/use-categories-store.js";
 import { formatAsLocalisedCurrency } from "../../modules/common/utils/format-as-localised-currency.js";
-import { makeScrollToSelectedOnOpen } from "../../modules/common/utils/make-scroll-to-selected-on-open.js";
 import { makeEditableOperation } from "../../modules/operations/make-editable-operation.js";
 import { useOperationsStore } from "../../modules/operations/use-operations-store.js";
 import type { AsyncDataState } from "../../types/AsyncDataState.js";
-import type { CategorySelectorListItem } from "../../types/CategorySelectorListItem.js";
+import type { CategorySelectOption } from "../../types/CategorySelectOption.js";
 import type { EditableOperation } from "../../types/EditableOperation.js";
 import type { MakeEditableOperation } from "../../types/MakeEditableOperation.js";
 import type { UseRetrievedAt } from "../../types/UseRetrievedAt.js";
 import AmountInput from "../common/AmountInput.vue";
 import Debug from "../common/Debug.vue";
+import MySelect from "../common/select/MySelect.vue";
 import AccountSelector from "./AccountSelect.vue";
-import CategorySelectorOption from "./CategorySelectorOption.vue";
+
+const categoriesStore = useCategoriesStore();
+
+const categoryList: ComputedRef<CategorySelectOption[]> = computed(() =>
+  categoriesStore.categories.data.map(({ categoryID, group, name }) => ({
+    categoryID,
+    group,
+    name,
+  })),
+);
 
 const route = useRoute();
 
-const categoriesStore = useCategoriesStore();
 const operationsStore = useOperationsStore();
 
 if (typeof route.params.id === "string") {
@@ -35,14 +42,6 @@ if (typeof route.params.id === "string") {
 const retrievedAt = useRetrievedAt<UseRetrievedAt<Operation>>({
   collection: operationsStore.operation,
 });
-
-const categoryList: ComputedRef<CategorySelectorListItem[]> = computed(() =>
-  categoriesStore.categories.data.map(({ categoryID, group, name }) => ({
-    categoryID,
-    group,
-    name,
-  })),
-);
 
 const editableOperation: EditableOperation = useEditableResource<
   EditableOperation,
@@ -62,10 +61,6 @@ const amount = computed(() =>
     ),
   }),
 );
-
-const updateCategory = (category: CategorySelectorListItem) => {
-  editableOperation.categoryID = category.categoryID;
-};
 
 const updateAmounts = (input: number | Event) => {
   const inputIsNumber = typeof input === "number";
@@ -143,22 +138,7 @@ const updateAccount = (accountID: string) => {
           </div>
 
           <div class="category">
-            <VueMultiselect
-              v-model="editableOperation.category"
-              label="name"
-              :option-height="56"
-              :options="categoryList"
-              placeholder="Select a category"
-              track-by="categoryID"
-              @open="makeScrollToSelectedOnOpen({ selector: '.category' })"
-              @select="updateCategory"
-            >
-              <template #option="props">
-                <CategorySelectorOption
-                  :option="props.option"
-                ></CategorySelectorOption>
-              </template>
-            </VueMultiselect>
+            <MySelect :options="categoryList"></MySelect>
           </div>
 
           <div class="type">

@@ -1,6 +1,6 @@
 import type { Category } from "../core/types/Category.js";
 
-export type CategorySelectorListItem = Pick<
+export type CategorySelectOption = Pick<
   Category,
   "categoryID" | "group" | "name"
 >;

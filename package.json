@@ -1,5 +1,6 @@
 {
   "devDependencies": {
+    "@types/bootstrap": "^5.2.9",
     "husky": "^8.0.3",
     "lint-staged": "^13.2.3"
   },
@@ -15,5 +16,8 @@
     "start": "npm run dev --prefix main",
     "test": "npm run test --prefix tests",
     "x": "npm run x --prefix main"
+  },
+  "dependencies": {
+    "@popperjs/core": "^2.11.8"
   }
 }
