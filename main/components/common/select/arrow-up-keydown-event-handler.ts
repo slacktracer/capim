@@ -16,7 +16,12 @@ export const arrowUpKeydownEventHandler = ({ event }: { event: Event }) => {
       if (label) {
         label.scrollIntoView({ block: "nearest" });
         label.focus();
-        label.click();
+
+        const input = label.querySelector("input");
+
+        if (input) {
+          input.click();
+        }
       }
     } else {
       const lastListItem = getLastListItem({
@@ -29,7 +34,12 @@ export const arrowUpKeydownEventHandler = ({ event }: { event: Event }) => {
         if (label) {
           label.scrollIntoView({ block: "nearest" });
           label.focus();
-          label.click();
+
+          const input = label.querySelector("input");
+
+          if (input) {
+            input.click();
+          }
         }
       }
     }

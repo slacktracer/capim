@@ -14,7 +14,12 @@ export const homeKeydownEventHandler = ({ event }: { event: Event }) => {
     if (label) {
       label.scrollIntoView({ block: "nearest" });
       label.focus();
-      label.click();
+
+      const input = label.querySelector("input");
+
+      if (input) {
+        input.click();
+      }
     }
   }
 };
