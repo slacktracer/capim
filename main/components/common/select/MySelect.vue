@@ -18,7 +18,7 @@ const selectedOption: Ref<Record<string, any> | null> = ref(null);
 
 const showOptions = ref(false);
 
-const eventHandlers = (event: KeyboardEvent) => {
+const handleKeydownEvents = (event: KeyboardEvent) => {
   if (event.target) {
     if (event.code === "Enter") {
       emit("optionSelected", selectedOption.value?.[props.property]);
@@ -28,6 +28,16 @@ const eventHandlers = (event: KeyboardEvent) => {
       event,
     });
   }
+};
+
+const handleClickEvent = () => {
+  setTimeout(async () => {
+    emit("optionSelected", selectedOption.value?.[props.property]);
+
+    await toggle({ showOptions });
+    // This was my last resort...
+    // Hopefully I wil be able to "fix" it someday...
+  }, 10);
 };
 
 const submit = () => {
@@ -46,7 +56,7 @@ const submit = () => {
     <div
       v-if="showOptions"
       class="border rounded select"
-      @keydown="eventHandlers"
+      @keydown="handleKeydownEvents"
     >
       <div>Search</div>
 
@@ -56,20 +66,21 @@ const submit = () => {
           :id="`list-item-${option[props.property]}`"
           :key="option[props.property]"
           role="option"
+          @click="handleClickEvent"
         >
           <label
+            :id="`option-${option[props.property]}`"
             class="option"
-            :for="`option-${option[props.property]}`"
             tabindex="0"
-            @keydown="eventHandlers"
+            @keydown="handleKeydownEvents"
           >
             <input
-              :id="`option-${option[props.property]}`"
               v-model="selectedOption"
               class="option-input"
               name="options"
               type="radio"
               :value="option"
+              @click.stop
             />
 
             <span class="option-content">
