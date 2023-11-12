@@ -86,6 +86,19 @@ const updateAccount = (accountID: string) => {
   editableOperation.accountID = accountID;
 };
 
+const categorySelectFilter = ({
+  options,
+  search,
+}: {
+  // I wanted this:
+  // options: CategorySelectOption[];
+  // But that gave me this:
+  // Type '({ options, search, }: { options: CategorySelectOption[]; search: string; }) => CategorySelectOption[]' is not assignable to type '(input: { options: Record<string, any>[]; search: string; }) => Record<string, any>[]'.
+  // How do I make the prop "generic" in some way...?
+  options: Record<string, any>[];
+  search: string;
+}) => options.filter((option) => option.name.includes(search));
+
 const updateCategory = (categoryID: string) => {
   editableOperation.categoryID = categoryID;
 };
@@ -144,6 +157,7 @@ const updateCategory = (categoryID: string) => {
           <div class="category">
             <MySelect
               v-slot="{ option }"
+              :filter="categorySelectFilter"
               :options="categoryList"
               property="categoryID"
               @option-selected="updateCategory"

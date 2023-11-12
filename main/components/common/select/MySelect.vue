@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import type { Ref } from "vue";
-import { ref } from "vue";
+import { computed, ref, unref } from "vue";
 
 import { keydownEventHandlers } from "./keydown-event-handler.js";
 import { toggle } from "./toggle.js";
@@ -10,14 +10,32 @@ const emit = defineEmits<{
 }>();
 
 const props = defineProps<{
+  filter: (input: {
+    options: Record<string, any>[];
+    search: string;
+  }) => Record<string, any>[];
   options: Record<string, any>[];
   property: string;
 }>();
 
-const selectedOption: Ref<Record<string, any> | null> = ref(null);
+const filteredOptions: Record<string, any> = computed(() =>
+  props.filter({ options: props.options, search: unref(search) }),
+);
 
 const showOptions = ref(false);
 
+const selectedOption: Ref<Record<string, any> | null> = ref(null);
+
+const search: Ref<string> = ref("");
+const handleClickEvent = () => {
+  setTimeout(async () => {
+    emit("optionSelected", selectedOption.value?.[props.property]);
+
+    await toggle({ showOptions });
+    // This was my last resort...
+    // Hopefully I wil be able to "fix" it someday...
+  }, 10);
+};
 const handleKeydownEvents = (event: KeyboardEvent) => {
   if (event.target) {
     if (event.code === "Enter") {
@@ -28,16 +46,6 @@ const handleKeydownEvents = (event: KeyboardEvent) => {
       event,
     });
   }
-};
-
-const handleClickEvent = () => {
-  setTimeout(async () => {
-    emit("optionSelected", selectedOption.value?.[props.property]);
-
-    await toggle({ showOptions });
-    // This was my last resort...
-    // Hopefully I wil be able to "fix" it someday...
-  }, 10);
 };
 
 const submit = () => {
@@ -55,12 +63,17 @@ const submit = () => {
 
     <div v-if="showOptions" class="border rounded select">
       <div style="padding: 1rem">
-        <input class="form-control" placeholder="Search" type="text" />
+        <input
+          v-model="search"
+          class="form-control"
+          placeholder="Search"
+          type="text"
+        />
       </div>
 
       <ul class="options">
         <li
-          v-for="option in props.options"
+          v-for="option in filteredOptions"
           :id="`list-item-${option[props.property]}`"
           :key="option[props.property]"
           role="option"
