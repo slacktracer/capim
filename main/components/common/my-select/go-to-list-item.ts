@@ -1,3 +1,7 @@
+import { makeDebouncedClickInput } from "./make-debounced-click-input.js";
+
+const debouncedClickInput = makeDebouncedClickInput({ delay: 50 });
+
 export const goToListItem = ({ listItem }: { listItem: HTMLElement }) => {
   const label = listItem.querySelector("label");
 
@@ -8,7 +12,8 @@ export const goToListItem = ({ listItem }: { listItem: HTMLElement }) => {
 
     if (input) {
       input.focus();
-      input.click();
+
+      debouncedClickInput({ input });
     }
   }
 };
