@@ -2,15 +2,13 @@
 import type { Ref } from "vue";
 import { computed, onMounted, ref, unref } from "vue";
 
+import { toggle } from "../select/toggle.js";
 import { boot } from "./boot.js";
 
-// import { keydownEventHandlers } from "../select/keydown-event-handler.js";
-// import { toggle } from "../select/toggle.js";
-//
 // const emit = defineEmits<{
 //   optionSelected: [selectedOption: any | null];
 // }>();
-//
+
 const props = defineProps<{
   filter: (input: {
     options: Record<string, any>[];
@@ -21,15 +19,15 @@ const props = defineProps<{
   property: string;
   selectedOption: Record<string, any>;
 }>();
-//
+
 const filteredOptions: Record<string, any> = computed(() =>
   props.filter({ options: props.options, search: unref(search) }),
 );
-//
-const showOptions = ref(true);
-//
+
+const showOptions = ref(false);
+
 const _selectedOption: Ref<Record<string, any> | null> = ref(null);
-//
+
 const search: Ref<string> = ref("");
 
 const mySelect = ref();
@@ -49,7 +47,7 @@ onMounted(() => {
 //     // Hopefully I wil be able to "fix" it someday...
 //   }, 10);
 // };
-//
+
 // const handleKeydownEvents = (event: KeyboardEvent) => {
 //   if (event.target) {
 //     if (event.code === "Enter") {
@@ -76,23 +74,19 @@ onMounted(() => {
 // };
 
 const submit = () => {
-  // toggle({ showOptions });
+  toggle({ showOptions });
 };
 </script>
 
 <template>
-  <div ref="mySelect" class="my-select">
+  <div ref="mySelect" class="my-select" data-select-role="select">
     <form @submit.prevent="submit">
-      <button
-        class="form-select toggle"
-        data-select-role="select"
-        type="submit"
-      >
+      <button class="form-select toggle" data-select-role="input" type="submit">
         {{ props.selectedOption?.[props.label] ?? "Select category" }}
       </button>
     </form>
 
-    <div v-if="showOptions" class="border rounded select" tabindex="0">
+    <div v-if="showOptions" class="border rounded select">
       <div style="padding: 1rem">
         <input
           v-model="search"
@@ -103,8 +97,6 @@ const submit = () => {
         />
       </div>
 
-      [[{{ _selectedOption?.name }}]]
-
       <ul class="options" data-select-role="options">
         <li
           v-for="option in filteredOptions"
@@ -112,11 +104,7 @@ const submit = () => {
           :key="option[props.property]"
           role="option"
         >
-          <label
-            :id="`option-${option[props.property]}`"
-            class="option"
-            tabindex="0"
-          >
+          <label :id="`option-${option[props.property]}`" class="option">
             <input
               v-model="_selectedOption"
               class="option-input"
@@ -174,7 +162,6 @@ const submit = () => {
   width: 100%;
 }
 
-.option:focus,
 .option:focus-within {
   background: hsla(303, 100%, 50%, 0.5);
 }
