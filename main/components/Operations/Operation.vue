@@ -18,7 +18,7 @@ import type { MakeEditableOperation } from "../../types/MakeEditableOperation.js
 import type { UseRetrievedAt } from "../../types/UseRetrievedAt.js";
 import AmountInput from "../common/AmountInput.vue";
 import Debug from "../common/Debug.vue";
-import MySelect from "../common/select/MySelect.vue";
+import MySelect from "../common/my-select/MySelect.vue";
 import AccountSelector from "./AccountSelect.vue";
 
 const categoriesStore = useCategoriesStore();
