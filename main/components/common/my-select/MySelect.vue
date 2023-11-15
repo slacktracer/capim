@@ -2,7 +2,7 @@
 import type { Ref } from "vue";
 import { computed, onMounted, ref, toRaw, unref } from "vue";
 
-import { boot } from "./boot.js";
+import { boot } from "./my-select-engine/boot.js";
 import { toggle } from "./toggle.js";
 
 const emit = defineEmits<{
@@ -140,10 +140,6 @@ div:has(> input.search) {
   max-height: 12rem;
   overflow-y: scroll;
   padding-inline-start: 0;
-}
-
-.options li {
-  margin-block-end: 0.5rem;
 }
 
 .option {
