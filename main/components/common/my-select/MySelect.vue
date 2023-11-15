@@ -150,7 +150,8 @@ div:has(> input.search) {
   width: 100%;
 }
 
-.option:focus-within {
+.option:focus-within,
+.option:hover {
   background: hsla(303, 100%, 50%, 0.5);
 }
 
