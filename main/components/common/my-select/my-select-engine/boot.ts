@@ -1,6 +1,6 @@
 import { dismiss } from "./dismiss.js";
 import { enterHandler } from "./enter-handler.js";
-import { keyCodes } from "./keyCodes.js";
+import { keyCodes } from "./key-codes.js";
 import { optionKeydownEventHandlers } from "./option-key-down-event-handlers/option-keydown-event-handlers.js";
 import { roles } from "./roles.js";
 
