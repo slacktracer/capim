@@ -72,10 +72,6 @@ const submit = () => {
           :key="option[props.property]"
           role="option"
         >
-          <label v-if="filteredOptions.length === 0">
-            No option
-            <input type="radio" value="" />
-          </label>
           <label
             :id="`option-${option[props.property]}`"
             class="option"
