@@ -5,5 +5,5 @@ export type EditableOperation = Omit<Operation, "category" | "categoryID"> & {
   atDate: string;
   atTime: string;
   category: Pick<Category, "categoryID" | "group" | "name"> | undefined;
-  categoryID: Pick<Category, "categoryID"> | undefined;
+  categoryID: Category["categoryID"] | undefined;
 };

@@ -99,10 +99,13 @@ const categorySelectFilter = ({
   search: string;
 }) => options.filter((option) => option.name.includes(search));
 
-const updateCategory = (category: CategorySelectOption | null) => {
+const updateCategory = (category: CategorySelectOption | undefined) => {
   if (category) {
     editableOperation.categoryID = category.categoryID;
     editableOperation.category = category;
+  } else {
+    editableOperation.categoryID = undefined;
+    editableOperation.category = undefined;
   }
 };
 </script>
@@ -159,7 +162,6 @@ const updateCategory = (category: CategorySelectOption | null) => {
 
           <div class="category">
             <MySelect
-              v-slot="{ option }"
               :current-selected-option="editableOperation.category"
               :filter="categorySelectFilter"
               label="name"
@@ -167,11 +169,17 @@ const updateCategory = (category: CategorySelectOption | null) => {
               property="categoryID"
               @option-selected="updateCategory"
             >
-              <div class="category-select-option">
-                <b>{{ option.name }}</b>
+              <template #no-match>
+                No category matches the search term
+              </template>
 
-                <span class="small">{{ option.group.name }}</span>
-              </div>
+              <template #option="{ option }">
+                <div class="category-select-option">
+                  <b>{{ option.name }}</b>
+
+                  <span class="small">{{ option.group.name }}</span>
+                </div>
+              </template>
             </MySelect>
           </div>
 

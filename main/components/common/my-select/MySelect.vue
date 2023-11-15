@@ -66,6 +66,22 @@ const submit = () => {
       </div>
 
       <ul class="options" data-select-role="options">
+        <li v-if="filteredOptions.length === 0" role="option">
+          <label class="option">
+            <slot name="no-match">No option matches the search term</slot>
+
+            <input
+              v-model="selectedOption"
+              class="option-input"
+              data-select-role="option-input"
+              name="options"
+              type="radio"
+              :value="undefined"
+              @click.stop
+            />
+          </label>
+        </li>
+
         <li
           v-for="option in filteredOptions"
           :id="`list-item-${option[props.property]}`"
@@ -88,7 +104,7 @@ const submit = () => {
             />
 
             <span>
-              <slot :option="option"></slot>
+              <slot name="option" :option="option"></slot>
             </span>
           </label>
         </li>
