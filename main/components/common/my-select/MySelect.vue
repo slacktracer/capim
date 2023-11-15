@@ -55,7 +55,7 @@ const submit = () => {
     </form>
 
     <div v-if="showOptions" class="border rounded select">
-      <div style="padding: 1rem">
+      <div>
         <input
           v-model="search"
           class="form-control search"
@@ -113,6 +113,10 @@ const submit = () => {
   position: absolute;
   top: 38px;
   width: 100%;
+}
+
+div:has(> input.search) {
+  padding: 1rem;
 }
 
 .options {
