@@ -1,3 +1,4 @@
+import type { Category } from "./Category.js";
 import type { TagKey } from "./TagKey.js";
 import type { TagValue } from "./TagValue.js";
 
@@ -10,10 +11,7 @@ export type Operation = {
   amount: number;
   amountPerUnit: number;
   at: string;
-  category: {
-    categoryID: string;
-    name: string;
-  };
+  category: Pick<Category, "categoryID" | "group" | "name">;
   categoryID: string;
   comments: string;
   confirmed: boolean;
