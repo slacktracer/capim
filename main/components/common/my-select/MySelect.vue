@@ -103,7 +103,7 @@ const submit = () => {
               @click.stop
             />
 
-            <span>
+            <span class="option-label">
               <slot name="option" :option="option"></slot>
             </span>
           </label>
@@ -157,5 +157,9 @@ div:has(> input.search) {
 .option-input {
   height: 0;
   width: 0;
+}
+
+.option-label {
+  pointer-events: none;
 }
 </style>
