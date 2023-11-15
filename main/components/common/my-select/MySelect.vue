@@ -2,8 +2,8 @@
 import type { Ref } from "vue";
 import { computed, onMounted, ref, toRaw, unref } from "vue";
 
-import { toggle } from "../select/toggle.js";
 import { boot } from "./boot.js";
+import { toggle } from "./toggle.js";
 
 const emit = defineEmits<{
   optionSelected: [selectedOption: any | null];
