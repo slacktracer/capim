@@ -1,5 +1,5 @@
-import { getNextPageListItem } from "./get-next-page-list-item.js";
-import { goToListItem } from "./go-to-list-item.js";
+import { getNextPageListItem } from "./option-list-traversing/get-next-page-list-item.js";
+import { goToListItem } from "./option-list-traversing/go-to-list-item.js";
 
 export const pageDownKeydownEventHandler = ({
   target,

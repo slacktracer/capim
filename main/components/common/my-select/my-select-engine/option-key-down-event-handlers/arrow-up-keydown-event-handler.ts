@@ -1,6 +1,6 @@
-import { getLastListItem } from "./get-last-list-item.js";
-import { getPreviousListItem } from "./get-previous-list-item.js";
-import { goToListItem } from "./go-to-list-item.js";
+import { getLastListItem } from "./option-list-traversing/get-last-list-item.js";
+import { getPreviousListItem } from "./option-list-traversing/get-previous-list-item.js";
+import { goToListItem } from "./option-list-traversing/go-to-list-item.js";
 
 export const arrowUpKeydownEventHandler = ({
   target,

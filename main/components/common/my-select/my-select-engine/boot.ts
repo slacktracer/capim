@@ -1,55 +1,9 @@
-import { arrowDownKeydownEventHandler } from "./arrow-down-keydown-event-handler.js";
-import { arrowUpKeydownEventHandler } from "./arrow-up-keydown-event-handler.js";
 import { dismiss } from "./dismiss.js";
-import { endKeydownEventHandler } from "./end-keydown-event-handler.js";
-import { homeKeydownEventHandler } from "./home-keydown-event-handler.js";
-import { pageDownKeydownEventHandler } from "./page-down-keydown-event-handler.js";
-import { pageUpKeydownEventHandler } from "./page-up-keydown-event-handler.js";
-
-const roles = {
-  "option-input": "option-input",
-  "option-label": "option-label",
-  input: "input",
-  search: "search",
-  select: "select",
-} as const;
-
-const optionKeydownEventHandlers = {
-  ArrowDown: arrowDownKeydownEventHandler,
-  ArrowUp: arrowUpKeydownEventHandler,
-  End: endKeydownEventHandler,
-  Home: homeKeydownEventHandler,
-  PageDown: pageDownKeydownEventHandler,
-  PageUp: pageUpKeydownEventHandler,
-};
-
-const enterHandler = ({
-  onOptionSelected,
-  target,
-}: {
-  onOptionSelected?: (() => void) | undefined;
-  target: HTMLInputElement;
-}) => {
-  if (onOptionSelected === undefined) return;
-
-  const inputIsChecked = target.checked;
-
-  if (!inputIsChecked) {
-    target.click();
-  }
-
-  setTimeout(() => {
-    onOptionSelected();
-
-    dismiss({ target });
-
-    // This was my last resort...
-    // Hopefully I wil be able to "fix" it someday...
-  }, 10);
-};
+import { enterHandler } from "./enter-handler.js";
+import { optionKeydownEventHandlers } from "./option-key-down-event-handlers/option-keydown-event-handlers.js";
+import { roles } from "./roles.js";
 
 const selectKeydownEventHandlers = {
-  Enter: enterHandler,
   Escape: dismiss,
   Tab: dismiss,
 };
@@ -126,17 +80,17 @@ export const boot = ({
           return;
         }
 
-        if (code === "Enter" && role === roles["option-input"]) {
-          const typedTarget = target as HTMLInputElement;
-
-          enterHandler({ onOptionSelected, target: typedTarget });
-
-          return;
-        }
-
         const typedTarget = target as HTMLInputElement;
 
         selectKeydownEventHandlers[typedCode]?.({ target: typedTarget });
+
+        return;
+      }
+
+      if (code === "Enter" && role === roles["option-input"]) {
+        const typedTarget = target as HTMLInputElement;
+
+        enterHandler({ onOptionSelected, target: typedTarget });
 
         // return;
       }

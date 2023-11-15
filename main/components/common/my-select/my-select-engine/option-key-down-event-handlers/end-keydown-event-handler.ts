@@ -1,5 +1,5 @@
-import { getLastListItem } from "./get-last-list-item.js";
-import { goToListItem } from "./go-to-list-item.js";
+import { getLastListItem } from "./option-list-traversing/get-last-list-item.js";
+import { goToListItem } from "./option-list-traversing/go-to-list-item.js";
 
 export const endKeydownEventHandler = ({ target }: { target: HTMLElement }) => {
   const container: HTMLElement | null = target.closest(
