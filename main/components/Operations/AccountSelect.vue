@@ -8,7 +8,7 @@ import type { AccountSelectOption } from "../../types/AccountSelectOption.js";
 const emit = defineEmits<{ accountSelected: [newValue: string] }>();
 
 const props = defineProps<{
-  selectedAccount: string;
+  selectedAccount: string | undefined;
 }>();
 
 const accountsStore = useAccountsStore();
