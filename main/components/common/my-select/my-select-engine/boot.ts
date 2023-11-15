@@ -1,12 +1,8 @@
 import { dismiss } from "./dismiss.js";
 import { enterHandler } from "./enter-handler.js";
+import { keyCodes } from "./keyCodes.js";
 import { optionKeydownEventHandlers } from "./option-key-down-event-handlers/option-keydown-event-handlers.js";
 import { roles } from "./roles.js";
-
-const selectKeydownEventHandlers = {
-  Escape: dismiss,
-  Tab: dismiss,
-};
 
 export const boot = ({
   mySelectElement,
@@ -68,26 +64,22 @@ export const boot = ({
         return;
       }
 
-      if (code in selectKeydownEventHandlers) {
-        const typedCode = code as keyof typeof selectKeydownEventHandlers;
+      if (
+        code === keyCodes.tab &&
+        (role === roles.input ||
+          (!shiftKey && role === roles.search) ||
+          (shiftKey && role === roles["option-input"]))
+      ) {
+        return;
+      }
 
-        if (
-          code === "Tab" &&
-          (role === roles.input ||
-            (!shiftKey && role === roles.search) ||
-            (shiftKey && role === roles["option-input"]))
-        ) {
-          return;
-        }
-
-        const typedTarget = target as HTMLInputElement;
-
-        selectKeydownEventHandlers[typedCode]?.({ target: typedTarget });
+      if (code === keyCodes.escape || code === keyCodes.tab) {
+        dismiss({ target });
 
         return;
       }
 
-      if (code === "Enter" && role === roles["option-input"]) {
+      if (code === keyCodes.enter && role === roles["option-input"]) {
         const typedTarget = target as HTMLInputElement;
 
         enterHandler({ onOptionSelected, target: typedTarget });
