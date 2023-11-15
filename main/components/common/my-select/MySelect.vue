@@ -61,7 +61,7 @@ const submit = () => {
           class="form-control search"
           data-select-role="search"
           placeholder="Search"
-          type="text"
+          type="search"
         />
       </div>
 
