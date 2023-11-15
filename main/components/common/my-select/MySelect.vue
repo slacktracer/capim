@@ -72,6 +72,10 @@ const submit = () => {
           :key="option[props.property]"
           role="option"
         >
+          <label v-if="filteredOptions.length === 0">
+            No option
+            <input type="radio" value="" />
+          </label>
           <label
             :id="`option-${option[props.property]}`"
             class="option"
@@ -87,7 +91,7 @@ const submit = () => {
               @click.stop
             />
 
-            <span class="option-content">
+            <span>
               <slot :option="option"></slot>
             </span>
           </label>
@@ -145,10 +149,5 @@ div:has(> input.search) {
 .option-input {
   height: 0;
   width: 0;
-}
-
-.option-content {
-  display: flex;
-  flex-direction: column;
 }
 </style>

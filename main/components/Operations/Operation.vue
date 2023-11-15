@@ -167,9 +167,11 @@ const updateCategory = (category: CategorySelectOption | null) => {
               property="categoryID"
               @option-selected="updateCategory"
             >
-              <b>{{ option.name }}</b>
+              <div class="category-select-option">
+                <b>{{ option.name }}</b>
 
-              <span class="small">{{ option.group.name }}</span>
+                <span class="small">{{ option.group.name }}</span>
+              </div>
             </MySelect>
           </div>
 
@@ -347,5 +349,10 @@ const updateCategory = (category: CategorySelectOption | null) => {
 
 label {
   width: 100%;
+}
+
+.category-select-option {
+  display: flex;
+  flex-direction: column;
 }
 </style>
