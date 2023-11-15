@@ -78,6 +78,21 @@ export const boot = ({
     }
   });
 
+  mySelectElement.addEventListener("mouseover", (event: MouseEvent) => {
+    if (event.target instanceof HTMLElement) {
+      const {
+        target: {
+          dataset: { selectRole: role },
+        },
+        target,
+      } = event;
+
+      if (role === roles["option-input"] || role === roles["option-label"]) {
+        target.focus();
+      }
+    }
+  });
+
   mySelectElement.addEventListener("keydown", (event: KeyboardEvent) => {
     if (event.target instanceof HTMLElement) {
       const {
