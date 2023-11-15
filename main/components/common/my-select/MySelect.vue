@@ -1,9 +1,8 @@
 <script lang="ts" setup>
 import type { Ref } from "vue";
-import { computed, onMounted, ref, toRaw, unref } from "vue";
+import { computed, nextTick, onMounted, ref, toRaw, unref } from "vue";
 
 import { boot } from "./my-select-engine/boot.js";
-import { toggle } from "./toggle.js";
 
 const emit = defineEmits<{
   optionSelected: [selectedOption: any | null];
@@ -32,6 +31,33 @@ const search: Ref<string> = ref("");
 
 const mySelect = ref();
 
+const toggle = async () => {
+  showOptions.value = !showOptions.value;
+
+  await nextTick();
+
+  if (showOptions.value) {
+    const currentSelectedOptionID =
+      props.currentSelectedOption?.[props.property];
+
+    const { value: mySelectElement } = mySelect;
+
+    const currentSelectedOptionLabel = mySelectElement.querySelector(
+      `label#option-${currentSelectedOptionID}`,
+    );
+
+    if (currentSelectedOptionLabel) {
+      currentSelectedOptionLabel.focus();
+      currentSelectedOptionLabel.scrollIntoView();
+    }
+
+    // This may be the last thing I will do for this component...
+    // window.addEventListener("click", handleOutsideInteraction);
+  } else {
+    // window.removeEventListener("click", handleOutsideInteraction);
+  }
+};
+
 const onOptionSelected = () =>
   emit("optionSelected", toRaw(unref(selectedOption)));
 
@@ -42,7 +68,7 @@ onMounted(() => {
 });
 
 const submit = () => {
-  toggle({ showOptions });
+  toggle();
 };
 </script>
 
