@@ -7,8 +7,9 @@ import { pageDownKeydownEventHandler } from "./page-down-keydown-event-handler.j
 import { pageUpKeydownEventHandler } from "./page-up-keydown-event-handler.js";
 
 const roles = {
+  "option-input": "option-input",
+  "option-label": "option-label",
   input: "input",
-  option: "option",
   search: "search",
   select: "select",
 } as const;
@@ -22,12 +23,61 @@ const optionKeydownEventHandlers = {
   PageUp: pageUpKeydownEventHandler,
 };
 
+const enterHandler = ({
+  onOptionSelected,
+  target,
+}: {
+  onOptionSelected?: (() => void) | undefined;
+  target: HTMLInputElement;
+}) => {
+  if (onOptionSelected === undefined) return;
+
+  const inputIsChecked = target.checked;
+
+  if (!inputIsChecked) {
+    target.click();
+  }
+
+  setTimeout(() => {
+    onOptionSelected();
+
+    dismiss({ target });
+
+    // This was my last resort...
+    // Hopefully I wil be able to "fix" it someday...
+  }, 10);
+};
+
 const selectKeydownEventHandlers = {
+  Enter: enterHandler,
   Escape: dismiss,
   Tab: dismiss,
 };
 
-export const boot = ({ mySelectElement }: { mySelectElement: HTMLElement }) => {
+export const boot = ({
+  mySelectElement,
+  onOptionSelected,
+}: {
+  mySelectElement: HTMLElement;
+  onOptionSelected?: (() => void) | undefined;
+}) => {
+  mySelectElement.addEventListener("click", (event: MouseEvent) => {
+    if (event.target instanceof HTMLElement) {
+      const {
+        target: {
+          dataset: { selectRole: role },
+        },
+        target,
+      } = event;
+
+      if (role === roles["option-input"] || role === roles["option-label"]) {
+        const typedTarget = target as HTMLInputElement;
+
+        enterHandler({ onOptionSelected, target: typedTarget });
+      }
+    }
+  });
+
   mySelectElement.addEventListener("keydown", (event: KeyboardEvent) => {
     if (event.target instanceof HTMLElement) {
       const {
@@ -56,12 +106,22 @@ export const boot = ({ mySelectElement }: { mySelectElement: HTMLElement }) => {
           code === "Tab" &&
           (role === roles.input ||
             (!shiftKey && role === roles.search) ||
-            (shiftKey && role === roles.option))
+            (shiftKey && role === roles["option-input"]))
         ) {
           return;
         }
 
-        selectKeydownEventHandlers[typedCode]?.({ target });
+        if (code === "Enter" && role === roles["option-input"]) {
+          const typedTarget = target as HTMLInputElement;
+
+          enterHandler({ onOptionSelected, target: typedTarget });
+
+          return;
+        }
+
+        const typedTarget = target as HTMLInputElement;
+
+        selectKeydownEventHandlers[typedCode]?.({ target: typedTarget });
 
         // return;
       }

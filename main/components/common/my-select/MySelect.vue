@@ -1,15 +1,16 @@
 <script lang="ts" setup>
 import type { Ref } from "vue";
-import { computed, onMounted, ref, unref } from "vue";
+import { computed, onMounted, ref, toRaw, unref } from "vue";
 
 import { toggle } from "../select/toggle.js";
 import { boot } from "./boot.js";
 
-// const emit = defineEmits<{
-//   optionSelected: [selectedOption: any | null];
-// }>();
+const emit = defineEmits<{
+  optionSelected: [selectedOption: any | null];
+}>();
 
 const props = defineProps<{
+  currentSelectedOption: Record<string, any> | undefined;
   filter: (input: {
     options: Record<string, any>[];
     search: string;
@@ -17,7 +18,6 @@ const props = defineProps<{
   label: string;
   options: Record<string, any>[];
   property: string;
-  selectedOption: Record<string, any>;
 }>();
 
 const filteredOptions: Record<string, any> = computed(() =>
@@ -26,52 +26,20 @@ const filteredOptions: Record<string, any> = computed(() =>
 
 const showOptions = ref(false);
 
-const _selectedOption: Ref<Record<string, any> | null> = ref(null);
+const selectedOption: Ref<Record<string, any> | null> = ref(null);
 
 const search: Ref<string> = ref("");
 
 const mySelect = ref();
 
+const onOptionSelected = () =>
+  emit("optionSelected", toRaw(unref(selectedOption)));
+
 onMounted(() => {
   const { value: mySelectElement } = mySelect;
 
-  boot({ mySelectElement });
+  boot({ mySelectElement, onOptionSelected });
 });
-
-// const handleClickEvent = () => {
-//   setTimeout(async () => {
-//     emit("optionSelected", toRaw(unref(_selectedOption)));
-//
-//     await toggle({ showOptions });
-//     // This was my last resort...
-//     // Hopefully I wil be able to "fix" it someday...
-//   }, 10);
-// };
-
-// const handleKeydownEvents = (event: KeyboardEvent) => {
-//   if (event.target) {
-//     if (event.code === "Enter") {
-//       emit("optionSelected", toRaw(unref(_selectedOption)));
-//     }
-//
-//     if (event.code === "Tab" && event.shiftKey) {
-//       event.preventDefault();
-//       event.stopPropagation();
-//
-//       const search = document.querySelector(".search") as HTMLElement;
-//
-//       if (search) {
-//         search.focus();
-//       }
-//
-//       return;
-//     }
-//
-//     keydownEventHandlers[event.code as keyof typeof keydownEventHandlers]?.({
-//       event,
-//     });
-//   }
-// };
 
 const submit = () => {
   toggle({ showOptions });
@@ -82,7 +50,7 @@ const submit = () => {
   <div ref="mySelect" class="my-select" data-select-role="select">
     <form @submit.prevent="submit">
       <button class="form-select toggle" data-select-role="input" type="submit">
-        {{ props.selectedOption?.[props.label] ?? "Select category" }}
+        {{ props.currentSelectedOption?.[props.label] ?? "Select category" }}
       </button>
     </form>
 
@@ -104,11 +72,15 @@ const submit = () => {
           :key="option[props.property]"
           role="option"
         >
-          <label :id="`option-${option[props.property]}`" class="option">
+          <label
+            :id="`option-${option[props.property]}`"
+            class="option"
+            data-select-role="option-label"
+          >
             <input
-              v-model="_selectedOption"
+              v-model="selectedOption"
               class="option-input"
-              data-select-role="option"
+              data-select-role="option-input"
               name="options"
               type="radio"
               :value="option"
