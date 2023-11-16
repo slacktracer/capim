@@ -92,64 +92,64 @@ const submit = () => {
       <button class="form-select toggle" data-select-role="input" type="submit">
         {{ props.currentSelectedOption?.[props.label] ?? "Select category" }}
       </button>
-    </form>
 
-    <div v-if="showOptions" class="border rounded select">
-      <div>
-        <input
-          v-model="search"
-          class="form-control search"
-          data-select-role="search"
-          placeholder="Search"
-          type="search"
-        />
-      </div>
+      <div v-if="showOptions" class="border rounded select">
+        <div>
+          <input
+            v-model="search"
+            class="form-control search"
+            data-select-role="search"
+            placeholder="Search"
+            type="search"
+          />
+        </div>
 
-      <ul class="options" data-select-role="options">
-        <li v-if="filteredOptions.length === 0" role="option">
-          <label class="option">
-            <slot name="no-match">No option matches the search term</slot>
+        <ul class="options" data-select-role="options">
+          <li v-if="filteredOptions.length === 0" role="option">
+            <label class="option">
+              <slot name="no-match">No option matches the search term</slot>
 
-            <input
-              v-model="selectedOption"
-              class="option-input"
-              data-select-role="option-input"
-              name="options"
-              type="radio"
-              :value="undefined"
-              @click.stop
-            />
-          </label>
-        </li>
+              <input
+                v-model="selectedOption"
+                class="option-input"
+                data-select-role="option-input"
+                name="options"
+                type="radio"
+                :value="undefined"
+                @click.stop
+              />
+            </label>
+          </li>
 
-        <li
-          v-for="option in filteredOptions"
-          :id="`list-item-${option[props.property]}`"
-          :key="option[props.property]"
-          role="option"
-        >
-          <label
-            :id="`option-${option[props.property]}`"
-            class="option"
-            data-select-role="option-label"
+          <li
+            v-for="option in filteredOptions"
+            :id="`list-item-${option[props.property]}`"
+            :key="option[props.property]"
+            role="option"
           >
-            <input
-              v-model="selectedOption"
-              class="option-input"
-              data-select-role="option-input"
-              name="options"
-              type="radio"
-              :value="option"
-              @click.stop
-            />
+            <label
+              :id="`option-${option[props.property]}`"
+              class="option"
+              data-select-role="option-label"
+            >
+              <input
+                v-model="selectedOption"
+                class="option-input"
+                data-select-role="option-input"
+                name="options"
+                type="radio"
+                :value="option"
+                @click.stop
+              />
 
-            <span class="option-label">
-              <slot name="option" :option="option"></slot>
-            </span>
-          </label>
-        </li>
-      </ul>
-    </div>
+              <span class="option-label">
+                <slot name="option" :option="option"></slot>
+              </span>
+            </label>
+          </li>
+        </ul>
+      </div>
+    </form>
   </div>
 </template>
 
