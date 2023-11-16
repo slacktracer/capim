@@ -1,8 +1,9 @@
 import { dismiss } from "./dismiss.js";
 import { roles } from "./roles.js";
+import type { OnOptionSelected } from "./types/OnOptionSelected.js";
 
 export const makeClickHandler =
-  ({ onOptionSelected }: { onOptionSelected: () => void }) =>
+  ({ onOptionSelected }: { onOptionSelected: OnOptionSelected }) =>
   (event: MouseEvent) => {
     if (event.target instanceof HTMLElement) {
       const {
@@ -13,10 +14,16 @@ export const makeClickHandler =
         target,
       } = event;
 
-      if (role === roles["option-input"] || role === roles["option-label"]) {
-        setTimeout(() => {
-          onOptionSelected();
-        }, 10);
+      if (role === roles["option-label"]) {
+        const input = target.querySelector(
+          `[data-select-role=${roles["option-input"]}]`,
+        );
+
+        if (input) {
+          const typedInput = input as HTMLInputElement;
+
+          onOptionSelected({ selectedOption: typedInput.value });
+        }
 
         if (isTrusted) {
           dismiss({ target });

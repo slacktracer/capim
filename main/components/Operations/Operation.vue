@@ -99,12 +99,18 @@ const categorySelectFilter = ({
   search: string;
 }) => options.filter((option) => option.name.includes(search));
 
-const updateCategory = (category: CategorySelectOption | undefined) => {
-  if (category) {
-    editableOperation.categoryID = category.categoryID;
-    editableOperation.category = category;
+const updateCategory = ({
+  selectedOption: categoryID,
+}: {
+  selectedOption: string | undefined;
+}) => {
+  editableOperation.categoryID = categoryID;
+
+  if (categoryID) {
+    editableOperation.category = categoryList.value.find(
+      (category) => category.categoryID === categoryID,
+    );
   } else {
-    editableOperation.categoryID = undefined;
     editableOperation.category = undefined;
   }
 };

@@ -1,19 +1,12 @@
 <script lang="ts" setup>
 import type { Ref } from "vue";
-import {
-  computed,
-  nextTick,
-  onMounted,
-  onUnmounted,
-  ref,
-  toRaw,
-  unref,
-} from "vue";
+import { computed, nextTick, onMounted, onUnmounted, ref, unref } from "vue";
 
 import { boot } from "./my-select-engine/boot.js";
+import type { OnOptionSelected } from "./my-select-engine/types/OnOptionSelected.js";
 
 const emit = defineEmits<{
-  optionSelected: [selectedOption: any | null];
+  optionSelected: [{ selectedOption: string | undefined }];
 }>();
 
 const props = defineProps<{
@@ -32,8 +25,6 @@ const filteredOptions: Record<string, any> = computed(() =>
 );
 
 const showOptions = ref(false);
-
-const selectedOption: Ref<Record<string, any> | null> = ref(null);
 
 const search: Ref<string> = ref("");
 
@@ -84,8 +75,8 @@ const toggle = async () => {
   }
 };
 
-const onOptionSelected = () =>
-  emit("optionSelected", toRaw(unref(selectedOption)));
+const onOptionSelected: OnOptionSelected = ({ selectedOption } = {}) =>
+  emit("optionSelected", { selectedOption });
 
 const submit = () => {
   toggle();
@@ -116,7 +107,6 @@ const submit = () => {
               <slot name="no-match">No option matches the search term</slot>
 
               <input
-                v-model="selectedOption"
                 class="option-input"
                 data-select-role="option-input"
                 name="options"
@@ -139,12 +129,11 @@ const submit = () => {
               data-select-role="option-label"
             >
               <input
-                v-model="selectedOption"
                 class="option-input"
                 data-select-role="option-input"
                 name="options"
                 type="radio"
-                :value="option"
+                :value="option[props.property]"
                 @click.stop
               />
 

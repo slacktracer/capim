@@ -1,13 +1,14 @@
 import { makeClickHandler } from "./make-click-handler.js";
 import { makeKeydownHandler } from "./make-keydown-handler.js";
 import { mouseoverHandler } from "./mouseover-handler.js";
+import type { OnOptionSelected } from "./types/OnOptionSelected.js";
 
 export const boot = ({
   mySelectElement,
   onOptionSelected,
 }: {
   mySelectElement: HTMLElement;
-  onOptionSelected: () => void;
+  onOptionSelected: OnOptionSelected;
 }): (() => void) => {
   const clickHandler = makeClickHandler({ onOptionSelected });
 

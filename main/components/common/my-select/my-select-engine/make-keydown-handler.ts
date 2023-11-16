@@ -2,9 +2,10 @@ import { dismiss } from "./dismiss.js";
 import { keyCodes } from "./key-codes.js";
 import { optionKeydownEventHandlers } from "./option-key-down-event-handlers/option-keydown-event-handlers.js";
 import { roles } from "./roles.js";
+import type { OnOptionSelected } from "./types/OnOptionSelected.js";
 
 export const makeKeydownHandler =
-  ({ onOptionSelected }: { onOptionSelected: () => void }) =>
+  ({ onOptionSelected }: { onOptionSelected: OnOptionSelected }) =>
   (event: KeyboardEvent) => {
     if (event.target instanceof HTMLElement) {
       const {
@@ -42,7 +43,9 @@ export const makeKeydownHandler =
       }
 
       if (code === keyCodes.enter && role === roles["option-input"]) {
-        onOptionSelected();
+        const typedTarget = target as HTMLInputElement;
+
+        onOptionSelected({ selectedOption: typedTarget.value });
 
         // return;
       }
