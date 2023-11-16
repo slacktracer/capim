@@ -1,4 +1,4 @@
-import { enterHandler } from "./enter-handler.js";
+import { dismiss } from "./dismiss.js";
 import { roles } from "./roles.js";
 
 export const makeClickHandler =
@@ -6,6 +6,7 @@ export const makeClickHandler =
   (event: MouseEvent) => {
     if (event.target instanceof HTMLElement) {
       const {
+        isTrusted,
         target: {
           dataset: { selectRole: role },
         },
@@ -13,9 +14,13 @@ export const makeClickHandler =
       } = event;
 
       if (role === roles["option-input"] || role === roles["option-label"]) {
-        const typedTarget = target as HTMLInputElement;
+        setTimeout(() => {
+          onOptionSelected();
+        }, 10);
 
-        enterHandler({ onOptionSelected, target: typedTarget });
+        if (isTrusted) {
+          dismiss({ target });
+        }
       }
     }
   };
