@@ -8,12 +8,8 @@ export const goToListItem = ({ listItem }: { listItem: HTMLElement }) => {
   if (label) {
     label.scrollIntoView({ block: "nearest" });
 
-    const input = label.querySelector("input");
+    label.focus();
 
-    if (input) {
-      input.focus();
-
-      debouncedClickInput({ input });
-    }
+    debouncedClickInput({ label });
   }
 };

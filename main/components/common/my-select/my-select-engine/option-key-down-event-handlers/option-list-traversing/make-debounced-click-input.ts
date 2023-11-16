@@ -1,11 +1,11 @@
 export const makeDebouncedClickInput = ({ delay }: { delay: number }) => {
   let timer: ReturnType<typeof setTimeout>;
 
-  return ({ input }: { input: HTMLInputElement }) => {
+  return ({ label }: { label: HTMLLabelElement }) => {
     clearTimeout(timer);
 
     timer = setTimeout(() => {
-      input.click();
+      label.click();
     }, delay);
   };
 };
