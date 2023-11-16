@@ -362,6 +362,6 @@ label {
 .category-select-option {
   display: flex;
   flex-direction: column;
-  padding-block-end: 0.5rem;
+  padding-block: 0.25rem;
 }
 </style>

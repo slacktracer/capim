@@ -163,6 +163,7 @@ div:has(> input.search) {
 
 .options {
   list-style: none;
+  margin-block-end: 0;
   max-height: 12rem;
   overflow-y: scroll;
   padding-inline-start: 0;
