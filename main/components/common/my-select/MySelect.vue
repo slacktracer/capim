@@ -1,6 +1,14 @@
 <script lang="ts" setup>
 import type { Ref } from "vue";
-import { computed, nextTick, onMounted, ref, toRaw, unref } from "vue";
+import {
+  computed,
+  nextTick,
+  onMounted,
+  onUnmounted,
+  ref,
+  toRaw,
+  unref,
+} from "vue";
 
 import { boot } from "./my-select-engine/boot.js";
 
@@ -31,6 +39,18 @@ const search: Ref<string> = ref("");
 
 const mySelect = ref();
 
+let shutdown: ReturnType<typeof boot>;
+
+onMounted(() => {
+  const { value: mySelectElement } = mySelect;
+
+  shutdown = boot({ mySelectElement, onOptionSelected });
+});
+
+onUnmounted(() => {
+  shutdown();
+});
+
 const toggle = async () => {
   showOptions.value = !showOptions.value;
 
@@ -60,12 +80,6 @@ const toggle = async () => {
 
 const onOptionSelected = () =>
   emit("optionSelected", toRaw(unref(selectedOption)));
-
-onMounted(() => {
-  const { value: mySelectElement } = mySelect;
-
-  boot({ mySelectElement, onOptionSelected });
-});
 
 const submit = () => {
   toggle();

@@ -1,91 +1,29 @@
-import { dismiss } from "./dismiss.js";
-import { enterHandler } from "./enter-handler.js";
-import { keyCodes } from "./key-codes.js";
-import { optionKeydownEventHandlers } from "./option-key-down-event-handlers/option-keydown-event-handlers.js";
-import { roles } from "./roles.js";
+import { makeClickHandler } from "./make-click-handler.js";
+import { makeKeydownHandler } from "./make-keydown-handler.js";
+import { mouseoverHandler } from "./mouseover-handler.js";
 
 export const boot = ({
   mySelectElement,
   onOptionSelected,
 }: {
   mySelectElement: HTMLElement;
-  onOptionSelected?: (() => void) | undefined;
-}) => {
-  mySelectElement.addEventListener("click", (event: MouseEvent) => {
-    if (event.target instanceof HTMLElement) {
-      const {
-        target: {
-          dataset: { selectRole: role },
-        },
-        target,
-      } = event;
+  onOptionSelected: () => void;
+}): (() => void) => {
+  const clickHandler = makeClickHandler({ onOptionSelected });
 
-      if (role === roles["option-input"] || role === roles["option-label"]) {
-        const typedTarget = target as HTMLInputElement;
+  mySelectElement.addEventListener("click", clickHandler);
 
-        enterHandler({ onOptionSelected, target: typedTarget });
-      }
-    }
-  });
+  mySelectElement.addEventListener("mouseover", mouseoverHandler);
 
-  mySelectElement.addEventListener("mouseover", (event: MouseEvent) => {
-    if (event.target instanceof HTMLElement) {
-      const {
-        target: {
-          dataset: { selectRole: role },
-        },
-        target,
-      } = event;
+  const keydownHandler = makeKeydownHandler({ onOptionSelected });
 
-      if (role === roles["option-input"] || role === roles["option-label"]) {
-        target.focus();
-      }
-    }
-  });
+  mySelectElement.addEventListener("keydown", keydownHandler);
 
-  mySelectElement.addEventListener("keydown", (event: KeyboardEvent) => {
-    if (event.target instanceof HTMLElement) {
-      const {
-        code,
-        shiftKey,
-        target: {
-          dataset: { selectRole: role },
-        },
-        target,
-      } = event;
+  return function shutdown() {
+    mySelectElement.removeEventListener("click", clickHandler);
 
-      if (code in optionKeydownEventHandlers) {
-        event.preventDefault();
+    mySelectElement.removeEventListener("mouseover", mouseoverHandler);
 
-        const typedCode = code as keyof typeof optionKeydownEventHandlers;
-
-        optionKeydownEventHandlers[typedCode]?.({ target });
-
-        return;
-      }
-
-      if (
-        code === keyCodes.tab &&
-        (role === roles.input ||
-          (!shiftKey && role === roles.search) ||
-          (shiftKey && role === roles["option-input"]))
-      ) {
-        return;
-      }
-
-      if (code === keyCodes.escape || code === keyCodes.tab) {
-        dismiss({ target });
-
-        return;
-      }
-
-      if (code === keyCodes.enter && role === roles["option-input"]) {
-        const typedTarget = target as HTMLInputElement;
-
-        enterHandler({ onOptionSelected, target: typedTarget });
-
-        // return;
-      }
-    }
-  });
+    mySelectElement.removeEventListener("keydown", keydownHandler);
+  };
 };
