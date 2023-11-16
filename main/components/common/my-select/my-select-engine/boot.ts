@@ -13,17 +13,17 @@ export const boot = ({
 
   mySelectElement.addEventListener("click", clickHandler);
 
-  mySelectElement.addEventListener("mouseover", mouseoverHandler);
-
   const keydownHandler = makeKeydownHandler({ onOptionSelected });
 
   mySelectElement.addEventListener("keydown", keydownHandler);
 
+  mySelectElement.addEventListener("mouseover", mouseoverHandler);
+
   return function shutdown() {
     mySelectElement.removeEventListener("click", clickHandler);
 
-    mySelectElement.removeEventListener("mouseover", mouseoverHandler);
-
     mySelectElement.removeEventListener("keydown", keydownHandler);
+
+    mySelectElement.removeEventListener("mouseover", mouseoverHandler);
   };
 };
