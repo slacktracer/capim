@@ -8,8 +8,6 @@ export const dismiss = ({ target }: { target: HTMLElement }) => {
 
     if (toggle) {
       toggle.click();
-
-      toggle.focus();
     }
   }
 };
