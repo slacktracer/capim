@@ -42,10 +42,12 @@ export const makeKeydownHandler =
         return;
       }
 
-      if (code === keyCodes.enter && role === roles["option-input"]) {
-        const typedTarget = target as HTMLInputElement;
-
-        onOptionSelected({ selectedOption: typedTarget.value });
+      if (
+        code === keyCodes.enter &&
+        role === roles["option-input"] &&
+        target instanceof HTMLInputElement
+      ) {
+        onOptionSelected({ selectedOption: target.value });
 
         // return;
       }

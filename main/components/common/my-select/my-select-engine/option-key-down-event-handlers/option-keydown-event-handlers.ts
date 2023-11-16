@@ -12,4 +12,4 @@ export const optionKeydownEventHandlers = {
   Home: homeKeydownEventHandler,
   PageDown: pageDownKeydownEventHandler,
   PageUp: pageUpKeydownEventHandler,
-};
+} as const;

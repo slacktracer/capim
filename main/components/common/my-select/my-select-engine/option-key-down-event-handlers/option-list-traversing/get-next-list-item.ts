@@ -3,11 +3,13 @@ export const getNextListItem = ({
 }: {
   element: HTMLElement;
 }): HTMLElement | undefined => {
-  const nextSibling = element.closest("li")?.nextSibling as HTMLElement;
+  const nextSibling = element.closest("li")?.nextSibling;
 
-  if (nextSibling?.tagName !== "LI") {
-    return;
+  if (nextSibling instanceof HTMLElement) {
+    if (nextSibling?.tagName !== "LI") {
+      return;
+    }
+
+    return nextSibling;
   }
-
-  return nextSibling;
 };

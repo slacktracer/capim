@@ -14,15 +14,9 @@ export const makeClickHandler =
         target,
       } = event;
 
-      if (role === roles["option-label"]) {
-        const input = target.querySelector(
-          `[data-select-role=${roles["option-input"]}]`,
-        );
-
-        if (input) {
-          const typedInput = input as HTMLInputElement;
-
-          onOptionSelected({ selectedOption: typedInput.value });
+      if (role === roles["option-input"]) {
+        if (target instanceof HTMLInputElement) {
+          onOptionSelected({ selectedOption: target.value });
         }
 
         if (isTrusted) {

@@ -1,9 +1,11 @@
 export const getPreviousListItem = ({ element }: { element: HTMLElement }) => {
-  const previousSibling = element.closest("li")?.previousSibling as HTMLElement;
+  const previousSibling = element.closest("li")?.previousSibling;
 
-  if (previousSibling?.tagName !== "LI") {
-    return;
+  if (previousSibling instanceof HTMLElement) {
+    if (previousSibling?.tagName !== "LI") {
+      return;
+    }
+
+    return previousSibling;
   }
-
-  return previousSibling;
 };

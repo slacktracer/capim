@@ -14,10 +14,8 @@ export const makeOutsideInteractionHandler: MakeOutsideInteractionHandler =
           `[data-select-role=${roles.input}]`,
         );
 
-        if (toggle && target !== toggle) {
-          const typedToggle = toggle as HTMLButtonElement;
-
-          typedToggle.click();
+        if (target !== toggle && toggle instanceof HTMLButtonElement) {
+          target.click();
         }
       }
     }

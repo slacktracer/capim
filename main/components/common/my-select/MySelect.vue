@@ -4,6 +4,7 @@ import { computed, nextTick, onMounted, onUnmounted, ref, unref } from "vue";
 
 import { boot } from "./my-select-engine/boot.js";
 import { makeOutsideInteractionHandler } from "./my-select-engine/make-outside-interaction-handler.js";
+import { roles } from "./my-select-engine/roles.js";
 import type { MakeOutsideInteractionHandler } from "./my-select-engine/types/MakeOutsideInteractionHandler.js";
 import type { OnOptionSelected } from "./my-select-engine/types/OnOptionSelected.js";
 
@@ -72,7 +73,9 @@ const toggle = async () => {
 
     window.document.body.addEventListener("click", outsideInteractionHandler);
   } else {
-    const toggle = mySelectElement.querySelector(".toggle");
+    const toggle = mySelectElement.querySelector(
+      `[data-select-role=${roles.input}]`,
+    );
 
     if (toggle) {
       toggle.focus();
@@ -122,7 +125,6 @@ const submit = () => {
                 name="options"
                 type="radio"
                 :value="undefined"
-                @click.stop
               />
             </label>
           </li>
@@ -144,7 +146,6 @@ const submit = () => {
                 name="options"
                 type="radio"
                 :value="option[props.property]"
-                @click.stop
               />
 
               <span class="option-label">
