@@ -56,11 +56,11 @@ const toggle = async () => {
 
   await nextTick();
 
+  const { value: mySelectElement } = mySelect;
+
   if (showOptions.value) {
     const currentSelectedOptionID =
       props.currentSelectedOption?.[props.property];
-
-    const { value: mySelectElement } = mySelect;
 
     const currentSelectedOptionLabel = mySelectElement.querySelector(
       `label#option-${currentSelectedOptionID}`,
@@ -74,6 +74,12 @@ const toggle = async () => {
     // This may be the last thing I will do for this component...
     // window.addEventListener("click", handleOutsideInteraction);
   } else {
+    const toggle = mySelectElement.querySelector(".toggle");
+
+    if (toggle) {
+      toggle.focus();
+    }
+
     // window.removeEventListener("click", handleOutsideInteraction);
   }
 };
@@ -93,7 +99,7 @@ const submit = () => {
         {{ props.currentSelectedOption?.[props.label] ?? "Select category" }}
       </button>
 
-      <div v-if="showOptions" class="border rounded select">
+      <div v-show="showOptions" class="border rounded select">
         <div>
           <input
             v-model="search"
