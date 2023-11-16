@@ -3,6 +3,8 @@ import type { Ref } from "vue";
 import { computed, nextTick, onMounted, onUnmounted, ref, unref } from "vue";
 
 import { boot } from "./my-select-engine/boot.js";
+import { makeOutsideInteractionHandler } from "./my-select-engine/make-outside-interaction-handler.js";
+import type { MakeOutsideInteractionHandler } from "./my-select-engine/types/MakeOutsideInteractionHandler.js";
 import type { OnOptionSelected } from "./my-select-engine/types/OnOptionSelected.js";
 
 const emit = defineEmits<{
@@ -32,10 +34,16 @@ const mySelect = ref();
 
 let shutdown: ReturnType<typeof boot>;
 
+let outsideInteractionHandler: ReturnType<MakeOutsideInteractionHandler>;
+
 onMounted(() => {
   const { value: mySelectElement } = mySelect;
 
   shutdown = boot({ mySelectElement, onOptionSelected });
+
+  outsideInteractionHandler = makeOutsideInteractionHandler({
+    container: mySelectElement,
+  });
 });
 
 onUnmounted(() => {
@@ -62,8 +70,7 @@ const toggle = async () => {
       currentSelectedOptionLabel.scrollIntoView({ block: "end" });
     }
 
-    // This may be the last thing I will do for this component...
-    // window.addEventListener("click", handleOutsideInteraction);
+    window.document.body.addEventListener("click", outsideInteractionHandler);
   } else {
     const toggle = mySelectElement.querySelector(".toggle");
 
@@ -71,7 +78,10 @@ const toggle = async () => {
       toggle.focus();
     }
 
-    // window.removeEventListener("click", handleOutsideInteraction);
+    window.document.body.removeEventListener(
+      "click",
+      outsideInteractionHandler,
+    );
   }
 };
 
