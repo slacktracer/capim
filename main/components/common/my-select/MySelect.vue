@@ -48,7 +48,7 @@ const toggle = async () => {
 
     if (currentSelectedOptionLabel) {
       currentSelectedOptionLabel.focus();
-      currentSelectedOptionLabel.scrollIntoView();
+      currentSelectedOptionLabel.scrollIntoView({ block: "end" });
     }
 
     // This may be the last thing I will do for this component...
