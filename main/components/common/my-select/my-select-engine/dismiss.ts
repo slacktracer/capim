@@ -2,7 +2,7 @@ import { roles } from "./roles.js";
 
 export const dismiss = ({ target }: { target: HTMLElement }) => {
   const container: HTMLElement | null = target.closest(
-    "[data-select-role='select']",
+    `[data-select-role=${roles.select}]`,
   );
 
   if (container) {

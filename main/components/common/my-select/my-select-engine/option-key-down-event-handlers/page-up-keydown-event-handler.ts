@@ -1,3 +1,4 @@
+import { roles } from "../roles.js";
 import { getPreviousPageListItem } from "./option-list-traversing/get-previous-page-list-item.js";
 import { goToListItem } from "./option-list-traversing/go-to-list-item.js";
 
@@ -7,7 +8,7 @@ export const pageUpKeydownEventHandler = ({
   target: HTMLElement;
 }) => {
   const container: HTMLElement | null = target.closest(
-    "[data-select-role='options']",
+    `[data-select-role=${roles.listbox}]`,
   );
 
   if (container) {

@@ -5,6 +5,8 @@ import type { OnOptionSelected } from "./types/OnOptionSelected.js";
 export const makeClickHandler =
   ({ onOptionSelected }: { onOptionSelected: OnOptionSelected }) =>
   (event: MouseEvent) => {
+    event.stopPropagation();
+
     if (event.target instanceof HTMLElement) {
       const {
         isTrusted,

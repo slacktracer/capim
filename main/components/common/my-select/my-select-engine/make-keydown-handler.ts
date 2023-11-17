@@ -5,7 +5,13 @@ import { roles } from "./roles.js";
 import type { OnOptionSelected } from "./types/OnOptionSelected.js";
 
 export const makeKeydownHandler =
-  ({ onOptionSelected }: { onOptionSelected: OnOptionSelected }) =>
+  ({
+    filterable,
+    onOptionSelected,
+  }: {
+    filterable: boolean;
+    onOptionSelected: OnOptionSelected;
+  }) =>
   (event: KeyboardEvent) => {
     if (event.target instanceof HTMLElement) {
       const {
@@ -27,17 +33,26 @@ export const makeKeydownHandler =
         return;
       }
 
-      if (
-        code === keyCodes.tab &&
-        (role === roles.input ||
-          (!shiftKey && role === roles.search) ||
-          (shiftKey && role === roles["option-input"]))
-      ) {
+      if (code === keyCodes.tab && shiftKey && filterable) {
         return;
       }
 
       if (code === keyCodes.escape || code === keyCodes.tab) {
         dismiss({ target });
+
+        const container = target.closest(`[data-select-role=${roles.select}]`);
+
+        if (container) {
+          const toggle = container.querySelector(
+            `[data-select-role=${roles.input}]`,
+          );
+
+          if (toggle instanceof HTMLElement) {
+            event.preventDefault();
+
+            toggle.focus();
+          }
+        }
 
         return;
       }

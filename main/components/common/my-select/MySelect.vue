@@ -42,7 +42,11 @@ let outsideInteractionHandler: ReturnType<MakeOutsideInteractionHandler>;
 onMounted(() => {
   const { value: mySelectElement } = mySelect;
 
-  shutdown = boot({ mySelectElement, onOptionSelected });
+  shutdown = boot({
+    filterable: props.filter !== undefined,
+    mySelectElement,
+    onOptionSelected,
+  });
 
   outsideInteractionHandler = makeOutsideInteractionHandler({
     container: mySelectElement,
@@ -119,7 +123,7 @@ const onOptionSelected: OnOptionSelected = ({ selectedOption } = {}) =>
       {{ props.currentSelectedOption?.[props.label] ?? "Select category" }}
     </button>
 
-    <div v-show="showOptions" class="border rounded select" role="listbox">
+    <div v-show="showOptions" class="border rounded select">
       <div v-if="props.filter">
         <input
           v-model="search"
@@ -130,7 +134,7 @@ const onOptionSelected: OnOptionSelected = ({ selectedOption } = {}) =>
         />
       </div>
 
-      <ul class="options" data-select-role="options">
+      <ul class="options" data-select-role="listbox" role="listbox">
         <li v-if="filteredOptions.length === 0" role="option">
           <label class="option">
             <slot name="no-match">No option matches the search term</slot>
