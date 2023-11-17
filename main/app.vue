@@ -1,6 +1,5 @@
 <script lang="ts" setup>
 import "bootstrap/dist/js/bootstrap.esm.js";
-import "./styles/styles.css";
 
 import { useRuntimeConfig } from "#imports"; // eslint-disable-line import/order
 
