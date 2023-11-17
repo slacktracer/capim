@@ -14,7 +14,7 @@ const emit = defineEmits<{
 
 const props = defineProps<{
   currentSelectedOption: Record<string, any> | undefined;
-  filter: (input: {
+  filter?: (input: {
     options: Record<string, any>[];
     search: string;
   }) => Record<string, any>[];
@@ -24,7 +24,9 @@ const props = defineProps<{
 }>();
 
 const filteredOptions: Record<string, any> = computed(() =>
-  props.filter({ options: props.options, search: unref(search) }),
+  props.filter
+    ? props.filter({ options: props.options, search: unref(search) })
+    : props.options,
 );
 
 const showOptions = ref(false);
@@ -110,7 +112,7 @@ const submit = () => {
       </button>
 
       <div v-show="showOptions" class="border rounded select">
-        <div>
+        <div v-if="props.filter">
           <input
             v-model="search"
             class="form-control search"
@@ -167,6 +169,7 @@ const submit = () => {
 
 <style scoped>
 .my-select {
+  --internal-padding: 0.75rem;
   position: relative;
 }
 
@@ -184,7 +187,7 @@ const submit = () => {
 }
 
 div:has(> input.search) {
-  padding: 1rem;
+  padding: var(--internal-padding);
 }
 
 .options {
@@ -200,7 +203,7 @@ div:has(> input.search) {
   align-items: center;
   display: flex;
   outline: none;
-  padding-inline: 1rem;
+  padding-inline: var(--internal-padding);
   width: 100%;
 }
 
