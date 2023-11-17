@@ -98,72 +98,79 @@ const toggle = async () => {
 
 const onOptionSelected: OnOptionSelected = ({ selectedOption } = {}) =>
   emit("optionSelected", { selectedOption });
-
-const submit = () => {
-  toggle();
-};
 </script>
 
 <template>
-  <div ref="mySelect" class="my-select" data-select-role="select">
-    <form @submit.prevent="submit">
-      <button class="form-select toggle" data-select-role="input" type="submit">
-        {{ props.currentSelectedOption?.[props.label] ?? "Select category" }}
-      </button>
+  <div
+    ref="mySelect"
+    class="my-select"
+    data-select-role="select"
+    @click.prevent
+  >
+    <button
+      :aria-expanded="showOptions"
+      aria-haspopup="listbox"
+      class="form-select toggle"
+      data-select-role="input"
+      role="combobox"
+      type="submit"
+      @click="toggle"
+    >
+      {{ props.currentSelectedOption?.[props.label] ?? "Select category" }}
+    </button>
 
-      <div v-show="showOptions" class="border rounded select">
-        <div v-if="props.filter">
-          <input
-            v-model="search"
-            class="form-control search"
-            data-select-role="search"
-            placeholder="Search"
-            type="search"
-          />
-        </div>
-
-        <ul class="options" data-select-role="options">
-          <li v-if="filteredOptions.length === 0" role="option">
-            <label class="option">
-              <slot name="no-match">No option matches the search term</slot>
-
-              <input
-                class="option-input"
-                data-select-role="option-input"
-                name="options"
-                type="radio"
-                :value="undefined"
-              />
-            </label>
-          </li>
-
-          <li
-            v-for="option in filteredOptions"
-            :id="`list-item-${option[props.property]}`"
-            :key="option[props.property]"
-            role="option"
-          >
-            <label
-              :id="`option-${option[props.property]}`"
-              class="option"
-              data-select-role="option-label"
-            >
-              <input
-                class="option-input"
-                data-select-role="option-input"
-                name="options"
-                type="radio"
-                :value="option[props.property]"
-              />
-
-              <span class="option-label">
-                <slot name="option" :option="option"></slot>
-              </span>
-            </label>
-          </li>
-        </ul>
+    <div v-show="showOptions" class="border rounded select" role="listbox">
+      <div v-if="props.filter">
+        <input
+          v-model="search"
+          class="form-control search"
+          data-select-role="search"
+          placeholder="Search"
+          type="search"
+        />
       </div>
-    </form>
+
+      <ul class="options" data-select-role="options">
+        <li v-if="filteredOptions.length === 0" role="option">
+          <label class="option">
+            <slot name="no-match">No option matches the search term</slot>
+
+            <input
+              class="option-input"
+              data-select-role="option-input"
+              name="options"
+              type="radio"
+              :value="undefined"
+            />
+          </label>
+        </li>
+
+        <li
+          v-for="option in filteredOptions"
+          :id="`list-item-${option[props.property]}`"
+          :key="option[props.property]"
+          role="option"
+        >
+          <label
+            :id="`option-${option[props.property]}`"
+            class="option"
+            data-select-role="option-label"
+          >
+            <input
+              class="option-input"
+              data-select-role="option-input"
+              name="options"
+              type="radio"
+              :value="option[props.property]"
+            />
+
+            <span class="option-label">
+              <slot name="option" :option="option"></slot>
+            </span>
+          </label>
+        </li>
+      </ul>
+    </div>
   </div>
 </template>
 
