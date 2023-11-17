@@ -66,12 +66,18 @@ const toggle = async () => {
       `label#option-${currentSelectedOptionID}`,
     );
 
-    if (currentSelectedOptionLabel) {
-      currentSelectedOptionLabel.focus();
-      currentSelectedOptionLabel.scrollIntoView({ block: "end" });
-    }
-
     window.document.body.addEventListener("click", outsideInteractionHandler);
+
+    if (currentSelectedOptionLabel) {
+      // I will put this in a function tomorrow...
+      // I was not able to make scrollIntoView play ball...
+      currentSelectedOptionLabel.parentNode.parentNode.scrollTop =
+        currentSelectedOptionLabel.offsetTop -
+        currentSelectedOptionLabel.parentNode.parentNode.clientHeight +
+        currentSelectedOptionLabel.clientHeight;
+
+      currentSelectedOptionLabel.focus();
+    }
   } else {
     const toggle = mySelectElement.querySelector(
       `[data-select-role=${roles.input}]`,
@@ -187,6 +193,7 @@ div:has(> input.search) {
   max-height: 12rem;
   overflow-y: scroll;
   padding-inline-start: 0;
+  position: relative;
 }
 
 .option {
