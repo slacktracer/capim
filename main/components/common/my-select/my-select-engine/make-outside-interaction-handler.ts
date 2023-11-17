@@ -15,7 +15,7 @@ export const makeOutsideInteractionHandler: MakeOutsideInteractionHandler =
         );
 
         if (target !== toggle && toggle instanceof HTMLButtonElement) {
-          target.click();
+          toggle.click();
         }
       }
     }
