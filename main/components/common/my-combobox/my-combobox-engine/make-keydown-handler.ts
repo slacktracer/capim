@@ -13,6 +13,14 @@ export const makeKeydownHandler =
     if (event.target instanceof HTMLElement) {
       const { code, shiftKey } = event;
 
+      const [combobox] = comboboxContainer.children;
+
+      const comboboxAriaExpanded = combobox.ariaExpanded === "true";
+
+      if (code === keyCodes.arrowDown && !comboboxAriaExpanded) {
+        toggleCombobox();
+      }
+
       if (code in optionKeydownEventHandlers) {
         event.preventDefault();
 
@@ -28,10 +36,6 @@ export const makeKeydownHandler =
         code === keyCodes.escape ||
         code === keyCodes.tab
       ) {
-        const [combobox] = comboboxContainer.children;
-
-        const comboboxAriaExpanded = combobox.ariaExpanded === "true";
-
         if (!shiftKey && comboboxAriaExpanded) {
           event.preventDefault();
         }

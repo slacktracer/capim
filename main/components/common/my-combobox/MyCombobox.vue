@@ -118,7 +118,6 @@ const onOptionSelected: OnOptionSelected = ({ label, value }) => {
       class="form-control"
       role="combobox"
       type="search"
-      @keydown.down="showOptions = true"
     />
 
     <ul v-show="showOptions" class="border rounded" role="listbox">
@@ -152,7 +151,7 @@ const onOptionSelected: OnOptionSelected = ({ label, value }) => {
   overflow-y: scroll;
   padding-inline-start: 0;
   position: absolute;
-  top: 38px;
+  top: calc(38px + 0.5rem);
   width: 100%;
 }
 
