@@ -18,7 +18,7 @@ import type { MakeEditableOperation } from "../../types/MakeEditableOperation.js
 import type { UseRetrievedAt } from "../../types/UseRetrievedAt.js";
 import AmountInput from "../common/AmountInput.vue";
 import Debug from "../common/Debug.vue";
-import MySelect from "../common/my-select/MySelect.vue";
+import MyCombobox from "../common/my-combobox/MyCombobox.vue";
 import AccountSelector from "./AccountSelect.vue";
 
 const categoriesStore = useCategoriesStore();
@@ -100,9 +100,11 @@ const categorySelectFilter = ({
 }) => options.filter((option) => option.name.includes(search));
 
 const updateCategory = ({
-  selectedOption: categoryID,
+  label: _categoryName,
+  value: categoryID,
 }: {
-  selectedOption: string | undefined;
+  label: string;
+  value: string | undefined;
 }) => {
   editableOperation.categoryID = categoryID;
 
@@ -167,7 +169,7 @@ const updateCategory = ({
           </div>
 
           <div class="category">
-            <MySelect
+            <MyCombobox
               :current-selected-option="editableOperation.category"
               :filter="categorySelectFilter"
               label="name"
@@ -175,10 +177,6 @@ const updateCategory = ({
               property="categoryID"
               @option-selected="updateCategory"
             >
-              <template #no-match>
-                No category matches the search term
-              </template>
-
               <template #option="{ option }">
                 <div class="category-select-option">
                   <b>{{ option.name }}</b>
@@ -186,7 +184,7 @@ const updateCategory = ({
                   <span class="small">{{ option.group.name }}</span>
                 </div>
               </template>
-            </MySelect>
+            </MyCombobox>
           </div>
 
           <div class="type">
