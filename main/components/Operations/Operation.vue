@@ -193,15 +193,17 @@ const save = () =>
 
           <div class="account">
             <MyCombobox
+              combobox-class="form-select"
               :current-selected-option="editableOperation.account"
               :filter="accountSelectFilter"
               label="name"
+              listbox-class="border rounded"
               name="account"
               :options="accountList"
               value="accountID"
               @option-selected="updateAccount"
             >
-              <template #option="{ option }">
+              <template #option="{ option }: { option: AccountSelectOption }">
                 <div class="account-select-option">
                   <b>{{ option.name }}</b>
                 </div>
@@ -211,15 +213,17 @@ const save = () =>
 
           <div class="category">
             <MyCombobox
+              combobox-class="form-select"
               :current-selected-option="editableOperation.category"
               :filter="categorySelectFilter"
               label="name"
+              listbox-class="border rounded"
               name="category"
               :options="categoryList"
               value="categoryID"
               @option-selected="updateCategory"
             >
-              <template #option="{ option }">
+              <template #option="{ option }: { option: CategorySelectOption }">
                 <div class="category-select-option">
                   <b>{{ option.name }}</b>
 

@@ -12,12 +12,14 @@ const emit = defineEmits<{
 }>();
 
 const props = defineProps<{
+  comboboxClass: string;
   currentSelectedOption: Record<string, any> | undefined;
   filter: (input: {
     options: Record<string, any>[];
     search: string;
   }) => Record<string, any>[];
   label: string;
+  listboxClass: string;
   name: string;
   options: Record<string, any>[];
   value: string;
@@ -60,6 +62,15 @@ onMounted(() => {
     onOptionSelected,
     toggleCombobox,
   });
+
+  const [combobox] = comboboxContainer.children;
+
+  if (combobox instanceof HTMLInputElement) {
+    comboboxContainer.style.setProperty(
+      "--combobox-height",
+      `${combobox.offsetHeight}px`,
+    );
+  }
 });
 
 onUnmounted(() => {
@@ -119,7 +130,7 @@ const onOptionSelected: OnOptionSelected = ({ label, value }) => {
       :aria-expanded="showOptions"
       :aria-label="capitalise(props.name)"
       autocomplete="off"
-      class="form-select"
+      :class="`${props.comboboxClass}`"
       :name="props.name"
       :placeholder="capitalise(props.name)"
       role="combobox"
@@ -129,7 +140,7 @@ const onOptionSelected: OnOptionSelected = ({ label, value }) => {
     <ul
       v-show="showOptions"
       :id="`${props.name}-listbox`"
-      class="border rounded"
+      :class="`${props.listboxClass}`"
       role="listbox"
     >
       <li
@@ -151,6 +162,7 @@ const onOptionSelected: OnOptionSelected = ({ label, value }) => {
 
 <style scoped>
 .my-combobox {
+  --combobox-height: 1rem;
   position: relative;
 }
 
@@ -162,7 +174,7 @@ const onOptionSelected: OnOptionSelected = ({ label, value }) => {
   overflow-y: scroll;
   padding-inline-start: 0;
   position: absolute;
-  top: calc(38px + 0.5rem);
+  top: calc(var(--combobox-height) + 0.5rem);
   width: 100%;
   z-index: 1;
 }
