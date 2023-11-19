@@ -26,9 +26,47 @@ const props = defineProps<{
 
 let count = 0;
 
+let outsideInteractionHandler: ReturnType<MakeOutsideInteractionHandler>;
+
 let previousCount = 0;
 
 let previousSearchValue = "";
+
+let shutdown: ReturnType<typeof boot>;
+
+const search: Ref<string> = ref("");
+
+const showOptions = ref(false);
+
+const myCombobox = ref();
+
+onMounted(() => {
+  const { value: comboboxContainer } = myCombobox;
+
+  shutdown = boot({
+    comboboxContainer,
+    onOptionSelected,
+    toggleCombobox,
+  });
+
+  outsideInteractionHandler = makeOutsideInteractionHandler({
+    comboboxContainer,
+    toggleCombobox,
+  });
+});
+
+onUnmounted(() => {
+  shutdown?.();
+});
+
+watch(
+  () => props.currentSelectedOption,
+  (currentSelectedOption) => {
+    if (currentSelectedOption) {
+      search.value = currentSelectedOption[props.label];
+    }
+  },
+);
 
 const filteredOptions: Record<string, any> = computed(() => {
   if (search.value === "") {
@@ -54,40 +92,6 @@ const filteredOptions: Record<string, any> = computed(() => {
   return updatedFilteredOptions;
 });
 
-const showOptions = ref(false);
-
-const search: Ref<string> = ref("");
-
-const myCombobox = ref();
-
-let shutdown: ReturnType<typeof boot>;
-
-let outsideInteractionHandler: ReturnType<MakeOutsideInteractionHandler>;
-
-onMounted(() => {
-  const { value: comboboxContainer } = myCombobox;
-
-  shutdown = boot({
-    comboboxContainer,
-    onOptionSelected,
-    toggleCombobox,
-  });
-
-  outsideInteractionHandler = makeOutsideInteractionHandler({
-    comboboxContainer,
-    toggleCombobox,
-  });
-});
-
-onUnmounted(() => {
-  shutdown?.();
-});
-
-watch(
-  () => props.currentSelectedOption,
-  (current) => (search.value = current?.[props.label]),
-);
-
 const toggleCombobox = () => {
   showOptions.value = !showOptions.value;
 
@@ -112,6 +116,10 @@ const toggleCombobox = () => {
       "click",
       outsideInteractionHandler,
     );
+
+    if (props.currentSelectedOption) {
+      search.value = props.currentSelectedOption[props.label];
+    }
   }
 };
 
