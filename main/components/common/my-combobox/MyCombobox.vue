@@ -145,6 +145,7 @@ const capitalise = (string: string) =>
       :aria-controls="`${props.name}-listbox`"
       :aria-expanded="showOptions"
       :aria-label="capitalise(props.name)"
+      autocomplete="off"
       class="form-select"
       :name="props.name"
       :placeholder="capitalise(props.name)"
@@ -190,6 +191,7 @@ const capitalise = (string: string) =>
   position: absolute;
   top: calc(38px + 0.5rem);
   width: 100%;
+  z-index: 1;
 }
 
 [role="option"] {

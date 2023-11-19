@@ -7,10 +7,12 @@ import { useEditableResource } from "../../composables/use-editable-resource.js"
 import { useRetrievedAt } from "../../composables/use-retrieved-at.js";
 import { core } from "../../core/core.js";
 import type { Operation } from "../../core/types/Operation.js";
+import { useAccountsStore } from "../../modules/accounts/use-accounts-store";
 import { useCategoriesStore } from "../../modules/categories/use-categories-store.js";
 import { formatAsLocalisedCurrency } from "../../modules/common/utils/format-as-localised-currency.js";
 import { makeEditableOperation } from "../../modules/operations/make-editable-operation.js";
 import { useOperationsStore } from "../../modules/operations/use-operations-store.js";
+import type { AccountSelectOption } from "../../types/AccountSelectOption";
 import type { AsyncDataState } from "../../types/AsyncDataState.js";
 import type { CategorySelectOption } from "../../types/CategorySelectOption.js";
 import type { EditableOperation } from "../../types/EditableOperation.js";
@@ -19,9 +21,21 @@ import type { UseRetrievedAt } from "../../types/UseRetrievedAt.js";
 import AmountInput from "../common/AmountInput.vue";
 import Debug from "../common/Debug.vue";
 import MyCombobox from "../common/my-combobox/MyCombobox.vue";
-import AccountSelector from "./AccountSelect.vue";
+
+const accountsStore = useAccountsStore();
 
 const categoriesStore = useCategoriesStore();
+
+const operationsStore = useOperationsStore();
+
+const route = useRoute();
+
+const accountList: ComputedRef<AccountSelectOption[]> = computed(() =>
+  accountsStore.accounts.data.map(({ accountID, name }) => ({
+    accountID,
+    name,
+  })),
+);
 
 const categoryList: ComputedRef<CategorySelectOption[]> = computed(() =>
   categoriesStore.categories.data.map(({ categoryID, group, name }) => ({
@@ -30,10 +44,6 @@ const categoryList: ComputedRef<CategorySelectOption[]> = computed(() =>
     name,
   })),
 );
-
-const route = useRoute();
-
-const operationsStore = useOperationsStore();
 
 if (typeof route.params.id === "string") {
   operationsStore.getOperation({ operationID: route.params.id });
@@ -79,12 +89,13 @@ const updateAmounts = (input: number | Event) => {
     editableOperation.unitCount * editableOperation.amountPerUnit;
 };
 
-const save = () =>
-  window.alert("Saved!\nNah, just kidding. Not saved at all...");
-
-const updateAccount = (accountID: string) => {
-  editableOperation.accountID = accountID;
-};
+const accountSelectFilter = ({
+  options,
+  search,
+}: {
+  options: Record<string, any>[];
+  search: string;
+}) => options.filter((option) => option.name.includes(search));
 
 const categorySelectFilter = ({
   options,
@@ -99,8 +110,24 @@ const categorySelectFilter = ({
   search: string;
 }) => options.filter((option) => option.name.includes(search));
 
+const updateAccount = ({
+  value: accountID,
+}: {
+  label: string;
+  value: string | undefined;
+}) => {
+  editableOperation.accountID = accountID;
+
+  if (accountID) {
+    editableOperation.account = accountList.value.find(
+      (account) => account.accountID === accountID,
+    );
+  } else {
+    editableOperation.account = undefined;
+  }
+};
+
 const updateCategory = ({
-  label: _categoryName,
   value: categoryID,
 }: {
   label: string;
@@ -116,6 +143,9 @@ const updateCategory = ({
     editableOperation.category = undefined;
   }
 };
+
+const save = () =>
+  window.alert("Saved!\nNah, just kidding. Not saved at all...");
 </script>
 
 <template>
@@ -167,10 +197,21 @@ const updateCategory = ({
           </div>
 
           <div class="account">
-            <AccountSelector
-              :selected-account="editableOperation.accountID"
-              @account-selected="updateAccount"
-            ></AccountSelector>
+            <MyCombobox
+              :current-selected-option="editableOperation.account"
+              :filter="accountSelectFilter"
+              label="name"
+              name="account"
+              :options="accountList"
+              value="accountID"
+              @option-selected="updateAccount"
+            >
+              <template #option="{ option }">
+                <div class="account-select-option">
+                  <b>{{ option.name }}</b>
+                </div>
+              </template>
+            </MyCombobox>
           </div>
 
           <div class="category">
@@ -376,6 +417,10 @@ const updateCategory = ({
 
 label {
   width: 100%;
+}
+
+.account-select-option {
+  padding-block: 0.25rem;
 }
 
 .category-select-option {
