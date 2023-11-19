@@ -105,7 +105,7 @@ const toggleCombobox = () => {
 
       if (comboboxContainer instanceof HTMLElement) {
         const listItem = comboboxContainer.querySelector(
-          `#option-${props.currentSelectedOption[props.value]}`,
+          `#${props.name}-${props.currentSelectedOption[props.value]}`,
         );
 
         if (listItem instanceof HTMLLIElement) {
@@ -132,6 +132,9 @@ const onOptionSelected: OnOptionSelected = ({ label, value }) => {
 
   emit("optionSelected", { label, value });
 };
+
+const capitalise = (string: string) =>
+  string.charAt(0).toUpperCase() + string.slice(1);
 </script>
 
 <template>
@@ -139,22 +142,24 @@ const onOptionSelected: OnOptionSelected = ({ label, value }) => {
     <input
       v-model="search"
       aria-autocomplete="list"
-      :aria-controls="`${props.value}-listbox`"
+      :aria-controls="`${props.name}-listbox`"
       :aria-expanded="showOptions"
+      :aria-label="capitalise(props.name)"
       class="form-control"
+      :placeholder="capitalise(props.name)"
       role="combobox"
       type="search"
     />
 
     <ul
       v-show="showOptions"
-      id="`${props.value}-listbox`"
+      :id="`${props.name}-listbox`"
       class="border rounded"
       role="listbox"
     >
       <li
         v-for="option in filteredOptions"
-        :id="`option-${option[props.value]}`"
+        :id="`${props.name}-${option[props.value]}`"
         :key="option[props.value]"
         :data-label="option[props.label]"
         :data-value="option[props.value]"
