@@ -1,12 +1,11 @@
 <script lang="ts" setup>
 import type { Ref } from "vue";
-import { computed, onMounted, onUnmounted, ref, watch } from "vue";
+import { computed, onMounted, onUnmounted, ref, toRef, watch } from "vue";
 
 import { boot } from "./my-combobox-engine/boot.js";
-import { makeOutsideInteractionHandler } from "./my-combobox-engine/make-outside-interaction-handler.js";
-import { goToListItem } from "./my-combobox-engine/option-key-down-event-handlers/option-list-traversing/go-to-list-item";
-import type { MakeOutsideInteractionHandler } from "./my-combobox-engine/types/MakeOutsideInteractionHandler.js";
+import { makeToggleCombobox } from "./my-combobox-engine/make-toggle-combobox";
 import type { OnOptionSelected } from "./my-combobox-engine/types/OnOptionSelected.js";
+import { capitalise } from "./my-combobox-engine/utils/capitalise";
 
 const emit = defineEmits<{
   optionSelected: [{ label: string; value: string | undefined }];
@@ -26,8 +25,6 @@ const props = defineProps<{
 
 let count = 0;
 
-let outsideInteractionHandler: ReturnType<MakeOutsideInteractionHandler>;
-
 let previousCount = 0;
 
 let previousSearchValue = "";
@@ -43,14 +40,24 @@ const myCombobox = ref();
 onMounted(() => {
   const { value: comboboxContainer } = myCombobox;
 
+  const currentSelectedOption = toRef(() => props.currentSelectedOption);
+  const label = toRef(() => props.label);
+  const name = toRef(() => props.name);
+  const value = toRef(() => props.value);
+
+  const toggleCombobox = makeToggleCombobox({
+    comboboxContainer,
+    currentSelectedOption,
+    label,
+    name,
+    search,
+    showOptions,
+    value,
+  });
+
   shutdown = boot({
     comboboxContainer,
     onOptionSelected,
-    toggleCombobox,
-  });
-
-  outsideInteractionHandler = makeOutsideInteractionHandler({
-    comboboxContainer,
     toggleCombobox,
   });
 });
@@ -94,37 +101,6 @@ const filteredOptions: Record<string, any> = computed(() => {
   return updatedFilteredOptions;
 });
 
-const toggleCombobox = () => {
-  showOptions.value = !showOptions.value;
-
-  if (showOptions.value) {
-    window.document.body.addEventListener("click", outsideInteractionHandler);
-
-    if (props.currentSelectedOption) {
-      const { value: comboboxContainer } = myCombobox;
-
-      if (comboboxContainer instanceof HTMLElement) {
-        const listItem = comboboxContainer.querySelector(
-          `#${props.name}-${props.currentSelectedOption[props.value]}`,
-        );
-
-        if (listItem instanceof HTMLLIElement) {
-          goToListItem({ listItem });
-        }
-      }
-    }
-  } else {
-    window.document.body.removeEventListener(
-      "click",
-      outsideInteractionHandler,
-    );
-
-    if (props.currentSelectedOption) {
-      search.value = props.currentSelectedOption[props.label];
-    }
-  }
-};
-
 const onOptionSelected: OnOptionSelected = ({ label, value }) => {
   count += 1;
 
@@ -132,9 +108,6 @@ const onOptionSelected: OnOptionSelected = ({ label, value }) => {
 
   emit("optionSelected", { label, value });
 };
-
-const capitalise = (string: string) =>
-  string.charAt(0).toUpperCase() + string.slice(1);
 </script>
 
 <template>

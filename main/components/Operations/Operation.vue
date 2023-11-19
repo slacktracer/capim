@@ -72,23 +72,6 @@ const amount = computed(() =>
   }),
 );
 
-const updateAmounts = (input: number | Event) => {
-  const inputIsNumber = typeof input === "number";
-
-  const typeIsExpense = editableOperation.type === "Expense";
-
-  const absoluteNewAmountPerUnit = Math.abs(
-    inputIsNumber ? input : editableOperation.amountPerUnit,
-  );
-
-  editableOperation.amountPerUnit = typeIsExpense
-    ? -absoluteNewAmountPerUnit
-    : absoluteNewAmountPerUnit;
-
-  editableOperation.amount =
-    editableOperation.unitCount * editableOperation.amountPerUnit;
-};
-
 const accountSelectFilter = ({
   options,
   search,
@@ -101,11 +84,6 @@ const categorySelectFilter = ({
   options,
   search,
 }: {
-  // I wanted this:
-  // options: CategorySelectOption[];
-  // But that gave me this:
-  // Type '({ options, search, }: { options: CategorySelectOption[]; search: string; }) => CategorySelectOption[]' is not assignable to type '(input: { options: Record<string, any>[]; search: string; }) => Record<string, any>[]'.
-  // How do I make the prop "generic" in some way...?
   options: Record<string, any>[];
   search: string;
 }) => options.filter((option) => option.name.includes(search));
@@ -125,6 +103,23 @@ const updateAccount = ({
   } else {
     editableOperation.account = undefined;
   }
+};
+
+const updateAmounts = (input: number | Event) => {
+  const inputIsNumber = typeof input === "number";
+
+  const typeIsExpense = editableOperation.type === "Expense";
+
+  const absoluteNewAmountPerUnit = Math.abs(
+    inputIsNumber ? input : editableOperation.amountPerUnit,
+  );
+
+  editableOperation.amountPerUnit = typeIsExpense
+    ? -absoluteNewAmountPerUnit
+    : absoluteNewAmountPerUnit;
+
+  editableOperation.amount =
+    editableOperation.unitCount * editableOperation.amountPerUnit;
 };
 
 const updateCategory = ({
