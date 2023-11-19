@@ -1,5 +1,5 @@
-import { getLastListItem } from "./option-list-traversing/get-last-list-item.js";
 import { getPreviousListItem } from "./option-list-traversing/get-previous-list-item.js";
+import { goToLastListItem } from "./option-list-traversing/go-to-last-list-item";
 import { goToListItem } from "./option-list-traversing/go-to-list-item.js";
 
 export const arrowUpKeydownEventHandler = ({
@@ -20,18 +20,10 @@ export const arrowUpKeydownEventHandler = ({
       if (previousListItem) {
         goToListItem({ listItem: previousListItem });
       } else {
-        const lastListItem = getLastListItem({ listbox });
-
-        if (lastListItem) {
-          goToListItem({ listItem: lastListItem });
-        }
+        goToLastListItem({ listbox });
       }
     } else {
-      const lastListItem = getLastListItem({ listbox });
-
-      if (lastListItem) {
-        goToListItem({ listItem: lastListItem });
-      }
+      goToLastListItem({ listbox });
     }
   }
 };
