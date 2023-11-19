@@ -12,14 +12,14 @@ const emit = defineEmits<{
 }>();
 
 const props = defineProps<{
-  comboboxClass: string;
+  comboboxClass?: string;
   currentSelectedOption: Record<string, any> | undefined;
   filter: (input: {
     options: Record<string, any>[];
     search: string;
   }) => Record<string, any>[];
   label: string;
-  listboxClass: string;
+  listboxClass?: string;
   name: string;
   options: Record<string, any>[];
   value: string;
@@ -130,7 +130,7 @@ const onOptionSelected: OnOptionSelected = ({ label, value }) => {
       :aria-expanded="showOptions"
       :aria-label="capitalise(props.name)"
       autocomplete="off"
-      :class="`${props.comboboxClass}`"
+      :class="props.comboboxClass ? `${props.comboboxClass}` : ''"
       :name="props.name"
       :placeholder="capitalise(props.name)"
       role="combobox"
@@ -140,7 +140,7 @@ const onOptionSelected: OnOptionSelected = ({ label, value }) => {
     <ul
       v-show="showOptions"
       :id="`${props.name}-listbox`"
-      :class="`${props.listboxClass}`"
+      :class="props.listboxClass ? `${props.listboxClass}` : ''"
       role="listbox"
     >
       <li
