@@ -52,6 +52,7 @@ const onInput = (event: Event) => {
   <input
     autocomplete="off"
     inputmode="numeric"
+    name="amountPerUnit"
     type="text"
     :value="formattedAmount"
     @focus="core.selectInputContent"

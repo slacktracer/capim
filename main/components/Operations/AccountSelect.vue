@@ -26,7 +26,7 @@ const emitAccountSelectedEvent = (event: Event) => {
 </script>
 
 <template>
-  <select @change="emitAccountSelectedEvent">
+  <select name="account" @change="emitAccountSelectedEvent">
     <option
       v-for="account in accountList"
       :key="account.accountID"

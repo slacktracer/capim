@@ -195,6 +195,7 @@ const updateCategory = ({
               <select
                 v-model="editableOperation.type"
                 class="form-control"
+                name="type"
                 @change="updateAmounts"
               >
                 <option value="Expense">Expense</option>
@@ -212,6 +213,7 @@ const updateCategory = ({
                 class="form-control"
                 max="999"
                 min="1"
+                name="units"
                 type="number"
                 @change="updateAmounts"
                 @focus="core.selectInputContent"
@@ -238,6 +240,7 @@ const updateCategory = ({
               <input
                 class="form-control"
                 disabled
+                name="total"
                 readonly
                 type="text"
                 :value="amount"
@@ -249,6 +252,7 @@ const updateCategory = ({
             <textarea
               v-model="editableOperation.comments"
               class="form-control"
+              name="comments"
               rows="2"
             ></textarea>
           </div>
@@ -256,8 +260,10 @@ const updateCategory = ({
           <div class="confirmed">
             <div class="form-check">
               <input
+                id="confirmed"
                 v-model="editableOperation.confirmed"
                 class="form-check-input"
+                name="confirmed"
                 type="checkbox"
               />
               <label class="form-check-label" for="confirmed">
