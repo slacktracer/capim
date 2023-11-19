@@ -138,7 +138,7 @@ const capitalise = (string: string) =>
 </script>
 
 <template>
-  <div ref="myCombobox" class="my-combobox" @click.prevent.stop>
+  <div ref="myCombobox" class="my-combobox">
     <input
       v-model="search"
       aria-autocomplete="list"

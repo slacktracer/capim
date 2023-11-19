@@ -4,8 +4,6 @@ import { roles } from "./roles.js";
 export const makeClickHandler =
   ({ toggleCombobox }: { toggleCombobox: () => void }) =>
   (event: MouseEvent) => {
-    event.stopPropagation();
-
     if (event.target instanceof HTMLElement) {
       const {
         target: { role },
