@@ -1,4 +1,4 @@
-import type { ToggleCombobox } from "./ToggleCombobox";
+import type { ToggleCombobox } from "../../types/ToggleCombobox";
 
 export type MakeOutsideInteractionHandler = (input: {
   comboboxContainer: HTMLElement;

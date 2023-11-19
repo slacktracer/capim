@@ -1,8 +1,8 @@
 import { unref } from "vue";
 
-import { makeOutsideInteractionHandler } from "./make-outside-interaction-handler";
-import { goToListItem } from "./option-key-down-event-handlers/option-list-traversing/go-to-list-item";
-import type { MakeOutsideInteractionHandler } from "./types/MakeOutsideInteractionHandler";
+import { makeOutsideInteractionHandler } from "./my-combobox-engine/make-outside-interaction-handler";
+import { goToListItem } from "./my-combobox-engine/option-key-down-event-handlers/option-list-traversing/go-to-list-item";
+import type { MakeOutsideInteractionHandler } from "./my-combobox-engine/types/MakeOutsideInteractionHandler";
 import type { MakeToggleCombobox } from "./types/MakeToggleCombobox";
 
 export const makeToggleCombobox: MakeToggleCombobox = ({

@@ -1,4 +1,4 @@
-import type { ToggleCombobox } from "./types/ToggleCombobox";
+import type { ToggleCombobox } from "../types/ToggleCombobox";
 
 export const makeInputHandler =
   ({
