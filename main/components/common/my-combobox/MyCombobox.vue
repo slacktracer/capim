@@ -4,6 +4,7 @@ import { computed, nextTick, onMounted, onUnmounted, ref } from "vue";
 
 import { boot } from "./my-combobox-engine/boot.js";
 import { makeOutsideInteractionHandler } from "./my-combobox-engine/make-outside-interaction-handler.js";
+import { goToListItem } from "./my-combobox-engine/option-key-down-event-handlers/option-list-traversing/go-to-list-item";
 import type { MakeOutsideInteractionHandler } from "./my-combobox-engine/types/MakeOutsideInteractionHandler.js";
 import type { OnOptionSelected } from "./my-combobox-engine/types/OnOptionSelected.js";
 
@@ -88,6 +89,20 @@ const toggleCombobox = async () => {
 
   if (showOptions.value) {
     window.document.body.addEventListener("click", outsideInteractionHandler);
+
+    if (props.currentSelectedOption) {
+      const { value: comboboxContainer } = myCombobox;
+
+      if (comboboxContainer instanceof HTMLElement) {
+        const listItem = comboboxContainer.querySelector(
+          `#option-${props.currentSelectedOption[props.property]}`,
+        );
+
+        if (listItem instanceof HTMLLIElement) {
+          goToListItem({ listItem });
+        }
+      }
+    }
   } else {
     window.document.body.removeEventListener(
       "click",
