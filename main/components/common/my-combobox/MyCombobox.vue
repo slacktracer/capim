@@ -135,12 +135,7 @@ const onOptionSelected: OnOptionSelected = ({ label, value }) => {
 </script>
 
 <template>
-  <div
-    ref="myCombobox"
-    class="my-combobox"
-    data-select-role="select"
-    @click.prevent.stop
-  >
+  <div ref="myCombobox" class="my-combobox" @click.prevent.stop>
     <input
       v-model="search"
       aria-autocomplete="list"
