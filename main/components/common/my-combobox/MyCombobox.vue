@@ -145,7 +145,7 @@ const capitalise = (string: string) =>
       :aria-controls="`${props.name}-listbox`"
       :aria-expanded="showOptions"
       :aria-label="capitalise(props.name)"
-      class="form-control"
+      class="form-select"
       :name="props.name"
       :placeholder="capitalise(props.name)"
       role="combobox"

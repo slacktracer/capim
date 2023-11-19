@@ -145,7 +145,10 @@ const updateCategory = ({
       <fieldset :disabled="operationsStore.operation.loading">
         <div class="operation">
           <div class="date">
+            <label class="visually-hidden" for="date">Date</label>
+
             <input
+              id="date"
               v-model="editableOperation.atDate"
               class="form-control"
               type="date"
@@ -153,7 +156,10 @@ const updateCategory = ({
           </div>
 
           <div class="time">
+            <label class="visually-hidden" for="time">Time</label>
+
             <input
+              id="time"
               v-model="editableOperation.atTime"
               class="form-control"
               type="time"
@@ -162,7 +168,6 @@ const updateCategory = ({
 
           <div class="account">
             <AccountSelector
-              class="form-select"
               :selected-account="editableOperation.accountID"
               @account-selected="updateAccount"
             ></AccountSelector>
@@ -249,7 +254,10 @@ const updateCategory = ({
           </div>
 
           <div class="comments">
+            <label class="visually-hidden" for="comments">Comments</label>
+
             <textarea
+              id="comments"
               v-model="editableOperation.comments"
               class="form-control"
               name="comments"

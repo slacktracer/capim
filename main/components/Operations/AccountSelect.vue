@@ -26,14 +26,23 @@ const emitAccountSelectedEvent = (event: Event) => {
 </script>
 
 <template>
-  <select name="account" @change="emitAccountSelectedEvent">
-    <option
-      v-for="account in accountList"
-      :key="account.accountID"
-      :selected="props.selectedAccount === account.accountID"
-      :value="account.accountID"
+  <div>
+    <label class="visually-hidden" for="account">Account</label>
+
+    <select
+      class="form-select"
+      name="account"
+      @change="emitAccountSelectedEvent"
     >
-      {{ account.name }}
-    </option>
-  </select>
+      <option
+        v-for="account in accountList"
+        id="account"
+        :key="account.accountID"
+        :selected="props.selectedAccount === account.accountID"
+        :value="account.accountID"
+      >
+        {{ account.name }}
+      </option>
+    </select>
+  </div>
 </template>

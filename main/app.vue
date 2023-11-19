@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import "bootstrap/dist/js/bootstrap.esm.js";
 
-import { useRuntimeConfig } from "#imports"; // eslint-disable-line import/order
+import { useHead, useRuntimeConfig } from "#imports"; // eslint-disable-line import/order
 
 import { core } from "./core/core.js";
 import { logout } from "./modules/authentication/logout.js";
@@ -12,6 +12,11 @@ const runtimeConfig = useRuntimeConfig();
 core.loadEnvironmentVariables({ runtimeConfig });
 
 core.mainEventBus.on("logout", logout);
+
+useHead({
+  htmlAttrs: { lang: "en" },
+  title: "capim",
+});
 
 await boot();
 </script>
