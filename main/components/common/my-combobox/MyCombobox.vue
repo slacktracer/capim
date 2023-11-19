@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import type { Ref } from "vue";
-import { computed, nextTick, onMounted, onUnmounted, ref } from "vue";
+import { computed, nextTick, onMounted, onUnmounted, ref, watch } from "vue";
 
 import { boot } from "./my-combobox-engine/boot.js";
 import { makeOutsideInteractionHandler } from "./my-combobox-engine/make-outside-interaction-handler.js";
@@ -81,6 +81,11 @@ onMounted(() => {
 onUnmounted(() => {
   shutdown?.();
 });
+
+watch(
+  () => props.currentSelectedOption,
+  (current) => (search.value = current?.[props.label]),
+);
 
 const toggleCombobox = async () => {
   showOptions.value = !showOptions.value;
