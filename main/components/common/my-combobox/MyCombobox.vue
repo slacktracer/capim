@@ -182,7 +182,6 @@ const onOptionSelected: OnOptionSelected = ({ label, value }) => {
 [role="option"] {
   align-items: center;
   display: flex;
-  outline: none;
   padding-inline: 0.75rem;
   width: 100%;
 }
