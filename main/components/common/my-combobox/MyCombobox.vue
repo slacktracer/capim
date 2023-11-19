@@ -91,21 +91,13 @@ const filteredOptions: Record<string, any> = computed(() => {
     previousSearchValue = "";
   }
 
-  let updatedFilteredOptions;
+  const searchValue =
+    count === previousCount ? search.value : previousSearchValue;
 
-  if (count === previousCount) {
-    updatedFilteredOptions = props.filter({
-      options: props.options,
-      search: search.value,
-    });
-
-    previousSearchValue = search.value;
-  } else {
-    updatedFilteredOptions = props.filter({
-      options: props.options,
-      search: previousSearchValue,
-    });
-  }
+  const updatedFilteredOptions = props.filter({
+    options: props.options,
+    search: searchValue,
+  });
 
   previousCount = count;
 
