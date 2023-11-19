@@ -134,13 +134,20 @@ const onOptionSelected: OnOptionSelected = ({ label, value }) => {
   >
     <input
       v-model="search"
+      aria-autocomplete="list"
+      :aria-controls="`${props.property}-listbox`"
       :aria-expanded="showOptions"
       class="form-control"
       role="combobox"
       type="search"
     />
 
-    <ul v-show="showOptions" class="border rounded" role="listbox">
+    <ul
+      v-show="showOptions"
+      id="`${props.property}-listbox`"
+      class="border rounded"
+      role="listbox"
+    >
       <li
         v-for="option in filteredOptions"
         :id="`option-${option[props.property]}`"

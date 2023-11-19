@@ -20,6 +20,12 @@ export const makeDebouncedAddAriaSelectedAttribute = ({
       }
 
       listItem.setAttribute("aria-selected", "true");
+
+      const [combobox] = listItem.parentNode?.parentNode?.children ?? [];
+
+      if (combobox instanceof HTMLInputElement) {
+        combobox.setAttribute("aria-activedescendant", listItem.id);
+      }
     }, delay);
   };
 };
