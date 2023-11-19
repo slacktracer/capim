@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import Operation from "../../components/Operations/Operation.vue";
+import Operation from "../../components/operations/Operation.vue";
 </script>
 
 <template>
