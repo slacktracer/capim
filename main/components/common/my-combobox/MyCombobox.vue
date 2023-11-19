@@ -14,7 +14,7 @@ const emit = defineEmits<{
 
 const props = defineProps<{
   currentSelectedOption: Record<string, any> | undefined;
-  filter?: (input: {
+  filter: (input: {
     options: Record<string, any>[];
     search: string;
   }) => Record<string, any>[];
@@ -76,15 +76,17 @@ const filteredOptions: Record<string, any> = computed(() => {
   let updatedFilteredOptions;
 
   if (count === previousCount) {
-    updatedFilteredOptions = props.filter
-      ? props.filter({ options: props.options, search: search.value })
-      : props.options;
+    updatedFilteredOptions = props.filter({
+      options: props.options,
+      search: search.value,
+    });
 
     previousSearchValue = search.value;
   } else {
-    updatedFilteredOptions = props.filter
-      ? props.filter({ options: props.options, search: previousSearchValue })
-      : props.options;
+    updatedFilteredOptions = props.filter({
+      options: props.options,
+      search: previousSearchValue,
+    });
   }
 
   previousCount = count;
