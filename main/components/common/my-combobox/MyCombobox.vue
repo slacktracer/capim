@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import type { Ref } from "vue";
-import { computed, nextTick, onMounted, onUnmounted, ref, watch } from "vue";
+import { computed, onMounted, onUnmounted, ref, watch } from "vue";
 
 import { boot } from "./my-combobox-engine/boot.js";
 import { makeOutsideInteractionHandler } from "./my-combobox-engine/make-outside-interaction-handler.js";
@@ -19,8 +19,9 @@ const props = defineProps<{
     search: string;
   }) => Record<string, any>[];
   label: string;
+  name: string;
   options: Record<string, any>[];
-  property: string;
+  value: string;
 }>();
 
 let count = 0;
@@ -87,10 +88,8 @@ watch(
   (current) => (search.value = current?.[props.label]),
 );
 
-const toggleCombobox = async () => {
+const toggleCombobox = () => {
   showOptions.value = !showOptions.value;
-
-  await nextTick();
 
   if (showOptions.value) {
     window.document.body.addEventListener("click", outsideInteractionHandler);
@@ -100,7 +99,7 @@ const toggleCombobox = async () => {
 
       if (comboboxContainer instanceof HTMLElement) {
         const listItem = comboboxContainer.querySelector(
-          `#option-${props.currentSelectedOption[props.property]}`,
+          `#option-${props.currentSelectedOption[props.value]}`,
         );
 
         if (listItem instanceof HTMLLIElement) {
@@ -135,7 +134,7 @@ const onOptionSelected: OnOptionSelected = ({ label, value }) => {
     <input
       v-model="search"
       aria-autocomplete="list"
-      :aria-controls="`${props.property}-listbox`"
+      :aria-controls="`${props.value}-listbox`"
       :aria-expanded="showOptions"
       class="form-control"
       role="combobox"
@@ -144,16 +143,16 @@ const onOptionSelected: OnOptionSelected = ({ label, value }) => {
 
     <ul
       v-show="showOptions"
-      id="`${props.property}-listbox`"
+      id="`${props.value}-listbox`"
       class="border rounded"
       role="listbox"
     >
       <li
         v-for="option in filteredOptions"
-        :id="`option-${option[props.property]}`"
-        :key="option[props.property]"
+        :id="`option-${option[props.value]}`"
+        :key="option[props.value]"
         :data-label="option[props.label]"
-        :data-value="option[props.property]"
+        :data-value="option[props.value]"
         role="option"
         tabindex="0"
       >

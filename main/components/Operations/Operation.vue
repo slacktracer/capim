@@ -173,8 +173,9 @@ const updateCategory = ({
               :current-selected-option="editableOperation.category"
               :filter="categorySelectFilter"
               label="name"
+              name="category"
               :options="categoryList"
-              property="categoryID"
+              value="categoryID"
               @option-selected="updateCategory"
             >
               <template #option="{ option }">
