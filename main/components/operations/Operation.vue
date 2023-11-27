@@ -140,7 +140,7 @@ const updateCategory = ({
 };
 
 const save = () =>
-  window.alert("Saved!\nNah, just kidding. Not saved at all...");
+  operationsStore.patchOperation({ operation: editableOperation });
 </script>
 
 <template>
@@ -167,7 +167,12 @@ const save = () =>
     </section>
 
     <form @submit.prevent="save">
-      <fieldset :disabled="operationsStore.operation.loading">
+      <fieldset
+        :disabled="
+          operationsStore.operation.loading ||
+          operationsStore.running[editableOperation.operationID]?.loading
+        "
+      >
         <div class="operation">
           <div class="date">
             <label class="visually-hidden" for="date">Date</label>

@@ -1,12 +1,10 @@
+import type { Account } from "./Account";
 import type { Category } from "./Category.js";
 import type { TagKey } from "./TagKey.js";
 import type { TagValue } from "./TagValue.js";
 
 export type Operation = {
-  account: {
-    accountID: string;
-    name: string;
-  };
+  account: Pick<Account, "accountID" | "name">;
   accountID: string;
   amount: number;
   amountPerUnit: number;

@@ -13,4 +13,5 @@ export const getInitialOperationsStoreState: GetInitialOperationsStoreState = ({
   operations: getInitialAsyncDataState<Operation[]>(),
   operationsByDate: [],
   router: markRaw(router),
+  running: {},
 });
