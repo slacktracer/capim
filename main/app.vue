@@ -14,7 +14,7 @@ core.loadEnvironmentVariables({ runtimeConfig });
 core.mainEventBus.on("logout", logout);
 
 useHead({
-  htmlAttrs: { lang: "en" },
+  htmlAttrs: { "data-bs-theme": "dark", lang: "en" },
   title: "capim",
 });
 
