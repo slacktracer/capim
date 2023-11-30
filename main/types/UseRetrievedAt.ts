@@ -1,3 +1,7 @@
-import type { AsyncDataState } from "./AsyncDataState.js";
+import type { Ref } from "vue";
 
-export type UseRetrievedAt<Data> = AsyncDataState<Readonly<Data>>;
+import type { TrackedAsyncFunctionState } from "../core/types/TrackedAsyncFunctionState";
+
+export type UseRetrievedAt = <Data>(input: {
+  collection: TrackedAsyncFunctionState<Readonly<Data>>;
+}) => Ref<string>;

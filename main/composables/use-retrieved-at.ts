@@ -1,13 +1,9 @@
 import { formatDistanceToNowStrict } from "date-fns";
 import { ref, watch } from "vue";
 
-import type { AsyncDataState } from "../types/AsyncDataState.js";
+import type { UseRetrievedAt } from "../types/UseRetrievedAt";
 
-export const useRetrievedAt = <Collection extends AsyncDataState<unknown>>({
-  collection,
-}: {
-  collection: Collection;
-}) => {
+export const useRetrievedAt: UseRetrievedAt = ({ collection }) => {
   const retrievedAt = ref("");
 
   let intervalID: ReturnType<typeof setInterval>;

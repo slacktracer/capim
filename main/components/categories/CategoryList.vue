@@ -2,13 +2,12 @@
 import { useRetrievedAt } from "../../composables/use-retrieved-at.js";
 import type { Category } from "../../core/types/Category.js";
 import { useCategoriesStore } from "../../modules/categories/use-categories-store.js";
-import type { UseRetrievedAt } from "../../types/UseRetrievedAt.js";
 
 const categoriesStore = useCategoriesStore();
 
 categoriesStore.getCategories();
 
-const retrievedAt = useRetrievedAt<UseRetrievedAt<Category[]>>({
+const retrievedAt = useRetrievedAt<Category[]>({
   collection: categoriesStore.categories,
 });
 </script>
