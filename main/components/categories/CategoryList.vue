@@ -8,7 +8,7 @@ const categoriesStore = useCategoriesStore();
 categoriesStore.getCategories();
 
 const retrievedAt = useRetrievedAt<Category[]>({
-  collection: categoriesStore.categories,
+  data: categoriesStore.categories,
 });
 </script>
 

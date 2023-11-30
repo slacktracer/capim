@@ -3,14 +3,14 @@ import { ref, watch } from "vue";
 
 import type { UseRetrievedAt } from "../types/UseRetrievedAt";
 
-export const useRetrievedAt: UseRetrievedAt = ({ collection }) => {
+export const useRetrievedAt: UseRetrievedAt = ({ data }) => {
   const retrievedAt = ref("");
 
   let intervalID: ReturnType<typeof setInterval>;
 
   const setRetrievedAtDistanceToNowStrict = () => {
     retrievedAt.value = formatDistanceToNowStrict(
-      collection.retrievedAt || new Date(),
+      data.retrievedAt || new Date(),
     );
 
     if (intervalID) {
@@ -22,7 +22,7 @@ export const useRetrievedAt: UseRetrievedAt = ({ collection }) => {
 
   setRetrievedAtDistanceToNowStrict();
 
-  watch(() => collection.retrievedAt, setRetrievedAtDistanceToNowStrict);
+  watch(() => data.retrievedAt, setRetrievedAtDistanceToNowStrict);
 
   return retrievedAt;
 };

@@ -18,7 +18,7 @@ operationsStore.getOperations({
 });
 
 const retrievedAt = useRetrievedAt<Operation[]>({
-  collection: operationsStore.operations,
+  data: operationsStore.operations,
 });
 </script>
 

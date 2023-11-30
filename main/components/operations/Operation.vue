@@ -52,7 +52,7 @@ if (operationID) {
 
 const retrievedAt = operationID
   ? useRetrievedAt<Operation>({
-      collection: operationsStore.runningAsyncFunctions[operationID],
+      data: operationsStore.runningAsyncFunctions[operationID],
     })
   : "";
 
