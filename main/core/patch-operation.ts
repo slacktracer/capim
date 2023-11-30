@@ -1,3 +1,4 @@
+import type { EditableOperation } from "../types/EditableOperation";
 import { mainRequestErrorHandler } from "./http/main-request-error-handler.js";
 import { patch } from "./http/patch.js";
 import type { Operation } from "./types/Operation.js";
@@ -5,7 +6,7 @@ import type { Operation } from "./types/Operation.js";
 export const patchOperation = async ({
   operation,
 }: {
-  operation: Operation;
+  operation: EditableOperation;
 }): Promise<Operation> => {
   try {
     const { operationID } = operation;
