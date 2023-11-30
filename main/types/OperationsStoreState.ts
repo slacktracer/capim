@@ -11,7 +11,7 @@ export type OperationsStoreState = {
   operations: AsyncDataState<Operation[]>;
   operationsByDate: [string, Operation[]][];
   router: Raw<Router>;
-  running: Record<
+  runningAsyncFunctions: Record<
     string,
     ReturnType<typeof core.makeTrackedAsyncFunctionState<Operation>>
   >;

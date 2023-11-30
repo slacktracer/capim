@@ -7,17 +7,16 @@ import { useEditableResource } from "../../composables/use-editable-resource.js"
 import { useRetrievedAt } from "../../composables/use-retrieved-at.js";
 import { core } from "../../core/core.js";
 import type { Operation } from "../../core/types/Operation.js";
+import type { TrackedAsyncFunctionState } from "../../core/types/TrackedAsyncFunctionState";
 import { useAccountsStore } from "../../modules/accounts/use-accounts-store";
 import { useCategoriesStore } from "../../modules/categories/use-categories-store.js";
 import { formatAsLocalisedCurrency } from "../../modules/common/utils/format-as-localised-currency.js";
 import { makeEditableOperation } from "../../modules/operations/make-editable-operation.js";
 import { useOperationsStore } from "../../modules/operations/use-operations-store.js";
 import type { AccountSelectOption } from "../../types/AccountSelectOption";
-import type { AsyncDataState } from "../../types/AsyncDataState.js";
 import type { CategorySelectOption } from "../../types/CategorySelectOption.js";
 import type { EditableOperation } from "../../types/EditableOperation.js";
 import type { MakeEditableOperation } from "../../types/MakeEditableOperation.js";
-import type { UseRetrievedAt } from "../../types/UseRetrievedAt.js";
 import AmountInput from "../common/AmountInput.vue";
 import Debug from "../common/Debug.vue";
 import MyCombobox from "../common/my-combobox/MyCombobox.vue";
@@ -29,6 +28,8 @@ const categoriesStore = useCategoriesStore();
 const operationsStore = useOperationsStore();
 
 const route = useRoute();
+
+const operationID = typeof route.params.id === "string" ? route.params.id : "";
 
 const accountList: ComputedRef<AccountSelectOption[]> = computed(() =>
   accountsStore.accounts.data.map(({ accountID, name }) => ({
@@ -45,22 +46,26 @@ const categoryList: ComputedRef<CategorySelectOption[]> = computed(() =>
   })),
 );
 
-if (typeof route.params.id === "string") {
-  operationsStore.getOperation({ operationID: route.params.id });
+if (operationID) {
+  operationsStore.getOperation({ operationID });
 }
 
-const retrievedAt = useRetrievedAt<UseRetrievedAt<Operation>>({
-  collection: operationsStore.operation,
-});
+const retrievedAt = operationID
+  ? useRetrievedAt<Operation>({
+      collection: operationsStore.runningAsyncFunctions[operationID],
+    })
+  : "";
 
-const editableOperation: EditableOperation = useEditableResource<
-  EditableOperation,
-  MakeEditableOperation,
-  AsyncDataState<Operation>
->({
-  makeEditableResource: makeEditableOperation,
-  resource: operationsStore.operation,
-});
+const editableOperation: EditableOperation = operationID
+  ? useEditableResource<
+      EditableOperation,
+      MakeEditableOperation,
+      TrackedAsyncFunctionState<Operation>
+    >({
+      makeEditableResource: makeEditableOperation,
+      resource: operationsStore.runningAsyncFunctions[operationID],
+    })
+  : ({} as EditableOperation);
 
 const amount = computed(() =>
   formatAsLocalisedCurrency({
@@ -141,6 +146,10 @@ const updateCategory = ({
 
 const save = () =>
   operationsStore.patchOperation({ operation: editableOperation });
+
+const runningAsyncFunction = computed(
+  () => operationsStore.runningAsyncFunctions[operationID],
+);
 </script>
 
 <template>
@@ -148,31 +157,23 @@ const save = () =>
     <section class="header">
       <h1>Operation</h1>
 
-      <div v-if="operationsStore.operation.error">
-        {{ operationsStore.operation.error.message }}
+      <div v-if="runningAsyncFunction?.error">
+        {{ runningAsyncFunction?.error.message }}
       </div>
 
-      <div v-if="operationsStore.operation.loading">Loading operation...</div>
+      <div v-if="runningAsyncFunction?.loading">Loading operation...</div>
 
       <div
         v-if="
-          !operationsStore.operation.loading &&
-          operationsStore.operation.retrievedAt
+          !runningAsyncFunction?.loading && runningAsyncFunction?.retrievedAt
         "
       >
-        Retrieved
-        {{ retrievedAt }}
-        ago
+        Retrieved {{ retrievedAt }} ago
       </div>
     </section>
 
     <form @submit.prevent="save">
-      <fieldset
-        :disabled="
-          operationsStore.operation.loading ||
-          operationsStore.running[editableOperation.operationID]?.loading
-        "
-      >
+      <fieldset :disabled="runningAsyncFunction?.loading">
         <div class="operation">
           <div class="date">
             <label class="visually-hidden" for="date">Date</label>

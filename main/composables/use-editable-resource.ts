@@ -1,12 +1,12 @@
 import { reactive, watch } from "vue";
 
 import { core } from "../core/core.js";
-import type { AsyncDataState } from "../types/AsyncDataState.js";
+import type { TrackedAsyncFunctionState } from "../core/types/TrackedAsyncFunctionState.js";
 
 export const useEditableResource = <
   EditableResource,
   MakeEditableResource extends (...args: any[]) => any,
-  Resource extends AsyncDataState<unknown>,
+  Resource extends TrackedAsyncFunctionState<unknown>,
 >({
   makeEditableResource,
   resource,
