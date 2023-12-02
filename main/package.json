@@ -30,6 +30,7 @@
     "https-dev": "nuxt dev --host capim.local --https --ssl-cert ../capim.local.pem --ssl-key ../capim.local-key.pem",
     "lint": "eslint --cache --ext .js,.ts,.vue --fix .",
     "lint-staged": "lint-staged",
+    "live-feedback": "npx nodemon --exec \"npm run check-types && npm run lint\" --ext js,json,ts,vue",
     "local-client-to-remote-server-proxy": "node ./tools/local-client-to-remote-server-proxy/local-client-to-remote-server-proxy.js",
     "no-https": "nuxt dev",
     "postinstall": "nuxt prepare",

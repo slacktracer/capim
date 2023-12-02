@@ -8,6 +8,7 @@
   "scripts": {
     "build": "npm ci && npm run generate --prefix main",
     "install": "npm install --prefix main && npm install --prefix tests",
+    "lf": "npm run live-feedback --prefix main",
     "lint": "npm run lint --prefix main && npm run lint --prefix tests",
     "lint-staged": "lint-staged",
     "prepare": "husky install",
