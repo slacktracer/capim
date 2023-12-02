@@ -1,4 +1,6 @@
 <script lang="ts" setup>
+import { useRouter } from "vue-router";
+
 import { useRetrievedAt } from "../../composables/use-retrieved-at.js";
 import { core } from "../../core/core.js";
 import type { Operation } from "../../core/types/Operation.js";
@@ -7,6 +9,7 @@ import OperationListItem from "./OperationListItem.vue";
 import OperationsDatetimeRangeSelector from "./OperationsDatetimeRangeSelector.vue";
 
 const operationsStore = useOperationsStore();
+const router = useRouter();
 
 const { from, to } = core.getSearchParamsFromURL();
 
@@ -25,7 +28,12 @@ const retrievedAt = useRetrievedAt<Operation[]>({
 <template>
   <div>
     <section class="header">
-      <h1>Operations</h1>
+      <h1>
+        Operations
+        <button class="btn btn-success" @click="router.push('/operations/new')">
+          New
+        </button>
+      </h1>
 
       <OperationsDatetimeRangeSelector />
 
@@ -76,6 +84,11 @@ const retrievedAt = useRetrievedAt<Operation[]>({
 .header {
   margin-bottom: 1rem;
   margin-inline: 1rem;
+}
+
+.header > h1 {
+  display: flex;
+  justify-content: space-between;
 }
 
 .date {
