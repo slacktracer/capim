@@ -12,6 +12,7 @@ import { useAccountsStore } from "../../modules/accounts/use-accounts-store";
 import { useCategoriesStore } from "../../modules/categories/use-categories-store.js";
 import { formatAsLocalisedCurrency } from "../../modules/common/utils/format-as-localised-currency.js";
 import { makeEditableOperation } from "../../modules/operations/make-editable-operation.js";
+import { makeEmptyOperation } from "../../modules/operations/make-empty-operation";
 import { useOperationsStore } from "../../modules/operations/use-operations-store.js";
 import type { AccountSelectOption } from "../../types/AccountSelectOption";
 import type { CategorySelectOption } from "../../types/CategorySelectOption.js";
@@ -29,7 +30,21 @@ const operationsStore = useOperationsStore();
 
 const route = useRoute();
 
-const operationID = typeof route.params.id === "string" ? route.params.id : "";
+// let newOperation = false;
+
+let operationID = "";
+
+if (typeof route.params.id === "string") {
+  if (route.params.id === "new") {
+    // newOperation = true;
+    // } else {
+    operationID = route.params.id;
+  }
+}
+
+if (operationID) {
+  operationsStore.getOperation({ operationID });
+}
 
 const accountList: ComputedRef<AccountSelectOption[]> = computed(() =>
   accountsStore.accounts.data.map(({ accountID, name }) => ({
@@ -46,26 +61,25 @@ const categoryList: ComputedRef<CategorySelectOption[]> = computed(() =>
   })),
 );
 
-if (operationID) {
-  operationsStore.getOperation({ operationID });
-}
-
 const retrievedAt = operationID
   ? useRetrievedAt<Operation>({
       data: operationsStore.runningAsyncFunctions[operationID],
     })
   : "";
 
-const editableOperation: EditableOperation = operationID
-  ? useEditableResource<
-      EditableOperation,
-      MakeEditableOperation,
-      TrackedAsyncFunctionState<Operation>
-    >({
-      makeEditableResource: makeEditableOperation,
-      resource: operationsStore.runningAsyncFunctions[operationID],
-    })
-  : ({} as EditableOperation);
+const editableOperation: EditableOperation = useEditableResource<
+  EditableOperation,
+  MakeEditableOperation,
+  TrackedAsyncFunctionState<Operation>
+>({
+  makeEditableResource: makeEditableOperation,
+  resource: operationID
+    ? operationsStore.runningAsyncFunctions[operationID]
+    : core.makeTrackedAsyncFunctionState({
+        data: makeEmptyOperation(),
+        ready: true,
+      }),
+});
 
 const amount = computed(() =>
   formatAsLocalisedCurrency({

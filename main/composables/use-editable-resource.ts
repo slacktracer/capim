@@ -16,6 +16,13 @@ export const useEditableResource = <
 }) => {
   const editableResource = reactive({});
 
+  if (resource.ready) {
+    Object.assign(
+      editableResource,
+      makeEditableResource({ data: resource.data }),
+    );
+  }
+
   watch(
     () => resource.ready,
     (currentValue, previousValue) => {
