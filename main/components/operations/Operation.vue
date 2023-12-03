@@ -35,7 +35,7 @@ const route = useRoute();
 let operationID = "";
 
 if (typeof route.params.id === "string") {
-  if (route.params.id === "new") {
+  if (route.params.id !== "new") {
     // newOperation = true;
     // } else {
     operationID = route.params.id;
