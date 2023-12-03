@@ -30,16 +30,10 @@ const operationsStore = useOperationsStore();
 
 const route = useRoute();
 
-// let newOperation = false;
-
 let operationID = "";
 
-if (typeof route.params.id === "string") {
-  if (route.params.id !== "new") {
-    // newOperation = true;
-    // } else {
-    operationID = route.params.id;
-  }
+if (typeof route.params.id === "string" && route.params.id !== "new") {
+  operationID = route.params.id;
 }
 
 if (operationID) {
@@ -141,6 +135,12 @@ const updateAmounts = (input: number | Event) => {
     editableOperation.unitCount * editableOperation.amountPerUnit;
 };
 
+const updateAt = () => {
+  editableOperation.at = new Date(
+    `${editableOperation.atDate} ${editableOperation.atTime}`,
+  ).toISOString();
+};
+
 const updateCategory = ({
   value: categoryID,
 }: {
@@ -159,7 +159,9 @@ const updateCategory = ({
 };
 
 const save = () =>
-  operationsStore.patchOperation({ operation: editableOperation });
+  operationID
+    ? operationsStore.patchOperation({ operation: editableOperation })
+    : operationsStore.postOperation({ operation: editableOperation });
 
 const runningAsyncFunction = computed(
   () => operationsStore.runningAsyncFunctions[operationID],
@@ -197,6 +199,7 @@ const runningAsyncFunction = computed(
               v-model="editableOperation.atDate"
               class="form-control"
               type="date"
+              @change="updateAt"
             />
           </div>
 
@@ -208,8 +211,11 @@ const runningAsyncFunction = computed(
               v-model="editableOperation.atTime"
               class="form-control"
               type="time"
+              @change="updateAt"
             />
           </div>
+
+          <input v-model="editableOperation.at" type="hidden" />
 
           <div class="account">
             <MyCombobox

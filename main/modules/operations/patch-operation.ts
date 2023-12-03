@@ -6,10 +6,6 @@ import type { PatchOperation } from "../../types/PatchOperation";
 export const patchOperation: PatchOperation = ({ operation, state }) => {
   const { operationID } = operation;
 
-  operation.at = new Date(
-    `${operation.atDate} ${operation.atTime}`,
-  ).toISOString();
-
   state.runningAsyncFunctions[operationID] =
     core.makeTrackedAsyncFunctionState<Operation>();
 
