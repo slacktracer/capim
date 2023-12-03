@@ -4,7 +4,7 @@ import type { Operation } from "./types/Operation.js";
 
 export const getOperation = async ({
   operationID,
-}: { operationID?: string } = {}): Promise<Operation> => {
+}: { operationID?: string } = {}): Promise<Operation> | never => {
   try {
     const response = await get(`operations/${operationID}`, {
       timeout: 60000,
@@ -14,6 +14,6 @@ export const getOperation = async ({
   } catch (error: any) {
     await mainRequestErrorHandler({ error });
 
-    return {} as Operation;
+    throw error;
   }
 };

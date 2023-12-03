@@ -22,6 +22,12 @@ export const makeTrackedAsyncFunction: MakeTrackedAsyncFunction =
       .catch((reason: unknown) => {
         if (reason instanceof CoreError) {
           state.error = { data: reason.data, message: reason.message };
+
+          return;
+        }
+
+        if (reason instanceof Error) {
+          state.error = { message: reason.message };
         }
       })
 

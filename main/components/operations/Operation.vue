@@ -206,7 +206,11 @@ const runningAsyncFunction = computed(
     <section class="header">
       <h1>Operation</h1>
 
-      <div v-if="runningAsyncFunction?.error">
+      <div
+        v-if="runningAsyncFunction?.error"
+        class="alert alert-danger"
+        role="alert"
+      >
         {{ runningAsyncFunction?.error.message }}
       </div>
 
