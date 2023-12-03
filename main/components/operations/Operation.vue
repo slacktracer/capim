@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import type { ComputedRef } from "vue";
-import { computed } from "vue";
+import { computed, ref, watch } from "vue";
 import { useRoute } from "vue-router";
 
 import { useEditableResource } from "../../composables/use-editable-resource.js";
@@ -30,14 +30,14 @@ const operationsStore = useOperationsStore();
 
 const route = useRoute();
 
-let operationID = "";
+const operationID = ref("");
 
 if (typeof route.params.id === "string" && route.params.id !== "new") {
-  operationID = route.params.id;
+  operationID.value = route.params.id;
 }
 
-if (operationID) {
-  operationsStore.getOperation({ operationID });
+if (operationID.value) {
+  operationsStore.getOperation({ operationID: operationID.value });
 }
 
 const accountList: ComputedRef<AccountSelectOption[]> = computed(() =>
@@ -55,9 +55,9 @@ const categoryList: ComputedRef<CategorySelectOption[]> = computed(() =>
   })),
 );
 
-const retrievedAt = operationID
+const retrievedAt = operationID.value
   ? useRetrievedAt<Operation>({
-      data: operationsStore.runningAsyncFunctions[operationID],
+      data: operationsStore.runningAsyncFunctions[operationID.value],
     })
   : "";
 
@@ -67,8 +67,8 @@ const editableOperation: EditableOperation = useEditableResource<
   TrackedAsyncFunctionState<Operation>
 >({
   makeEditableResource: makeEditableOperation,
-  resource: operationID
-    ? operationsStore.runningAsyncFunctions[operationID]
+  resource: operationID.value
+    ? operationsStore.runningAsyncFunctions[operationID.value]
     : core.makeTrackedAsyncFunctionState({
         data: makeEmptyOperation(),
         ready: true,
@@ -158,13 +158,46 @@ const updateCategory = ({
   }
 };
 
-const save = () =>
-  operationID
-    ? operationsStore.patchOperation({ operation: editableOperation })
-    : operationsStore.postOperation({ operation: editableOperation });
+const save = () => {
+  if (!operationID.value) {
+    operationID.value = operationsStore.postOperation({
+      operation: editableOperation,
+    });
+
+    return;
+  }
+
+  operationsStore.patchOperation({ operation: editableOperation });
+};
+
+const makeWatchCallback = (newOperation: boolean) => {
+  if (newOperation) {
+    let ranOnce = false;
+
+    return (currentValue: boolean) => {
+      if (currentValue && !ranOnce) {
+        Object.assign(
+          editableOperation,
+          operationsStore.runningAsyncFunctions[operationID.value].data,
+        );
+
+        history.pushState({}, "", `/operations/${operationID.value}`);
+
+        ranOnce = true;
+      }
+    };
+  }
+
+  return () => {};
+};
+
+watch(
+  () => operationsStore.runningAsyncFunctions[operationID.value]?.ready,
+  makeWatchCallback(!operationID.value),
+);
 
 const runningAsyncFunction = computed(
-  () => operationsStore.runningAsyncFunctions[operationID],
+  () => operationsStore.runningAsyncFunctions[operationID.value],
 );
 </script>
 
