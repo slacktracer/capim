@@ -186,4 +186,8 @@ const onOptionSelected: OnOptionSelected = ({ label, value }) => {
   background: #333333;
   color: whitesmoke;
 }
+
+[role="option"] > span {
+  pointer-events: none;
+}
 </style>
