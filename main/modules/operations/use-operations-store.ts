@@ -7,12 +7,14 @@ import type { GetOperation } from "../../types/GetOperation.js";
 import type { GetOperations } from "../../types/GetOperations.js";
 import type { OperationsStoreState } from "../../types/OperationsStoreState.js";
 import type { PatchOperation } from "../../types/PatchOperation";
+import type { PostOperation } from "../../types/PostOperation";
 import type { SetDatetimeRange } from "../../types/SetDatetimeRange.js";
 import { injectState } from "../common/utils/inject-state.js";
 import { getInitialOperationsStoreState } from "./get-initial-operations-store-state.js";
 import { getOperation } from "./get-operation.js";
 import { getOperations } from "./get-operations.js";
 import { patchOperation } from "./patch-operation";
+import { postOperation } from "./post-operation";
 import { setDatetimeRange } from "./set-datetime-range.js";
 
 export const useOperationsStore = defineStore("operations", () => {
@@ -33,6 +35,10 @@ export const useOperationsStore = defineStore("operations", () => {
     ),
     patchOperation: injectState<PatchOperation, OperationsStoreState>(
       patchOperation,
+      state,
+    ),
+    postOperation: injectState<PostOperation, OperationsStoreState>(
+      postOperation,
       state,
     ),
     setDatetimeRange: injectState<SetDatetimeRange, OperationsStoreState>(
