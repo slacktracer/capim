@@ -240,6 +240,7 @@ const runningAsyncFunction = computed(
               id="date"
               v-model="editableOperation.atDate"
               class="form-control"
+              required
               type="date"
               @change="updateAt"
             />
@@ -252,6 +253,7 @@ const runningAsyncFunction = computed(
               id="time"
               v-model="editableOperation.atTime"
               class="form-control"
+              required
               type="time"
               @change="updateAt"
             />
@@ -268,6 +270,7 @@ const runningAsyncFunction = computed(
               listbox-class="border rounded"
               name="account"
               :options="accountList"
+              :required="false"
               value="accountID"
               @option-selected="updateAccount"
             >
@@ -288,6 +291,7 @@ const runningAsyncFunction = computed(
               listbox-class="border rounded"
               name="category"
               :options="categoryList"
+              :required="true"
               value="categoryID"
               @option-selected="updateCategory"
             >
@@ -309,6 +313,7 @@ const runningAsyncFunction = computed(
                 v-model="editableOperation.type"
                 class="form-control"
                 name="type"
+                required
                 @change="updateAmounts"
               >
                 <option value="Expense">Expense</option>
@@ -327,6 +332,7 @@ const runningAsyncFunction = computed(
                 max="999"
                 min="1"
                 name="units"
+                required
                 type="number"
                 @change="updateAmounts"
                 @focus="core.selectInputContent"
