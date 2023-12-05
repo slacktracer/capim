@@ -4,10 +4,9 @@ import type { DatetimeRangeRecord } from "./types/DatetimeRangeRecord.js";
 import type { Operation } from "./types/Operation.js";
 import { filterOutFalsyEntries } from "./utils/filter-out-falsy-entries.js";
 
-export const getOperations = async ({
-  from,
-  to,
-}: DatetimeRangeRecord = {}): Promise<Operation[]> => {
+export const getOperations = async ({ from, to }: DatetimeRangeRecord = {}):
+  | Promise<Operation[]>
+  | never => {
   const searchParams = filterOutFalsyEntries({ object: { from, to } });
 
   try {
@@ -20,6 +19,6 @@ export const getOperations = async ({
   } catch (error: any) {
     await mainRequestErrorHandler({ error });
 
-    return [];
+    throw error;
   }
 };

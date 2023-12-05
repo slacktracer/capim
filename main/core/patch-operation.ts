@@ -7,7 +7,7 @@ export const patchOperation = async ({
   operation,
 }: {
   operation: EditableOperation;
-}): Promise<Operation> => {
+}): Promise<Operation> | never => {
   try {
     const { operationID } = operation;
 
@@ -19,6 +19,6 @@ export const patchOperation = async ({
   } catch (error: any) {
     await mainRequestErrorHandler({ error });
 
-    return {} as Operation;
+    throw error;
   }
 };
