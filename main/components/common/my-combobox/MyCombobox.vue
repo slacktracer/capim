@@ -22,6 +22,7 @@ const props = defineProps<{
   listboxClass?: string;
   name: string;
   options: Record<string, any>[];
+  required?: boolean;
   value: string;
 }>();
 
@@ -125,6 +126,7 @@ const onOptionSelected: OnOptionSelected = ({ label, value }) => {
       :class="props.comboboxClass ? `${props.comboboxClass}` : ''"
       :name="props.name"
       :placeholder="capitalise(props.name)"
+      :required="props.required"
       role="combobox"
       type="search"
     />
