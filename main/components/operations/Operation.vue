@@ -75,15 +75,20 @@ const editableOperation: EditableOperation = useEditableResource<
       }),
 });
 
-const amount = computed(() =>
-  formatAsLocalisedCurrency({
-    currency: "BRL",
-    locales: "pt-BR",
-    number: Math.abs(
-      (editableOperation.amountPerUnit / 100) * editableOperation.unitCount,
-    ),
-  }),
-);
+const amount = computed(() => {
+  const newAmount =
+    (editableOperation.amountPerUnit / 100) * editableOperation.unitCount;
+
+  return Number.isNaN(newAmount)
+    ? 0
+    : formatAsLocalisedCurrency({
+        currency: "BRL",
+        locales: "pt-BR",
+        number: Math.abs(
+          (editableOperation.amountPerUnit / 100) * editableOperation.unitCount,
+        ),
+      });
+});
 
 const accountSelectFilter = ({
   options,
