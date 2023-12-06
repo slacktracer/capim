@@ -274,7 +274,7 @@ const runningAsyncFunction = computed(
               listbox-class="border rounded"
               name="account"
               :options="accountList"
-              :required="false"
+              :required="true"
               value="accountID"
               @option-selected="updateAccount"
             >
