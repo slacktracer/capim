@@ -399,7 +399,7 @@ const runningAsyncFunction = computed(
           </div>
         </div>
 
-        <div style="padding: 1rem; text-align: right">
+        <div class="action">
           <button class="btn btn-primary" type="submit">Save</button>
         </div>
       </fieldset>
@@ -504,5 +504,10 @@ label {
   display: flex;
   flex-direction: column;
   padding-block: 0.25rem;
+}
+
+.action {
+  padding: 1rem;
+  text-align: right;
 }
 </style>
