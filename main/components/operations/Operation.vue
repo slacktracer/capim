@@ -55,6 +55,8 @@ const categoryList: ComputedRef<CategorySelectOption[]> = computed(() =>
   })),
 );
 
+// other solution maybe to make this a computed... Make everything a computed!
+// View is a function of state...
 let retrievedAt = operationID.value
   ? useRetrievedAt<Operation>({
       data: operationsStore.runningAsyncFunctions[operationID.value],
