@@ -55,7 +55,7 @@ const categoryList: ComputedRef<CategorySelectOption[]> = computed(() =>
   })),
 );
 
-const retrievedAt = operationID.value
+let retrievedAt = operationID.value
   ? useRetrievedAt<Operation>({
       data: operationsStore.runningAsyncFunctions[operationID.value],
     })
@@ -183,6 +183,12 @@ const makeWatchCallback = (newOperation: boolean) => {
           editableOperation,
           operationsStore.runningAsyncFunctions[operationID.value].data,
         );
+
+        retrievedAt = operationID.value
+          ? useRetrievedAt<Operation>({
+              data: operationsStore.runningAsyncFunctions[operationID.value],
+            })
+          : "";
 
         history.pushState({}, "", `/operations/${operationID.value}`);
       }
