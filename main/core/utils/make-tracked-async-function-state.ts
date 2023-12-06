@@ -8,4 +8,5 @@ export const makeTrackedAsyncFunctionState: MakeTrackedAsyncFunctionState = (
   loading: false,
   ready: ready ?? false,
   retrievedAt: undefined,
+  state: "pending",
 });

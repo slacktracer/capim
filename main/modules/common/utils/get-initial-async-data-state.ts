@@ -8,4 +8,5 @@ export const getInitialAsyncDataState = <T>(
   loading: false,
   ready: false,
   retrievedAt: undefined,
+  state: "pending",
 });

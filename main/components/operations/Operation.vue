@@ -177,18 +177,22 @@ const save = () => {
 
 const makeWatchCallback = (newOperation: boolean) => {
   if (newOperation) {
-    let ranOnce = false;
-
-    return (currentValue: boolean) => {
-      if (currentValue && !ranOnce) {
+    return (currentState: string) => {
+      if (currentState === "fulfilled") {
         Object.assign(
           editableOperation,
           operationsStore.runningAsyncFunctions[operationID.value].data,
         );
 
         history.pushState({}, "", `/operations/${operationID.value}`);
+      }
 
-        ranOnce = true;
+      if (currentState === "rejected") {
+        operationsStore.deleteRunningAsyncFunction({
+          runningAsyncFunctionID: operationID.value,
+        });
+
+        operationID.value = "";
       }
     };
   }
@@ -197,7 +201,7 @@ const makeWatchCallback = (newOperation: boolean) => {
 };
 
 watch(
-  () => operationsStore.runningAsyncFunctions[operationID.value]?.ready,
+  () => operationsStore.runningAsyncFunctions[operationID.value]?.state,
   makeWatchCallback(!operationID.value),
 );
 

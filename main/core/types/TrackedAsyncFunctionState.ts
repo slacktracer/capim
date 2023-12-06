@@ -9,4 +9,5 @@ export type TrackedAsyncFunctionState<Data> = {
   loading: boolean;
   ready: boolean;
   retrievedAt: Date | undefined;
+  state: "pending" | "fulfilled" | "rejected";
 };

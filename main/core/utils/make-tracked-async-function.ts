@@ -10,6 +10,8 @@ export const makeTrackedAsyncFunction: MakeTrackedAsyncFunction =
 
     state.loading = true;
 
+    state.state = "pending";
+
     await asyncFunction(...input)
       .then((data) => {
         state.data = data;
@@ -17,9 +19,13 @@ export const makeTrackedAsyncFunction: MakeTrackedAsyncFunction =
         state.ready = true;
 
         state.retrievedAt = new Date();
+
+        state.state = "fulfilled";
       })
 
       .catch((reason: unknown) => {
+        state.state = "rejected";
+
         if (reason instanceof CoreError) {
           state.error = { data: reason.data, message: reason.message };
 

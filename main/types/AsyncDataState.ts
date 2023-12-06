@@ -9,4 +9,5 @@ export type AsyncDataState<T> = {
   loading: boolean;
   ready: boolean;
   retrievedAt: Date | undefined;
+  state: "pending" | "fulfilled" | "rejected";
 };
