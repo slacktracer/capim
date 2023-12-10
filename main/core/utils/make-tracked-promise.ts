@@ -34,15 +34,13 @@ export const makeTrackedPromise: MakeTrackedPromise = ({
     reason: undefined,
 
     run(input) {
-      return asyncFunction(input)
+      asyncFunction(input)
         .then((value) => {
           this.state = promiseState.fulfilled;
 
           this.value = value;
 
           onFulfilled?.(value);
-
-          return value;
         })
         .catch((reason) => {
           this.state = promiseState.rejected;
@@ -50,8 +48,6 @@ export const makeTrackedPromise: MakeTrackedPromise = ({
           this.reason = reason;
 
           onRejected?.(reason);
-
-          return reason;
         })
         .finally(() => {
           onSettled?.();

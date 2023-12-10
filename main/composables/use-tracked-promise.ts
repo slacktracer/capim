@@ -8,7 +8,7 @@ export const useTrackedPromise = <Input, Output>({
   onRejected,
   onSettled,
 }: {
-  asyncFunction: (input: Input) => Promise<Output>;
+  asyncFunction: (input: Input) => Promise<Output> | never;
   onFulfilled: (input: Output) => any;
   onRejected: (input: unknown) => any;
   onSettled: () => any;

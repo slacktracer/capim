@@ -1,3 +1,4 @@
+import { useTrackedPromise } from "../../composables/use-tracked-promise";
 import { core } from "../../core/core.js";
 import type { Operation } from "../../core/types/Operation";
 import type { EditableOperation } from "../../types/EditableOperation";
@@ -8,18 +9,19 @@ export const postOperation: PostOperation = ({ operation, state }) => {
 
   operation.operationID = operationID;
 
-  state.runningAsyncFunctions[operationID] =
-    core.makeTrackedAsyncFunctionState<Operation>();
-
-  const trackedPostOperation = core.makeTrackedAsyncFunction<
+  const trackedPromise = useTrackedPromise<
     { operation: EditableOperation },
     Operation
   >({
     asyncFunction: core.postOperation,
-    state: state.runningAsyncFunctions[operationID],
+    onFulfilled: (_input) => {},
+    onRejected: (_input) => {},
+    onSettled: () => {},
   });
 
-  trackedPostOperation({ operation });
+  state.promises[operationID] = trackedPromise;
+
+  trackedPromise.run({ operation });
 
   return operationID;
 };

@@ -9,8 +9,8 @@ export class CoreError extends Error {
   ) {
     super(...[message, ...parameters]);
 
-    if (Error.captureStackTrace) {
-      Error.captureStackTrace(this, CoreError);
+    if ("captureStackTrace" in Error) {
+      (Error.captureStackTrace as (...args: any[]) => void)(this, CoreError);
     }
 
     this.name = "CoreError";

@@ -1,7 +1,7 @@
 import type { PromiseState } from "../utils/promise-state";
 
 export type MakeTrackedPromise = <Input, Output>(input: {
-  asyncFunction: (input: Input) => Promise<Output>;
+  asyncFunction: (input: Input) => Promise<Output> | never;
   onFulfilled: (input: Output) => any;
   onRejected: (input: unknown) => any;
   onSettled: () => any;
@@ -12,7 +12,7 @@ export type MakeTrackedPromise = <Input, Output>(input: {
   isRejected: boolean;
   isSettled: boolean;
   reason: unknown;
-  run: (input: Input) => Promise<Output | unknown>;
+  run: (input: Input) => void;
   state: PromiseState;
   value: Output | undefined;
 };
