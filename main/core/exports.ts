@@ -25,6 +25,7 @@ export { getSearchParamsFromURL } from "./utils/get-search-params-from-url.js";
 export { isUserLoggedIn } from "./utils/is-user-logged-in.js";
 export { makeTrackedAsyncFunction } from "./utils/make-tracked-async-function.js";
 export { makeTrackedAsyncFunctionState } from "./utils/make-tracked-async-function-state.js";
+export { makeTrackedPromise } from "./utils/make-tracked-promise";
 export { makeUUID } from "./utils/make-uuid.js";
 export { selectInputContent } from "./utils/select-input-content.js";
 export { wrapWithRetrievedAt } from "./utils/wrap-with-retrieved-at.js";

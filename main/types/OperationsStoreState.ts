@@ -2,6 +2,7 @@ import type { Raw } from "vue";
 import type { Router } from "vue-router";
 
 import type { core } from "../core/core.js";
+import type { MakeTrackedPromise } from "../core/types/MakeTrackedPromise";
 import type { Operation } from "../core/types/Operation.js";
 import type { AsyncDataState } from "./AsyncDataState.js";
 
@@ -15,4 +16,5 @@ export type OperationsStoreState = {
     string,
     ReturnType<typeof core.makeTrackedAsyncFunctionState<Operation>>
   >;
+  promises: Record<string, ReturnType<MakeTrackedPromise>>;
 };
