@@ -1,12 +1,12 @@
 import { reactive, watch } from "vue";
 
 import { core } from "../core/core.js";
-import type { TrackedAsyncFunctionState } from "../core/types/TrackedAsyncFunctionState.js";
+import type { useTrackedPromise } from "./use-tracked-promise";
 
 export const useEditableResource = <
   EditableResource,
   MakeEditableResource extends (...args: any[]) => any,
-  Resource extends TrackedAsyncFunctionState<unknown>,
+  Resource extends ReturnType<typeof useTrackedPromise>,
 >({
   makeEditableResource,
   resource,
@@ -16,20 +16,20 @@ export const useEditableResource = <
 }) => {
   const editableResource = reactive({});
 
-  if (resource.ready) {
+  if (resource.isFulfilled) {
     Object.assign(
       editableResource,
-      makeEditableResource({ data: resource.data }),
+      makeEditableResource({ data: resource.value }),
     );
   }
 
   watch(
-    () => resource.ready,
+    () => resource.isFulfilled,
     (currentValue, previousValue) => {
       if (core.didSwitchTo({ currentValue, previousValue, to: true })) {
         Object.assign(
           editableResource,
-          makeEditableResource({ data: resource.data }),
+          makeEditableResource({ data: resource.value }),
         );
       }
     },

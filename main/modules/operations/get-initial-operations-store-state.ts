@@ -9,10 +9,8 @@ export const getInitialOperationsStoreState: GetInitialOperationsStoreState = ({
   router,
 }) => ({
   datetimeRange: [lightFormat("yyyy-MM-dd", startOfMonth(new Date())), ""],
-  operation: getInitialAsyncDataState<Operation>(),
   operations: getInitialAsyncDataState<Operation[]>(),
   operationsByDate: [],
   promises: {},
   router: markRaw(router),
-  runningAsyncFunctions: {},
 });

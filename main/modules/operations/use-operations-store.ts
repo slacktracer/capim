@@ -42,13 +42,9 @@ export const useOperationsStore = defineStore("operations", () => {
       state,
     ),
     deleteRunningAsyncFunction: injectState<
-      (input: { runningAsyncFunctionID: string }) => void,
+      (input: { promiseID: string }) => void,
       OperationsStoreState
-    >(
-      ({ runningAsyncFunctionID }) =>
-        delete state.runningAsyncFunctions[runningAsyncFunctionID],
-      state,
-    ),
+    >(({ promiseID }) => delete state.promises[promiseID], state),
     setDatetimeRange: injectState<SetDatetimeRange, OperationsStoreState>(
       setDatetimeRange,
       state,

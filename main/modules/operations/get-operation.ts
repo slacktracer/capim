@@ -1,5 +1,7 @@
+import { useTrackedPromise } from "../../composables/use-tracked-promise";
 import { core } from "../../core/core.js";
 import type { Operation } from "../../core/types/Operation.js";
+// import { EditableOperation } from "../../types/EditableOperation";
 import type { GetOperation } from "../../types/GetOperation.js";
 
 // let invalidateCount = 0;
@@ -9,20 +11,14 @@ export const getOperation: GetOperation = ({
   operationID,
   state,
 }) => {
-  // if (invalidate) {
-  //   invalidateCount += 1;
-  // }
-
-  state.runningAsyncFunctions[operationID] =
-    core.makeTrackedAsyncFunctionState<Operation>();
-
-  const trackedGetOperation = core.makeTrackedAsyncFunction<
-    { operationID: string },
-    Operation
-  >({
+  const trackedPromise = useTrackedPromise<{ operationID: string }, Operation>({
     asyncFunction: core.getOperation,
-    state: state.runningAsyncFunctions[operationID],
+    onFulfilled: (_input) => {},
+    onRejected: (_input) => {},
+    onSettled: () => {},
   });
 
-  trackedGetOperation({ operationID });
+  state.promises[operationID] = trackedPromise;
+
+  trackedPromise.run({ operationID });
 };

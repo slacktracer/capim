@@ -1,9 +1,8 @@
 <script lang="ts" setup>
 import { useRouter } from "vue-router";
 
-import { useRetrievedAt } from "../../composables/use-retrieved-at.js";
+// import { useRetrievedAt } from "../../composables/use-retrieved-at.js";
 import { core } from "../../core/core.js";
-import type { Operation } from "../../core/types/Operation.js";
 import { useOperationsStore } from "../../modules/operations/use-operations-store.js";
 import OperationListItem from "./OperationListItem.vue";
 import OperationsDatetimeRangeSelector from "./OperationsDatetimeRangeSelector.vue";
@@ -20,9 +19,9 @@ operationsStore.getOperations({
   to: operationsStore.datetimeRange[1],
 });
 
-const retrievedAt = useRetrievedAt<Operation[]>({
-  data: operationsStore.operations,
-});
+// const retrievedAt = useRetrievedAt<Operation[]>({
+//   value: operationsStore.operations,
+// });
 </script>
 
 <template>
@@ -50,7 +49,7 @@ const retrievedAt = useRetrievedAt<Operation[]>({
         "
       >
         Retrieved
-        {{ retrievedAt }}
+        <!--        {{ retrievedAt }}-->
         ago
       </div>
     </section>

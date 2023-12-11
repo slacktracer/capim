@@ -7,7 +7,7 @@ import { useEditableResource } from "../../composables/use-editable-resource.js"
 import { useRetrievedAt } from "../../composables/use-retrieved-at.js";
 import { core } from "../../core/core.js";
 import type { Operation } from "../../core/types/Operation.js";
-import type { TrackedAsyncFunctionState } from "../../core/types/TrackedAsyncFunctionState";
+import type { PromiseState } from "../../core/types/PromiseState.js";
 import { useAccountsStore } from "../../modules/accounts/use-accounts-store";
 import { useCategoriesStore } from "../../modules/categories/use-categories-store.js";
 import { formatAsLocalisedCurrency } from "../../modules/common/utils/format-as-localised-currency.js";
@@ -59,22 +59,19 @@ const categoryList: ComputedRef<CategorySelectOption[]> = computed(() =>
 // View is a function of state...
 let retrievedAt = operationID.value
   ? useRetrievedAt<Operation>({
-      data: operationsStore.runningAsyncFunctions[operationID.value],
+      value: operationsStore.promises[operationID.value],
     })
   : "";
 
 const editableOperation: EditableOperation = useEditableResource<
   EditableOperation,
   MakeEditableOperation,
-  TrackedAsyncFunctionState<Operation>
+  any
 >({
   makeEditableResource: makeEditableOperation,
   resource: operationID.value
-    ? operationsStore.runningAsyncFunctions[operationID.value]
-    : core.makeTrackedAsyncFunctionState({
-        data: makeEmptyOperation(),
-        ready: true,
-      }),
+    ? operationsStore.promises[operationID.value]
+    : { data: makeEmptyOperation() },
 });
 
 const amount = computed(() => {
@@ -179,25 +176,25 @@ const save = () => {
 
 const makeWatchCallback = (newOperation: boolean) => {
   if (newOperation) {
-    return (currentState: string) => {
-      if (currentState === "fulfilled") {
+    return (currentState: PromiseState) => {
+      if (currentState === core.promiseState.fulfilled) {
         Object.assign(
           editableOperation,
-          operationsStore.runningAsyncFunctions[operationID.value].data,
+          operationsStore.promises[operationID.value].value,
         );
 
         retrievedAt = operationID.value
           ? useRetrievedAt<Operation>({
-              data: operationsStore.runningAsyncFunctions[operationID.value],
+              value: operationsStore.promises[operationID.value],
             })
           : "";
 
         history.pushState({}, "", `/operations/${operationID.value}`);
       }
 
-      if (currentState === "rejected") {
+      if (currentState === core.promiseState.rejected) {
         operationsStore.deleteRunningAsyncFunction({
-          runningAsyncFunctionID: operationID.value,
+          promiseID: operationID.value,
         });
 
         operationID.value = "";
@@ -209,13 +206,11 @@ const makeWatchCallback = (newOperation: boolean) => {
 };
 
 watch(
-  () => operationsStore.runningAsyncFunctions[operationID.value]?.state,
+  () => operationsStore.promises[operationID.value]?.state,
   makeWatchCallback(!operationID.value),
 );
 
-const runningAsyncFunction = computed(
-  () => operationsStore.runningAsyncFunctions[operationID.value],
-);
+const promise = computed(() => operationsStore.promises[operationID.value]);
 </script>
 
 <template>
@@ -224,26 +219,22 @@ const runningAsyncFunction = computed(
       <h1>Operation</h1>
 
       <div
-        v-if="runningAsyncFunction?.error"
+        v-if="promise?.reason && 'message' in promise.reason"
         class="alert alert-danger"
         role="alert"
       >
-        {{ runningAsyncFunction?.error.message }}
+        {{ promise?.reason.message }}
       </div>
 
-      <div v-if="runningAsyncFunction?.loading">Loading operation...</div>
+      <div v-if="promise?.isPending">Loading operation...</div>
 
-      <div
-        v-if="
-          !runningAsyncFunction?.loading && runningAsyncFunction?.retrievedAt
-        "
-      >
+      <div v-if="!promise?.isPending && promise?.retrievedAt">
         Retrieved {{ retrievedAt }} ago
       </div>
     </section>
 
     <form @submit.prevent="save">
-      <fieldset :disabled="runningAsyncFunction?.loading">
+      <fieldset :disabled="promise?.isPending">
         <div class="operation">
           <div class="date">
             <label class="visually-hidden" for="date">Date</label>

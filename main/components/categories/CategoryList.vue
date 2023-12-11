@@ -1,15 +1,15 @@
 <script lang="ts" setup>
-import { useRetrievedAt } from "../../composables/use-retrieved-at.js";
-import type { Category } from "../../core/types/Category.js";
+// import { useRetrievedAt } from "../../composables/use-retrieved-at.js";
+// import type { Category } from "../../core/types/Category.js";
 import { useCategoriesStore } from "../../modules/categories/use-categories-store.js";
 
 const categoriesStore = useCategoriesStore();
 
 categoriesStore.getCategories();
 
-const retrievedAt = useRetrievedAt<Category[]>({
-  data: categoriesStore.categories,
-});
+// const retrievedAt = useRetrievedAt<Category[]>({
+//   data: categoriesStore.categories,
+// });
 </script>
 
 <template>
@@ -30,7 +30,7 @@ const retrievedAt = useRetrievedAt<Category[]>({
         "
       >
         Retrieved
-        {{ retrievedAt }}
+        <!--        {{ retrievedAt }}-->
         ago
       </div>
     </section>

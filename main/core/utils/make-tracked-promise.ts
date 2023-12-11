@@ -1,5 +1,5 @@
-import type { MakeTrackedPromise } from "../types/MakeTrackedPromise";
-import { promiseState } from "./promise-state";
+import type { MakeTrackedPromise } from "../types/MakeTrackedPromise.js";
+import { promiseState } from "./promise-state.js";
 
 export const makeTrackedPromise: MakeTrackedPromise = ({
   asyncFunction,
@@ -8,8 +8,8 @@ export const makeTrackedPromise: MakeTrackedPromise = ({
   onSettled,
 }) => {
   return {
-    get isUndefined() {
-      return this.state === promiseState.nil;
+    get isBlank() {
+      return this.state === promiseState.blank;
     },
 
     get isFulfilled() {
@@ -33,7 +33,11 @@ export const makeTrackedPromise: MakeTrackedPromise = ({
 
     reason: undefined,
 
+    retrievedAt: undefined,
+
     run(input) {
+      this.state = promiseState.pending;
+
       asyncFunction(input)
         .then((value) => {
           this.state = promiseState.fulfilled;
@@ -50,11 +54,13 @@ export const makeTrackedPromise: MakeTrackedPromise = ({
           onRejected?.(reason);
         })
         .finally(() => {
+          this.retrievedAt = new Date();
+
           onSettled?.();
         });
     },
 
-    state: promiseState.nil,
+    state: promiseState.blank,
 
     value: undefined,
   };
