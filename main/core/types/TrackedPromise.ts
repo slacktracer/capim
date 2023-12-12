@@ -7,8 +7,8 @@ export type TrackedPromise<Input, Output> = {
   isRejected: boolean;
   isSettled: boolean;
   reason: unknown;
-  retrievedAt: Date | undefined;
   run: (input: Input) => void;
+  settledAt: Date | undefined;
   state: PromiseState;
   value: Output | undefined;
 };

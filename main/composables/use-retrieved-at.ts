@@ -1,16 +1,19 @@
 import { formatDistanceToNowStrict } from "date-fns";
 import { ref, watch } from "vue";
 
-import type { UseRetrievedAt } from "../types/UseRetrievedAt";
+import type { UseRetrievedAt } from "../types/UseRetrievedAt.js";
 
-export const useRetrievedAt: UseRetrievedAt = ({ value }) => {
+export const useRetrievedAt: UseRetrievedAt = ({
+  dataObject,
+  datePropertyName,
+}) => {
   const retrievedAt = ref("");
 
   let intervalID: ReturnType<typeof setInterval>;
 
   const setRetrievedAtDistanceToNowStrict = () => {
     retrievedAt.value = formatDistanceToNowStrict(
-      value.retrievedAt || new Date(),
+      dataObject[datePropertyName] || new Date(),
     );
 
     if (intervalID) {
@@ -22,7 +25,7 @@ export const useRetrievedAt: UseRetrievedAt = ({ value }) => {
 
   setRetrievedAtDistanceToNowStrict();
 
-  watch(() => value.retrievedAt, setRetrievedAtDistanceToNowStrict);
+  watch(() => dataObject[datePropertyName], setRetrievedAtDistanceToNowStrict);
 
   return retrievedAt;
 };

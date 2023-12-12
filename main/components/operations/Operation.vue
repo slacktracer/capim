@@ -6,7 +6,6 @@ import { useRoute } from "vue-router";
 import { useEditableResource } from "../../composables/use-editable-resource.js";
 import { useRetrievedAt } from "../../composables/use-retrieved-at.js";
 import { core } from "../../core/core.js";
-import type { Operation } from "../../core/types/Operation.js";
 import type { PromiseState } from "../../core/types/PromiseState.js";
 import { useAccountsStore } from "../../modules/accounts/use-accounts-store";
 import { useCategoriesStore } from "../../modules/categories/use-categories-store.js";
@@ -58,8 +57,9 @@ const categoryList: ComputedRef<CategorySelectOption[]> = computed(() =>
 // other solution maybe to make this a computed... Make everything a computed!
 // View is a function of state...
 let retrievedAt = operationID.value
-  ? useRetrievedAt<Operation>({
-      value: operationsStore.promises[operationID.value],
+  ? useRetrievedAt({
+      dataObject: operationsStore.promises[operationID.value],
+      datePropertyName: "settledAt",
     })
   : "";
 
@@ -184,8 +184,9 @@ const makeWatchCallback = (newOperation: boolean) => {
         );
 
         retrievedAt = operationID.value
-          ? useRetrievedAt<Operation>({
-              value: operationsStore.promises[operationID.value],
+          ? useRetrievedAt({
+              dataObject: operationsStore.promises[operationID.value],
+              datePropertyName: "settledAt",
             })
           : "";
 
@@ -228,7 +229,7 @@ const promise = computed(() => operationsStore.promises[operationID.value]);
 
       <div v-if="promise?.isPending">Loading operation...</div>
 
-      <div v-if="!promise?.isPending && promise?.retrievedAt">
+      <div v-if="!promise?.isPending && promise?.settledAt">
         Retrieved {{ retrievedAt }} ago
       </div>
     </section>

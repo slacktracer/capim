@@ -33,8 +33,6 @@ export const makeTrackedPromise: MakeTrackedPromise = ({
 
     reason: undefined,
 
-    retrievedAt: undefined,
-
     run(input) {
       this.state = promiseState.pending;
 
@@ -54,11 +52,13 @@ export const makeTrackedPromise: MakeTrackedPromise = ({
           onRejected?.(reason);
         })
         .finally(() => {
-          this.retrievedAt = new Date();
+          this.settledAt = new Date();
 
           onSettled?.();
         });
     },
+
+    settledAt: undefined,
 
     state: promiseState.blank,
 

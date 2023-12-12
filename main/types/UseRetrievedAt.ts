@@ -1,7 +1,8 @@
 import type { Ref } from "vue";
 
-import type { TrackedPromise } from "../core/types/TrackedPromise";
+// type X<T, U extends keyof T> = T[U] extends Date ? U : never;
 
-export type UseRetrievedAt = <Data>(input: {
-  value: TrackedPromise<Readonly<Data>, any>;
+export type UseRetrievedAt = (input: {
+  dataObject: Record<string, any>;
+  datePropertyName: string;
 }) => Ref<string>;
