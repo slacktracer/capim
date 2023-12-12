@@ -1,12 +1,11 @@
 <script lang="ts" setup>
 import type { ComputedRef } from "vue";
-import { computed, ref, watch } from "vue";
+import { computed, ref } from "vue";
 import { useRoute } from "vue-router";
 
 import { useEditableResource } from "../../composables/use-editable-resource.js";
-import { useRetrievedAt } from "../../composables/use-retrieved-at.js";
+import { useLiveDistanceToNow } from "../../composables/use-live-distance-to-now";
 import { core } from "../../core/core.js";
-import type { PromiseState } from "../../core/types/PromiseState.js";
 import { useAccountsStore } from "../../modules/accounts/use-accounts-store";
 import { useCategoriesStore } from "../../modules/categories/use-categories-store.js";
 import { formatAsLocalisedCurrency } from "../../modules/common/utils/format-as-localised-currency.js";
@@ -54,14 +53,13 @@ const categoryList: ComputedRef<CategorySelectOption[]> = computed(() =>
   })),
 );
 
-// other solution maybe to make this a computed... Make everything a computed!
-// View is a function of state...
-let retrievedAt = operationID.value
-  ? useRetrievedAt({
-      dataObject: operationsStore.promises[operationID.value],
-      datePropertyName: "settledAt",
-    })
-  : "";
+const liveDistanceToNow = computed(
+  () =>
+    useLiveDistanceToNow({
+      object: operationsStore.promises[operationID.value],
+      propertyName: "settledAt",
+    }).value,
+);
 
 const editableOperation: EditableOperation = useEditableResource<
   EditableOperation,
@@ -165,6 +163,9 @@ const updateCategory = ({
 const save = () => {
   if (!operationID.value) {
     operationID.value = operationsStore.postOperation({
+      onFulfilled: () =>
+        history.pushState({}, "", `/operations/${operationID.value}`),
+
       operation: editableOperation,
     });
 
@@ -174,44 +175,9 @@ const save = () => {
   operationsStore.patchOperation({ operation: editableOperation });
 };
 
-const makeWatchCallback = (newOperation: boolean) => {
-  if (newOperation) {
-    return (currentState: PromiseState) => {
-      if (currentState === core.promiseState.fulfilled) {
-        Object.assign(
-          editableOperation,
-          operationsStore.promises[operationID.value].value,
-        );
-
-        retrievedAt = operationID.value
-          ? useRetrievedAt({
-              dataObject: operationsStore.promises[operationID.value],
-              datePropertyName: "settledAt",
-            })
-          : "";
-
-        history.pushState({}, "", `/operations/${operationID.value}`);
-      }
-
-      if (currentState === core.promiseState.rejected) {
-        operationsStore.deleteRunningAsyncFunction({
-          promiseID: operationID.value,
-        });
-
-        operationID.value = "";
-      }
-    };
-  }
-
-  return () => {};
-};
-
-watch(
-  () => operationsStore.promises[operationID.value]?.state,
-  makeWatchCallback(!operationID.value),
+const promise = computed(
+  () => operationsStore.promises[operationID.value] ?? {},
 );
-
-const promise = computed(() => operationsStore.promises[operationID.value]);
 </script>
 
 <template>
@@ -220,22 +186,22 @@ const promise = computed(() => operationsStore.promises[operationID.value]);
       <h1>Operation</h1>
 
       <div
-        v-if="promise?.reason && 'message' in promise.reason"
+        v-if="promise.reason && 'message' in promise.reason"
         class="alert alert-danger"
         role="alert"
       >
-        {{ promise?.reason.message }}
+        {{ promise.reason.message }}
       </div>
 
-      <div v-if="promise?.isPending">Loading operation...</div>
+      <div v-if="promise.isPending">Loading operation...</div>
 
-      <div v-if="!promise?.isPending && promise?.settledAt">
-        Retrieved {{ retrievedAt }} ago
+      <div v-if="!promise.isPending && promise.settledAt">
+        Retrieved {{ liveDistanceToNow }} ago
       </div>
     </section>
 
     <form @submit.prevent="save">
-      <fieldset :disabled="promise?.isPending">
+      <fieldset :disabled="promise.isPending">
         <div class="operation">
           <div class="date">
             <label class="visually-hidden" for="date">Date</label>
