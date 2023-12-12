@@ -12,8 +12,13 @@ export const patchOperation: PatchOperation = ({ operation, state }) => {
     Operation
   >({
     asyncFunction: core.patchOperation,
-    onFulfilled: (_input) => {},
+
+    onFulfilled: (value) => {
+      Object.assign(operation, value);
+    },
+
     onRejected: (_input) => {},
+
     onSettled: () => {},
   });
 

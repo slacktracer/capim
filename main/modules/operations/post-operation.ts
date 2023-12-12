@@ -4,7 +4,11 @@ import type { Operation } from "../../core/types/Operation";
 import type { EditableOperation } from "../../types/EditableOperation";
 import type { PostOperation } from "../../types/PostOperation";
 
-export const postOperation: PostOperation = ({ operation, state }) => {
+export const postOperation: PostOperation = ({
+  onFulfilled,
+  operation,
+  state,
+}) => {
   const operationID = core.makeUUID();
 
   operation.operationID = operationID;
@@ -14,8 +18,15 @@ export const postOperation: PostOperation = ({ operation, state }) => {
     Operation
   >({
     asyncFunction: core.postOperation,
-    onFulfilled: (_input) => {},
-    onRejected: (_input) => {},
+
+    onFulfilled: (value) => {
+      Object.assign(operation, value);
+
+      onFulfilled?.(value);
+    },
+
+    onRejected: (_reason) => {},
+
     onSettled: () => {},
   });
 
