@@ -71,7 +71,7 @@ const editableOperation: EditableOperation = useEditableResource<
   makeEditableResource: makeEditableOperation,
   resource: operationID.value
     ? operationsStore.promises[operationID.value]
-    : { data: makeEmptyOperation() },
+    : { value: makeEmptyOperation(), isFulfilled: true },
 });
 
 const amount = computed(() => {
