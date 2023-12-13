@@ -4,8 +4,8 @@ const read: unique symbol = Symbol("read");
 const update: unique symbol = Symbol("update");
 
 export const promiseAction = {
-  notSet,
   create,
+  notSet,
   read,
   update,
 } as const;
