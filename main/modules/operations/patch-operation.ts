@@ -4,11 +4,14 @@ import type { Operation } from "../../core/types/Operation";
 import type { EditableOperation } from "../../types/EditableOperation";
 import type { PatchOperation } from "../../types/PatchOperation";
 
-export const patchOperation: PatchOperation = ({ operation, state }) => {
-  const { operationID } = operation;
+export const patchOperation: PatchOperation = ({
+  editableOperation,
+  state,
+}) => {
+  const { operationID } = editableOperation;
 
   const trackedPromise = useTrackedPromise<
-    { operation: EditableOperation },
+    { editableOperation: EditableOperation },
     Operation
   >({
     action: core.promiseAction.update,
@@ -16,7 +19,7 @@ export const patchOperation: PatchOperation = ({ operation, state }) => {
     asyncFunction: core.patchOperation,
 
     onFulfilled: (value) => {
-      Object.assign(operation, value);
+      Object.assign(editableOperation, value);
     },
 
     onRejected: (_input) => {},
@@ -26,5 +29,5 @@ export const patchOperation: PatchOperation = ({ operation, state }) => {
 
   state.promises[operationID] = trackedPromise;
 
-  trackedPromise.run({ operation });
+  trackedPromise.run({ editableOperation });
 };

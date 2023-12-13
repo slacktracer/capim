@@ -5,16 +5,16 @@ import type { EditableOperation } from "../../types/EditableOperation";
 import type { PostOperation } from "../../types/PostOperation";
 
 export const postOperation: PostOperation = ({
+  editableOperation,
   onFulfilled,
-  operation,
   state,
 }) => {
   const operationID = core.makeUUID();
 
-  operation.operationID = operationID;
+  editableOperation.operationID = operationID;
 
   const trackedPromise = useTrackedPromise<
-    { operation: EditableOperation },
+    { editableOperation: EditableOperation },
     Operation
   >({
     action: core.promiseAction.create,
@@ -22,7 +22,7 @@ export const postOperation: PostOperation = ({
     asyncFunction: core.postOperation,
 
     onFulfilled: (value) => {
-      Object.assign(operation, value);
+      Object.assign(editableOperation, value);
 
       onFulfilled?.(value);
     },
@@ -34,7 +34,7 @@ export const postOperation: PostOperation = ({
 
   state.promises[operationID] = trackedPromise;
 
-  trackedPromise.run({ operation });
+  trackedPromise.run({ editableOperation });
 
   return operationID;
 };

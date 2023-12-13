@@ -166,13 +166,13 @@ const save = () => {
       onFulfilled: () =>
         history.pushState({}, "", `/operations/${operationID.value}`),
 
-      operation: editableOperation,
+      editableOperation,
     });
 
     return;
   }
 
-  operationsStore.patchOperation({ operation: editableOperation });
+  operationsStore.patchOperation({ editableOperation });
 };
 
 const promise = computed(

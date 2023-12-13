@@ -4,15 +4,15 @@ import { patch } from "./http/patch.js";
 import type { Operation } from "./types/Operation.js";
 
 export const patchOperation = async ({
-  operation,
+  editableOperation,
 }: {
-  operation: EditableOperation;
+  editableOperation: EditableOperation;
 }): Promise<Operation> | never => {
   try {
-    const { operationID } = operation;
+    const { operationID } = editableOperation;
 
     const response = await patch(`operations/${operationID}`, {
-      json: operation,
+      json: editableOperation,
     }).json<Operation>();
 
     return response;

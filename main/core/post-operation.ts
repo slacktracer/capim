@@ -4,15 +4,15 @@ import { post } from "./http/post.js";
 import type { Operation } from "./types/Operation.js";
 
 export const postOperation = async ({
-  operation,
+  editableOperation,
 }: {
-  operation: EditableOperation;
+  editableOperation: EditableOperation;
 }): Promise<Operation> | never => {
   try {
-    const { operationID } = operation;
+    const { operationID } = editableOperation;
 
     const response = await post(`operations/${operationID}`, {
-      json: operation,
+      json: editableOperation,
     }).json<Operation>();
 
     return response;
