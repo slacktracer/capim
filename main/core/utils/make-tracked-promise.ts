@@ -1,15 +1,15 @@
 import type { MakeTrackedPromise } from "../types/MakeTrackedPromise.js";
-import { promiseAction } from "./promise-action";
 import { promiseState } from "./promise-state.js";
 
 export const makeTrackedPromise: MakeTrackedPromise = ({
+  action,
   asyncFunction,
   onFulfilled,
   onRejected,
   onSettled,
 }) => {
   return {
-    action: promiseAction.notSet,
+    action,
 
     get isBlank() {
       return this.state === promiseState.blank;

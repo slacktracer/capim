@@ -25,6 +25,7 @@ export { getSearchParamsFromURL } from "./utils/get-search-params-from-url.js";
 export { isUserLoggedIn } from "./utils/is-user-logged-in.js";
 export { makeTrackedPromise } from "./utils/make-tracked-promise";
 export { makeUUID } from "./utils/make-uuid.js";
+export { promiseAction } from "./utils/promise-action";
 export { promiseState } from "./utils/promise-state";
 export { selectInputContent } from "./utils/select-input-content.js";
 export { wrapWithRetrievedAt } from "./utils/wrap-with-retrieved-at.js";

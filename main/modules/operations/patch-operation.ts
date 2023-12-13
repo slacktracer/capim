@@ -11,6 +11,8 @@ export const patchOperation: PatchOperation = ({ operation, state }) => {
     { operation: EditableOperation },
     Operation
   >({
+    action: core.promiseAction.update,
+
     asyncFunction: core.patchOperation,
 
     onFulfilled: (value) => {

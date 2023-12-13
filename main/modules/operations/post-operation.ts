@@ -17,6 +17,8 @@ export const postOperation: PostOperation = ({
     { operation: EditableOperation },
     Operation
   >({
+    action: core.promiseAction.create,
+
     asyncFunction: core.postOperation,
 
     onFulfilled: (value) => {
