@@ -1,4 +1,5 @@
 import type { MakeTrackedPromise } from "../types/MakeTrackedPromise.js";
+import { promiseAction } from "./promise-action";
 import { promiseState } from "./promise-state.js";
 
 export const makeTrackedPromise: MakeTrackedPromise = ({
@@ -8,6 +9,8 @@ export const makeTrackedPromise: MakeTrackedPromise = ({
   onSettled,
 }) => {
   return {
+    action: promiseAction.notSet,
+
     get isBlank() {
       return this.state === promiseState.blank;
     },
@@ -44,6 +47,7 @@ export const makeTrackedPromise: MakeTrackedPromise = ({
 
           onFulfilled?.(value);
         })
+
         .catch((reason) => {
           this.state = promiseState.rejected;
 
@@ -51,6 +55,7 @@ export const makeTrackedPromise: MakeTrackedPromise = ({
 
           onRejected?.(reason);
         })
+
         .finally(() => {
           this.settledAt = new Date();
 
