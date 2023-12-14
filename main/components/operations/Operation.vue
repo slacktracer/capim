@@ -4,7 +4,6 @@ import { computed, ref } from "vue";
 import { useRoute } from "vue-router";
 
 import { useEditableResource } from "../../composables/use-editable-resource.js";
-import { useLiveDistanceToNow } from "../../composables/use-live-distance-to-now";
 import { core } from "../../core/core.js";
 import { useAccountsStore } from "../../modules/accounts/use-accounts-store";
 import { useCategoriesStore } from "../../modules/categories/use-categories-store.js";
@@ -19,6 +18,7 @@ import type { MakeEditableOperation } from "../../types/MakeEditableOperation.js
 import AmountInput from "../common/AmountInput.vue";
 import Debug from "../common/Debug.vue";
 import MyCombobox from "../common/my-combobox/MyCombobox.vue";
+import PromiseState from "../common/PromiseState.vue";
 
 const accountsStore = useAccountsStore();
 
@@ -51,14 +51,6 @@ const categoryList: ComputedRef<CategorySelectOption[]> = computed(() =>
     group,
     name,
   })),
-);
-
-const liveDistanceToNow = computed(
-  () =>
-    useLiveDistanceToNow({
-      object: operationsStore.promises[operationID.value],
-      propertyName: "settledAt",
-    }).value,
 );
 
 const editableOperation: EditableOperation = useEditableResource<
@@ -185,19 +177,7 @@ const promise = computed(
     <section class="header">
       <h1>Operation</h1>
 
-      <div
-        v-if="promise.reason && 'message' in promise.reason"
-        class="alert alert-danger"
-        role="alert"
-      >
-        {{ promise.reason.message }}
-      </div>
-
-      <div v-if="promise.isPending">Loading operation...</div>
-
-      <div v-if="!promise.isPending && promise.settledAt">
-        Retrieved {{ liveDistanceToNow }} ago
-      </div>
+      <PromiseState :promise="promise" resource-name="operation"></PromiseState>
     </section>
 
     <form @submit.prevent="save">
