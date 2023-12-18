@@ -1,3 +1,4 @@
+import { format } from "date-fns";
 import { toRaw } from "vue";
 
 import type { MakeEditableOperation } from "../../types/MakeEditableOperation.js";
@@ -9,7 +10,7 @@ export const makeEditableOperation: MakeEditableOperation = ({
 
   return {
     ...rawOperation,
-    atDate: rawOperation.at.slice(0, 10),
-    atTime: rawOperation.at.slice(11, 16),
+    atDate: format(new Date(operation.at), "yyyy-MM-dd"),
+    atTime: format(new Date(rawOperation.at), "HH:mm"),
   };
 };

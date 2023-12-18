@@ -1,3 +1,5 @@
+import { format } from "date-fns";
+
 import type { Operation } from "./types/Operation.js";
 
 export const makeOperationsByDate = ({
@@ -8,7 +10,7 @@ export const makeOperationsByDate = ({
   const operationsByDate: [string, Operation[]][] = Object.entries(
     operations.reduce(
       (operationsByDate: Record<string, Operation[]>, operation: Operation) => {
-        const date = operation.at.substring(0, 10);
+        const date = format(new Date(operation.at), "yyyy-MM-dd");
 
         if (operationsByDate[date] === undefined) {
           operationsByDate[date] = [];
