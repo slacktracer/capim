@@ -12,7 +12,7 @@ export const makeClickHandler =
 
       if (role === roles.option) {
         if (target instanceof HTMLLIElement) {
-          goToListItem({ listItem: target });
+          goToListItem({ listItem: target, noDebounce: true });
         }
       }
 

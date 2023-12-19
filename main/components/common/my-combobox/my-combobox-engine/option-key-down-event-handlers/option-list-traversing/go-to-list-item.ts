@@ -6,7 +6,13 @@ const debouncedAddAriaSelectedAttribute = makeDebouncedAddAriaSelectedAttribute(
 
 let previouslySelectedListItem: HTMLLIElement;
 
-export const goToListItem = ({ listItem }: { listItem: HTMLLIElement }) => {
+export const goToListItem = ({
+  listItem,
+  noDebounce = false,
+}: {
+  listItem: HTMLLIElement;
+  noDebounce?: boolean;
+}) => {
   listItem.scrollIntoView({ block: "nearest" });
 
   const listbox = listItem.parentNode;
@@ -19,5 +25,9 @@ export const goToListItem = ({ listItem }: { listItem: HTMLLIElement }) => {
 
   listItem.classList.add("aria-selected");
 
-  debouncedAddAriaSelectedAttribute({ listItem, previouslySelectedListItem });
+  debouncedAddAriaSelectedAttribute({
+    listItem,
+    noDelay: noDebounce,
+    previouslySelectedListItem,
+  });
 };

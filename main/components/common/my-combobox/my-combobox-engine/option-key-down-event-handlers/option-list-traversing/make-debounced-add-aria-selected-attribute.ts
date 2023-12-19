@@ -7,14 +7,14 @@ export const makeDebouncedAddAriaSelectedAttribute = ({
 
   return ({
     listItem,
+    noDelay = false,
     previouslySelectedListItem,
   }: {
     listItem: HTMLLIElement;
+    noDelay?: boolean;
     previouslySelectedListItem?: HTMLLIElement;
   }) => {
-    clearTimeout(timer);
-
-    timer = setTimeout(() => {
+    const addAriaSelectedAttribute = () => {
       if (previouslySelectedListItem?.hasAttribute("aria-selected")) {
         previouslySelectedListItem.removeAttribute("aria-selected");
       }
@@ -26,6 +26,16 @@ export const makeDebouncedAddAriaSelectedAttribute = ({
       if (combobox instanceof HTMLInputElement) {
         combobox.setAttribute("aria-activedescendant", listItem.id);
       }
-    }, delay);
+    };
+
+    clearTimeout(timer);
+
+    if (noDelay) {
+      addAriaSelectedAttribute();
+
+      return;
+    }
+
+    timer = setTimeout(addAriaSelectedAttribute, delay);
   };
 };
