@@ -16,6 +16,7 @@ operationsStore.setDatetimeRange({ from, to });
 
 operationsStore.getOperations({
   from: operationsStore.datetimeRange[0],
+  replace: true,
   to: operationsStore.datetimeRange[1],
 });
 

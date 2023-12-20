@@ -28,10 +28,16 @@ const operationsStore = useOperationsStore();
 
 const route = useRoute();
 
+const newOperation = ref(false);
+
 const operationID = ref("");
 
-if (typeof route.params.id === "string" && route.params.id !== "new") {
-  operationID.value = route.params.id;
+if (typeof route.params.id === "string") {
+  if (route.params.id === "new") {
+    newOperation.value = true;
+  } else {
+    operationID.value = route.params.id;
+  }
 }
 
 if (operationID.value) {
@@ -153,10 +159,13 @@ const updateCategory = ({
 };
 
 const save = () => {
-  if (!operationID.value) {
+  if (newOperation.value) {
     operationID.value = operationsStore.postOperation({
-      onFulfilled: () =>
-        history.pushState({}, "", `/operations/${operationID.value}`),
+      onFulfilled: () => {
+        history.replaceState({}, "", `/operations/${operationID.value}`);
+
+        newOperation.value = false;
+      },
 
       editableOperation,
     });

@@ -9,10 +9,11 @@ let invalidateCount = 0;
 export const getOperations: GetOperations = async ({
   from,
   invalidate,
+  replace = false,
   to,
   state,
 }) => {
-  await setSearchParams({ data: { from, to }, router: state.router });
+  await setSearchParams({ data: { from, to }, replace, router: state.router });
 
   if (invalidate) {
     invalidateCount += 1;
