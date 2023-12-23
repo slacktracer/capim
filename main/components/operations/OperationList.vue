@@ -16,24 +16,36 @@ const getOperations = ({
   from,
   replace = false,
   to,
+  updateSearchParams = true,
 }: {
   from: string;
   replace?: boolean;
   to: string;
+  updateSearchParams?: boolean;
 }) => {
   operationListID.value = operationsStore.getOperations({
     from,
     replace,
     to,
+    updateSearchParams,
   });
 };
 
 const operationListID = ref("");
 
+let firstWatch = true;
+
 watch(
   () => route.query,
   (locationQueryValue) => {
-    const { from, to } = locationQueryValue;
+    let from;
+    let to;
+
+    if (Object.keys(locationQueryValue).length) {
+      ({ from, to } = locationQueryValue);
+    } else {
+      [from, to] = operationsStore.datetimeRange;
+    }
 
     if (
       !Array.isArray(from) &&
@@ -43,7 +55,19 @@ watch(
     ) {
       operationsStore.setDatetimeRange({ from, to });
 
-      getOperations({ from, to });
+      let replace = false;
+
+      let updateSearchParams = false;
+
+      if (firstWatch) {
+        replace = true;
+
+        updateSearchParams = true;
+
+        firstWatch = false;
+      }
+
+      getOperations({ from, replace, to, updateSearchParams });
     }
   },
   { immediate: true },

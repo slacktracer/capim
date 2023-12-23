@@ -9,10 +9,13 @@ import { getOperationListID } from "./get-operation-list-id";
 export const getOperations: GetOperations = ({
   from,
   replace = false,
-  to,
+  updateSearchParams = true,
   state,
+  to,
 }) => {
-  setSearchParams({ data: { from, to }, replace, router: state.router });
+  if (updateSearchParams) {
+    setSearchParams({ data: { from, to }, replace, router: state.router });
+  }
 
   const trackedPromise = useTrackedPromise<
     { from: string | undefined; to: string | undefined },
