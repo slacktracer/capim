@@ -1,12 +1,12 @@
 import { reactive, watch } from "vue";
 
 import { core } from "../core/core.js";
-import type { useTrackedPromise } from "./use-tracked-promise";
+import type { TrackedPromise } from "../core/types/TrackedPromise";
 
 export const useEditableResource = <
   EditableResource,
   MakeEditableResource extends (...args: any[]) => any,
-  Resource extends ReturnType<typeof useTrackedPromise>,
+  Resource extends TrackedPromise<unknown, any>,
 >({
   makeEditableResource,
   resource,

@@ -21,10 +21,6 @@ export const patchOperation: PatchOperation = ({
     onFulfilled: (value) => {
       Object.assign(editableOperation, value);
     },
-
-    onRejected: (_input) => {},
-
-    onSettled: () => {},
   });
 
   state.promises[operationID] = trackedPromise;

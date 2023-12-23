@@ -22,12 +22,12 @@ export const getOperations: GetOperations = ({
     Operation[] & { byDate?: OperationsByDate }
   >({
     action: core.promiseAction.read,
+
     asyncFunction: core.getOperations,
+
     onFulfilled: (operations) => {
       operations.byDate = core.makeOperationsByDate({ operations });
     },
-    onRejected: (_input) => {},
-    onSettled: () => {},
   });
 
   const operationListID = getOperationListID({ from, to });

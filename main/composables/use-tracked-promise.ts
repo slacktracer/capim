@@ -12,9 +12,9 @@ export const useTrackedPromise = <Input, Output>({
 }: {
   action: PromiseAction;
   asyncFunction: (input: Input) => Promise<Output> | never;
-  onFulfilled: (input: Output) => any;
-  onRejected: (input: unknown) => any;
-  onSettled: () => any;
+  onFulfilled?: (input: Output) => void;
+  onRejected?: (input: unknown) => void;
+  onSettled?: () => void;
 }) => {
   const trackedPromise = core.makeTrackedPromise<Input, Output>({
     action,

@@ -6,10 +6,8 @@ import type { GetOperation } from "../../types/GetOperation.js";
 export const getOperation: GetOperation = ({ operationID, state }) => {
   const trackedPromise = useTrackedPromise<{ operationID: string }, Operation>({
     action: core.promiseAction.read,
+
     asyncFunction: core.getOperation,
-    onFulfilled: (_input) => {},
-    onRejected: (_input) => {},
-    onSettled: () => {},
   });
 
   state.promises[operationID] = trackedPromise;

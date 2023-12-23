@@ -26,10 +26,6 @@ export const postOperation: PostOperation = ({
 
       onFulfilled?.(value);
     },
-
-    onRejected: (_reason) => {},
-
-    onSettled: () => {},
   });
 
   state.promises[operationID] = trackedPromise;
