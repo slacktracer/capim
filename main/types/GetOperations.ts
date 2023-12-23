@@ -6,4 +6,4 @@ export type GetOperations = (input: {
   replace?: boolean;
   to?: string | undefined;
   state: OperationsStoreState;
-}) => Promise<void>;
+}) => string;

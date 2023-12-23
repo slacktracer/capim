@@ -1,26 +1,37 @@
+import { useTrackedPromise } from "../../composables/use-tracked-promise.js";
+import { core } from "../../core/core.js";
 import type { Operation } from "../../core/types/Operation.js";
+import type { OperationsByDate } from "../../core/types/OperationsByDate";
 import type { GetOperations } from "../../types/GetOperations.js";
-import { newLoadDataIntoState } from "../common/utils/new-load-data-into-state.js";
 import { setSearchParams } from "../common/utils/set-search-params.js";
-import { memoisedGetOperations } from "./memoised-get-operations.js";
+import { getOperationListID } from "./get-operation-list-id";
 
-let invalidateCount = 0;
-
-export const getOperations: GetOperations = async ({
+export const getOperations: GetOperations = ({
   from,
-  invalidate,
   replace = false,
   to,
   state,
 }) => {
-  await setSearchParams({ data: { from, to }, replace, router: state.router });
+  setSearchParams({ data: { from, to }, replace, router: state.router });
 
-  if (invalidate) {
-    invalidateCount += 1;
-  }
-
-  newLoadDataIntoState<Operation[]>({
-    functionToCall: () => memoisedGetOperations({ from, to, invalidateCount }),
-    stateToUpdate: state.operations,
+  const trackedPromise = useTrackedPromise<
+    { from: string | undefined; to: string | undefined },
+    Operation[] & { byDate?: OperationsByDate }
+  >({
+    action: core.promiseAction.read,
+    asyncFunction: core.getOperations,
+    onFulfilled: (operations) => {
+      operations.byDate = core.makeOperationsByDate({ operations });
+    },
+    onRejected: (_input) => {},
+    onSettled: () => {},
   });
+
+  const operationListID = getOperationListID({ from, to });
+
+  state.promises[operationListID] = trackedPromise;
+
+  trackedPromise.run({ from, to });
+
+  return operationListID;
 };

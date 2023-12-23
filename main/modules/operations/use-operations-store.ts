@@ -1,5 +1,5 @@
 import { defineStore } from "pinia";
-import { computed, reactive, readonly, toRefs } from "vue";
+import { reactive, readonly, toRefs } from "vue";
 import { useRouter } from "vue-router";
 
 import { core } from "../../core/core.js";
@@ -47,12 +47,6 @@ export const useOperationsStore = defineStore("operations", () => {
     ),
   };
 
-  const operationsByDate = computed(() =>
-    core.makeOperationsByDate({
-      operations: state.operations.data ?? [],
-    }),
-  );
-
   const $reset = () =>
     void Object.assign(state, getInitialOperationsStoreState({ router }));
 
@@ -62,6 +56,5 @@ export const useOperationsStore = defineStore("operations", () => {
     $reset,
     ...actions,
     ...toRefs(readonly(state)),
-    operationsByDate,
   };
 });

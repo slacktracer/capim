@@ -1,13 +1,14 @@
 import { format } from "date-fns";
 
 import type { Operation } from "./types/Operation.js";
+import type { OperationsByDate } from "./types/OperationsByDate";
 
 export const makeOperationsByDate = ({
   operations,
 }: {
   operations: Operation[];
 }) => {
-  const operationsByDate: [string, Operation[]][] = Object.entries(
+  const operationsByDate: OperationsByDate = Object.entries(
     operations.reduce(
       (operationsByDate: Record<string, Operation[]>, operation: Operation) => {
         const date = format(new Date(operation.at), "yyyy-MM-dd");

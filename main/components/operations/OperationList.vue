@@ -1,28 +1,64 @@
 <script lang="ts" setup>
-import { useRouter } from "vue-router";
+import { computed, ref, unref, watch } from "vue";
+import { useRoute, useRouter } from "vue-router";
 
-import { useRetrievedAt } from "../../composables/use-retrieved-at.js";
-import { core } from "../../core/core.js";
 import { useOperationsStore } from "../../modules/operations/use-operations-store.js";
+import type { TrackedPromiseOfOperations } from "../../types/TrackedPromiseOfOperations";
+import PromiseState from "../common/PromiseState.vue";
 import OperationListItem from "./OperationListItem.vue";
 import OperationsDatetimeRangeSelector from "./OperationsDatetimeRangeSelector.vue";
 
 const operationsStore = useOperationsStore();
+const route = useRoute();
 const router = useRouter();
 
-const { from, to } = core.getSearchParamsFromURL();
+const getOperations = ({
+  from,
+  replace = false,
+  to,
+}: {
+  from: string;
+  replace?: boolean;
+  to: string;
+}) => {
+  operationListID.value = operationsStore.getOperations({
+    from,
+    replace,
+    to,
+  });
+};
 
-operationsStore.setDatetimeRange({ from, to });
+const operationListID = ref("");
 
-operationsStore.getOperations({
-  from: operationsStore.datetimeRange[0],
-  replace: true,
-  to: operationsStore.datetimeRange[1],
-});
+watch(
+  () => route.query,
+  (locationQueryValue) => {
+    const { from, to } = locationQueryValue;
 
-const retrievedAt = useRetrievedAt({
-  dataObject: operationsStore.operations,
-  datePropertyName: "retrievedAt",
+    if (
+      !Array.isArray(from) &&
+      from !== null &&
+      !Array.isArray(to) &&
+      to !== null
+    ) {
+      operationsStore.setDatetimeRange({ from, to });
+
+      getOperations({ from, to });
+    }
+  },
+  { immediate: true },
+);
+
+const trackedPromiseOfOperations = computed(
+  () =>
+    (operationsStore.promises[operationListID.value] ||
+      []) as TrackedPromiseOfOperations,
+);
+
+const operationsByDate = computed(() => {
+  const promise = unref(trackedPromiseOfOperations);
+
+  return Array.isArray(promise.value?.byDate) ? promise.value?.byDate : [];
 });
 </script>
 
@@ -36,31 +72,19 @@ const retrievedAt = useRetrievedAt({
         </button>
       </h1>
 
-      <OperationsDatetimeRangeSelector />
+      <OperationsDatetimeRangeSelector
+        :operations="trackedPromiseOfOperations"
+        @search="getOperations"
+      />
 
-      <div v-if="operationsStore.operations.error">
-        {{ operationsStore.operations.error.message }}
-      </div>
-
-      <div v-if="operationsStore.operations.loading">Loading operations...</div>
-
-      <div
-        v-if="
-          !operationsStore.operations.loading &&
-          operationsStore.operations.retrievedAt
-        "
-      >
-        Retrieved
-        {{ retrievedAt }}
-        ago
-      </div>
+      <PromiseState
+        :promise="trackedPromiseOfOperations"
+        resource-name="operations"
+      ></PromiseState>
     </section>
 
     <section>
-      <div
-        v-for="[date, operations] in operationsStore.operationsByDate"
-        :key="date"
-      >
+      <div v-for="[date, operations] in operationsByDate" :key="date">
         <div class="date">
           {{ date }}
         </div>

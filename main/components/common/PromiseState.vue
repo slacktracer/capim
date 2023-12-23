@@ -6,7 +6,7 @@ import { core } from "../../core/core.js";
 import type { TrackedPromise } from "../../core/types/TrackedPromise";
 
 const props = defineProps<{
-  promise: TrackedPromise<unknown, unknown>;
+  promise: TrackedPromise<any, unknown>;
   resourceName: string;
 }>();
 

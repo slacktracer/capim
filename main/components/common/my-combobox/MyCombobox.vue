@@ -2,10 +2,10 @@
 import type { Ref } from "vue";
 import { computed, onMounted, onUnmounted, ref, toRef, watch } from "vue";
 
-import { makeToggleCombobox } from "./make-toggle-combobox";
+import { makeToggleCombobox } from "./make-toggle-combobox.js";
 import { boot } from "./my-combobox-engine/boot.js";
 import type { OnOptionSelected } from "./my-combobox-engine/types/OnOptionSelected.js";
-import { capitalise } from "./my-combobox-engine/utils/capitalise";
+import { capitalise } from "./my-combobox-engine/utils/capitalise.js";
 
 const emit = defineEmits<{
   optionSelected: [{ label: string; value: string | undefined }];
