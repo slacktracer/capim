@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { computed, ref, unref, watch } from "vue";
+import { computed, onBeforeUpdate, ref, unref, watch } from "vue";
 import type { Router } from "vue-router";
 import { useRoute, useRouter } from "vue-router";
 
@@ -8,7 +8,8 @@ import { useOperationsStore } from "../../modules/operations/use-operations-stor
 import type { TrackedPromiseOfOperations } from "../../types/TrackedPromiseOfOperations";
 import PromiseState from "../common/PromiseState.vue";
 import { getFromAndTo } from "./operation-list/get-from-and-to.js";
-import { getOperations } from "./operation-list/get-operations.js";
+import { handleSearchParamsChange } from "./operation-list/handle-search-params-change.js";
+import { search } from "./operation-list/search.js";
 import OperationListItem from "./OperationListItem.vue";
 import OperationsDatetimeRangeSelector from "./OperationsDatetimeRangeSelector.vue";
 
@@ -22,31 +23,37 @@ const to = ref("");
 
 const operationListID = ref("");
 
-let firstWatch = true;
+setSearchParams({
+  data: getFromAndTo(route.query),
+  replace: true,
+  router: operationsStore.router as Router,
+});
+
+({
+  from: from.value,
+  operationListID: operationListID.value,
+  to: to.value,
+} = handleSearchParamsChange(route.query));
+
+let updatedOnce = false;
+
+onBeforeUpdate(() => {
+  if (!updatedOnce) {
+    updatedOnce = true;
+  }
+});
 
 watch(
   () => route.query,
   (locationQuery) => {
-    const fromAndTo = getFromAndTo(locationQuery);
-
-    ({ from: from.value, to: to.value } = fromAndTo);
-
-    if (firstWatch) {
-      setSearchParams({
-        data: fromAndTo,
-        replace: true,
-        router: operationsStore.router as Router,
-      });
-
-      firstWatch = false;
+    if (updatedOnce) {
+      ({
+        from: from.value,
+        operationListID: operationListID.value,
+        to: to.value,
+      } = handleSearchParamsChange(locationQuery));
     }
-
-    operationListID.value = getOperations({
-      from: unref(from),
-      to: unref(to),
-    });
   },
-  { immediate: true },
 );
 
 const trackedPromiseOfOperations = computed(
@@ -61,11 +68,13 @@ const operationsByDate = computed(() => {
   return Array.isArray(promise.value?.byDate) ? promise.value.byDate : [];
 });
 
-const onSearch = ({ from, to }: { from: string; to: string }) =>
-  setSearchParams({
-    data: { from, to },
-    router: operationsStore.router as Router,
-  });
+const onSearch = ({ from, to }: { from: string; to: string }) => {
+  const searchID = search({ from, to });
+
+  if (searchID) {
+    operationListID.value = searchID;
+  }
+};
 </script>
 
 <template>

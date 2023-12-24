@@ -28,8 +28,8 @@ watch(
 
 const search = () => {
   emit("search", {
-    from: unref(from),
-    to: unref(to),
+    from: unref(from) || "",
+    to: unref(to) || "",
   });
 };
 </script>

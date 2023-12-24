@@ -14,21 +14,11 @@ export const setSearchParams = ({
 }) => {
   const currentRoute = unref(router.currentRoute);
 
-  const currentSearchParams = currentRoute.query;
-
-  const newSearchParams = core.filterOutFalsyEntries({ object: data });
-
-  const searchParamsAreUpToDate = Object.keys(newSearchParams).every(
-    (key) => currentSearchParams[key] === newSearchParams[key],
-  );
-
-  if (!searchParamsAreUpToDate) {
-    router[replace ? "replace" : "push"]({
-      path: currentRoute.path,
-      query: {
-        ...currentRoute.query,
-        ...core.filterOutFalsyEntries({ object: data }),
-      },
-    });
-  }
+  router[replace ? "replace" : "push"]({
+    path: currentRoute.path,
+    query: {
+      ...currentRoute.query,
+      ...core.filterOutFalsyEntries({ object: data }),
+    },
+  });
 };
