@@ -1,5 +1,12 @@
 <script lang="ts" setup>
-import { computed, onBeforeUpdate, ref, unref, watch } from "vue";
+import {
+  computed,
+  onBeforeMount,
+  onBeforeUpdate,
+  ref,
+  unref,
+  watch,
+} from "vue";
 import type { Router } from "vue-router";
 import { useRoute, useRouter } from "vue-router";
 
@@ -21,6 +28,8 @@ const from = ref("");
 
 const to = ref("");
 
+console.log("setup");
+
 const operationListID = ref("");
 
 setSearchParams({
@@ -38,6 +47,12 @@ setSearchParams({
 let updatedOnce = false;
 
 onBeforeUpdate(() => {
+  if (!updatedOnce) {
+    updatedOnce = true;
+  }
+});
+
+onBeforeMount(() => {
   if (!updatedOnce) {
     updatedOnce = true;
   }
