@@ -1,12 +1,5 @@
 <script lang="ts" setup>
-import {
-  computed,
-  onBeforeMount,
-  onBeforeUpdate,
-  ref,
-  unref,
-  watch,
-} from "vue";
+import { computed, onBeforeMount, ref, unref, watch } from "vue";
 import type { Router } from "vue-router";
 import { useRoute, useRouter } from "vue-router";
 
@@ -28,8 +21,6 @@ const from = ref("");
 
 const to = ref("");
 
-console.log("setup");
-
 const operationListID = ref("");
 
 setSearchParams({
@@ -44,24 +35,18 @@ setSearchParams({
   to: to.value,
 } = handleSearchParamsChange(route.query));
 
-let updatedOnce = false;
-
-onBeforeUpdate(() => {
-  if (!updatedOnce) {
-    updatedOnce = true;
-  }
-});
+let doWatch = false;
 
 onBeforeMount(() => {
-  if (!updatedOnce) {
-    updatedOnce = true;
+  if (!doWatch) {
+    doWatch = true;
   }
 });
 
 watch(
   () => route.query,
   (locationQuery) => {
-    if (updatedOnce) {
+    if (doWatch) {
       ({
         from: from.value,
         operationListID: operationListID.value,
@@ -70,6 +55,14 @@ watch(
     }
   },
 );
+
+const onSearch = ({ from, to }: { from: string; to: string }) => {
+  const searchID = search({ from, to });
+
+  if (searchID) {
+    operationListID.value = searchID;
+  }
+};
 
 const trackedPromiseOfOperations = computed(
   () =>
@@ -82,14 +75,6 @@ const operationsByDate = computed(() => {
 
   return Array.isArray(promise.value?.byDate) ? promise.value.byDate : [];
 });
-
-const onSearch = ({ from, to }: { from: string; to: string }) => {
-  const searchID = search({ from, to });
-
-  if (searchID) {
-    operationListID.value = searchID;
-  }
-};
 </script>
 
 <template>
