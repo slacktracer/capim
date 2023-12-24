@@ -3,15 +3,15 @@ import { computed, onBeforeMount, ref, unref, watch } from "vue";
 import type { Router } from "vue-router";
 import { useRoute, useRouter } from "vue-router";
 
-import { setSearchParams } from "../../modules/common/utils/set-search-params.js";
-import { useOperationsStore } from "../../modules/operations/use-operations-store.js";
-import type { TrackedPromiseOfOperations } from "../../types/TrackedPromiseOfOperations";
-import PromiseState from "../common/PromiseState.vue";
-import { getFromAndTo } from "./operation-list/get-from-and-to.js";
-import { handleSearchParamsChange } from "./operation-list/handle-search-params-change.js";
-import { search } from "./operation-list/search.js";
-import OperationListItem from "./OperationListItem.vue";
-import OperationsDatetimeRangeSelector from "./OperationsDatetimeRangeSelector.vue";
+import { setSearchParams } from "../../../modules/common/utils/set-search-params.js";
+import { useOperationsStore } from "../../../modules/operations/use-operations-store.js";
+import type { TrackedPromiseOfOperations } from "../../../types/TrackedPromiseOfOperations.js";
+import PromiseState from "../../common/PromiseState.vue";
+import OperationListItem from "../OperationListItem.vue";
+import OperationsDatetimeRangeSelector from "../OperationsDatetimeRangeSelector.vue";
+import { getFromAndTo } from "./get-from-and-to.js";
+import { handleSearchParamsChange } from "./handle-search-params-change.js";
+import { search } from "./search.js";
 
 const operationsStore = useOperationsStore();
 const route = useRoute();
