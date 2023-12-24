@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { computed, onBeforeMount, ref, unref, watch } from "vue";
+import { computed, ref, unref, watch } from "vue";
 import { useRoute } from "vue-router";
 
 import { setSearchParams } from "../../../modules/common/utils/set-search-params.js";
@@ -22,6 +22,18 @@ const to = ref("");
 
 const operationListID = ref("");
 
+const trackedPromiseOfOperations = computed(
+  () =>
+    (operationsStore.promises[operationListID.value] ||
+      []) as TrackedPromiseOfOperations,
+);
+
+const operationsByDate = computed(() => {
+  const promise = unref(trackedPromiseOfOperations);
+
+  return Array.isArray(promise.value?.byDate) ? promise.value.byDate : [];
+});
+
 setSearchParams({
   data: getFromAndTo(route.query),
   replace: true,
@@ -33,18 +45,24 @@ setSearchParams({
   to: to.value,
 } = handleSearchParamsChange(route.query));
 
-let doWatch = false;
+let watchSearchParams = false;
 
-onBeforeMount(() => {
-  if (!doWatch) {
-    doWatch = true;
-  }
-});
+const unwatchIsSettled = watch(
+  () => unref(trackedPromiseOfOperations).isSettled,
+  (isSettled) => {
+    if (isSettled && !watchSearchParams) {
+      watchSearchParams = true;
+    }
+  },
+  { immediate: true },
+);
 
 watch(
   () => route.query,
   (locationQuery) => {
-    if (doWatch) {
+    if (watchSearchParams) {
+      unwatchIsSettled();
+
       ({
         from: from.value,
         operationListID: operationListID.value,
@@ -61,18 +79,6 @@ const onSearch = ({ from, to }: { from: string; to: string }) => {
     operationListID.value = searchID;
   }
 };
-
-const trackedPromiseOfOperations = computed(
-  () =>
-    (operationsStore.promises[operationListID.value] ||
-      []) as TrackedPromiseOfOperations,
-);
-
-const operationsByDate = computed(() => {
-  const promise = unref(trackedPromiseOfOperations);
-
-  return Array.isArray(promise.value?.byDate) ? promise.value.byDate : [];
-});
 </script>
 
 <template>
