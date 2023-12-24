@@ -1,33 +1,36 @@
 <script lang="ts" setup>
-import type { DatetimeRangeRecord } from "../../core/types/DatetimeRangeRecord.js";
+import { ref, unref, watch } from "vue";
+
 import type { Operation } from "../../core/types/Operation";
 import type { TrackedPromise } from "../../core/types/TrackedPromise";
-import { useOperationsStore } from "../../modules/operations/use-operations-store.js";
-import SearchButton from "./SearchButton.vue";
 
 const emit = defineEmits<{ search: [{ from: string; to: string }] }>();
 
 const props = defineProps<{
+  from: string;
   operations: TrackedPromise<{ from: string; to: string }, Operation[]>;
+  to: string;
 }>();
 
-const operationsStore = useOperationsStore();
+const from = ref(props.from);
+
+const to = ref(props.to);
+
+watch(
+  () => props.from,
+  (newValue) => (from.value = newValue),
+);
+
+watch(
+  () => props.to,
+  (newValue) => (to.value = newValue),
+);
 
 const search = () => {
   emit("search", {
-    from: operationsStore.datetimeRange[0],
-    to: operationsStore.datetimeRange[1],
+    from: unref(from),
+    to: unref(to),
   });
-};
-
-const updateDatetimeRange = (event: Event) => {
-  if (event.target) {
-    const { name: key, value } = event.target as HTMLInputElement;
-
-    operationsStore.setDatetimeRange({
-      [key]: value,
-    } as DatetimeRangeRecord);
-  }
 };
 </script>
 
@@ -42,31 +45,19 @@ const updateDatetimeRange = (event: Event) => {
           From
           <br />
 
-          <input
-            class="form-control"
-            name="from"
-            type="date"
-            :value="operationsStore.datetimeRange[0]"
-            @input="updateDatetimeRange"
-          />
+          <input v-model="from" class="form-control" name="from" type="date" />
         </div>
 
         <div>
           To
           <br />
 
-          <input
-            class="form-control"
-            name="to"
-            type="date"
-            :value="operationsStore.datetimeRange[1]"
-            @input="updateDatetimeRange"
-          />
+          <input v-model="to" class="form-control" name="to" type="date" />
         </div>
       </div>
 
       <div>
-        <SearchButton :loading="props.operations?.isPending" />
+        <button class="btn btn-primary" type="submit">Search</button>
       </div>
     </fieldset>
   </form>

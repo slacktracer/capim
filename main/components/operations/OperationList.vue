@@ -1,10 +1,14 @@
 <script lang="ts" setup>
 import { computed, ref, unref, watch } from "vue";
+import type { Router } from "vue-router";
 import { useRoute, useRouter } from "vue-router";
 
+import { setSearchParams } from "../../modules/common/utils/set-search-params.js";
 import { useOperationsStore } from "../../modules/operations/use-operations-store.js";
 import type { TrackedPromiseOfOperations } from "../../types/TrackedPromiseOfOperations";
 import PromiseState from "../common/PromiseState.vue";
+import { getFromAndTo } from "./operation-list/get-from-and-to.js";
+import { getOperations } from "./operation-list/get-operations.js";
 import OperationListItem from "./OperationListItem.vue";
 import OperationsDatetimeRangeSelector from "./OperationsDatetimeRangeSelector.vue";
 
@@ -12,24 +16,9 @@ const operationsStore = useOperationsStore();
 const route = useRoute();
 const router = useRouter();
 
-const getOperations = ({
-  from,
-  replace = false,
-  to,
-  updateSearchParams = true,
-}: {
-  from: string;
-  replace?: boolean;
-  to: string;
-  updateSearchParams?: boolean;
-}) => {
-  operationListID.value = operationsStore.getOperations({
-    from,
-    replace,
-    to,
-    updateSearchParams,
-  });
-};
+const from = ref("");
+
+const to = ref("");
 
 const operationListID = ref("");
 
@@ -37,38 +26,25 @@ let firstWatch = true;
 
 watch(
   () => route.query,
-  (locationQueryValue) => {
-    let from;
-    let to;
+  (locationQuery) => {
+    const fromAndTo = getFromAndTo(locationQuery);
 
-    if (Object.keys(locationQueryValue).length) {
-      ({ from, to } = locationQueryValue);
-    } else {
-      [from, to] = operationsStore.datetimeRange;
+    ({ from: from.value, to: to.value } = fromAndTo);
+
+    if (firstWatch) {
+      setSearchParams({
+        data: fromAndTo,
+        replace: true,
+        router: operationsStore.router as Router,
+      });
+
+      firstWatch = false;
     }
 
-    if (
-      !Array.isArray(from) &&
-      from !== null &&
-      !Array.isArray(to) &&
-      to !== null
-    ) {
-      operationsStore.setDatetimeRange({ from, to });
-
-      let replace = false;
-
-      let updateSearchParams = false;
-
-      if (firstWatch) {
-        replace = true;
-
-        updateSearchParams = true;
-
-        firstWatch = false;
-      }
-
-      getOperations({ from, replace, to, updateSearchParams });
-    }
+    operationListID.value = getOperations({
+      from: unref(from),
+      to: unref(to),
+    });
   },
   { immediate: true },
 );
@@ -82,8 +58,14 @@ const trackedPromiseOfOperations = computed(
 const operationsByDate = computed(() => {
   const promise = unref(trackedPromiseOfOperations);
 
-  return Array.isArray(promise.value?.byDate) ? promise.value?.byDate : [];
+  return Array.isArray(promise.value?.byDate) ? promise.value.byDate : [];
 });
+
+const onSearch = ({ from, to }: { from: string; to: string }) =>
+  setSearchParams({
+    data: { from, to },
+    router: operationsStore.router as Router,
+  });
 </script>
 
 <template>
@@ -97,8 +79,10 @@ const operationsByDate = computed(() => {
       </h1>
 
       <OperationsDatetimeRangeSelector
+        :from="from"
         :operations="trackedPromiseOfOperations"
-        @search="getOperations"
+        :to="to"
+        @search="onSearch"
       />
 
       <PromiseState
