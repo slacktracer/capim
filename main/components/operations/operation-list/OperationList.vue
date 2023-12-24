@@ -1,7 +1,6 @@
 <script lang="ts" setup>
 import { computed, onBeforeMount, ref, unref, watch } from "vue";
-import type { Router } from "vue-router";
-import { useRoute, useRouter } from "vue-router";
+import { useRoute } from "vue-router";
 
 import { setSearchParams } from "../../../modules/common/utils/set-search-params.js";
 import { useOperationsStore } from "../../../modules/operations/use-operations-store.js";
@@ -14,8 +13,8 @@ import { handleSearchParamsChange } from "./handle-search-params-change.js";
 import { search } from "./search.js";
 
 const operationsStore = useOperationsStore();
+
 const route = useRoute();
-const router = useRouter();
 
 const from = ref("");
 
@@ -26,7 +25,6 @@ const operationListID = ref("");
 setSearchParams({
   data: getFromAndTo(route.query),
   replace: true,
-  router: operationsStore.router as Router,
 });
 
 ({
@@ -82,7 +80,10 @@ const operationsByDate = computed(() => {
     <section class="header">
       <h1>
         Operations
-        <button class="btn btn-success" @click="router.push('/operations/new')">
+        <button
+          class="btn btn-success"
+          @click="$router.push('/operations/new')"
+        >
           New
         </button>
       </h1>

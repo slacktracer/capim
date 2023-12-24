@@ -1,6 +1,3 @@
-import type { Raw } from "vue";
-import type { Router } from "vue-router";
-
 import type { Operation } from "../core/types/Operation";
 import type { OperationsByDate } from "../core/types/OperationsByDate";
 import type { TrackedPromise } from "../core/types/TrackedPromise";
@@ -17,5 +14,4 @@ export type OperationsStoreState = {
     | TrackedPromise<{ operationID: string }, Operation>
     | TrackedPromise<{ editableOperation: EditableOperation }, Operation>
   >;
-  router: Raw<Router>;
 };

@@ -1,6 +1,5 @@
 import { defineStore } from "pinia";
 import { reactive, readonly, toRefs } from "vue";
-import { useRouter } from "vue-router";
 
 import { core } from "../../core/core.js";
 import type { GetOperation } from "../../types/GetOperation.js";
@@ -18,10 +17,8 @@ import { postOperation } from "./post-operation";
 import { setDatetimeRange } from "./set-datetime-range.js";
 
 export const useOperationsStore = defineStore("operations", () => {
-  const router = useRouter();
-
   const state: OperationsStoreState = reactive(
-    getInitialOperationsStoreState({ router }),
+    getInitialOperationsStoreState(),
   );
 
   const actions = {
@@ -48,7 +45,7 @@ export const useOperationsStore = defineStore("operations", () => {
   };
 
   const $reset = () =>
-    void Object.assign(state, getInitialOperationsStoreState({ router }));
+    void Object.assign(state, getInitialOperationsStoreState());
 
   core.mainEventBus.on("reset-all", $reset);
 
