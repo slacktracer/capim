@@ -34,15 +34,17 @@ const operationsByDate = computed(() => {
   return Array.isArray(promise.value?.byDate) ? promise.value.byDate : [];
 });
 
-const loadOperationList = (searchParams: LocationQuery) => {
-  const fromAndTo = getFromAndTo(searchParams);
+watch(
+  () => route.query,
+  (searchParams: LocationQuery) => {
+    const fromAndTo = getFromAndTo(searchParams);
 
-  ({ from: from.value, to: to.value } = fromAndTo);
+    ({ from: from.value, to: to.value } = fromAndTo);
 
-  operationListID.value = getOperations({ ...fromAndTo });
-};
-
-watch(() => route.query, loadOperationList, { immediate: true });
+    operationListID.value = getOperations({ ...fromAndTo });
+  },
+  { immediate: true },
+);
 
 const onSearch = ({ from, to }: { from: string; to: string }) => {
   const searchID = search({ from, to });
