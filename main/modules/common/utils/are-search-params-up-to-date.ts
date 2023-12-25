@@ -1,13 +1,14 @@
 import { core } from "../../../core/core.js";
+import { useCommonStore } from "../use-common-store.js";
 
 export const areSearchParamsUpToDate = ({
-  currentSearchParams,
   newSearchParams,
 }: {
-  currentSearchParams: any /* LocationQuery */;
   newSearchParams: Record<string, string>;
 }) => {
+  const { router } = useCommonStore();
+
   return Object.keys(
     core.filterOutFalsyEntries({ object: newSearchParams }),
-  ).every((key) => currentSearchParams[key] === newSearchParams[key]);
+  ).every((key) => router.currentRoute?.query?.[key] === newSearchParams[key]);
 };
