@@ -1,15 +1,15 @@
 <script lang="ts" setup>
 import { computed, ref, unref, watch } from "vue";
+import type { LocationQuery } from "vue-router";
 import { useRoute } from "vue-router";
 
-import { setSearchParams } from "../../../modules/common/utils/set-search-params.js";
 import { useOperationsStore } from "../../../modules/operations/use-operations-store.js";
 import type { TrackedPromiseOfOperations } from "../../../types/TrackedPromiseOfOperations.js";
 import PromiseState from "../../common/PromiseState.vue";
 import OperationListItem from "../OperationListItem.vue";
 import OperationsDatetimeRangeSelector from "../OperationsDatetimeRangeSelector.vue";
 import { getFromAndTo } from "./get-from-and-to.js";
-import { handleSearchParamsChange } from "./handle-search-params-change.js";
+import { getOperations } from "./get-operations.js";
 import { search } from "./search.js";
 
 const operationsStore = useOperationsStore();
@@ -34,43 +34,15 @@ const operationsByDate = computed(() => {
   return Array.isArray(promise.value?.byDate) ? promise.value.byDate : [];
 });
 
-setSearchParams({
-  data: getFromAndTo(route.query),
-  replace: true,
-});
+const loadOperationList = (searchParams: LocationQuery) => {
+  const fromAndTo = getFromAndTo(searchParams);
 
-({
-  from: from.value,
-  operationListID: operationListID.value,
-  to: to.value,
-} = handleSearchParamsChange(route.query));
+  ({ from: from.value, to: to.value } = fromAndTo);
 
-let watchSearchParams = false;
+  operationListID.value = getOperations({ ...fromAndTo });
+};
 
-const unwatchIsSettled = watch(
-  () => unref(trackedPromiseOfOperations).isSettled,
-  (isSettled) => {
-    if (isSettled && !watchSearchParams) {
-      watchSearchParams = true;
-    }
-  },
-  { immediate: true },
-);
-
-watch(
-  () => route.query,
-  (locationQuery) => {
-    if (watchSearchParams) {
-      unwatchIsSettled();
-
-      ({
-        from: from.value,
-        operationListID: operationListID.value,
-        to: to.value,
-      } = handleSearchParamsChange(locationQuery));
-    }
-  },
-);
+watch(() => route.query, loadOperationList, { immediate: true });
 
 const onSearch = ({ from, to }: { from: string; to: string }) => {
   const searchID = search({ from, to });
