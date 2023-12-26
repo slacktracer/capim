@@ -44,7 +44,9 @@ onMounted(() => {
         />
       </div>
 
-      <button class="btn btn-outline-dark" type="submit">Submit</button>
+      <button class="btn btn-outline-dark login-button" type="submit">
+        Log in
+      </button>
     </form>
   </div>
 </template>
@@ -59,5 +61,9 @@ onMounted(() => {
 .login-form {
   flex: 0 1 25rem;
   padding: 1rem;
+}
+
+.login-button {
+  float: right;
 }
 </style>
