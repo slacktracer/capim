@@ -17,5 +17,6 @@
     "start": "npm run dev --prefix main",
     "test": "npm run test --prefix tests",
     "x": "npm run x --prefix main"
-  }
+  },
+  "version": "1.0.0-build.0"
 }
