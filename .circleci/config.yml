@@ -37,3 +37,5 @@ workflows:
               only: /^v\d+\.\d+.\d+-build\.\d+$/
             branches:
               ignore: /.*/
+          requires:
+            - lint
