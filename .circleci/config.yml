@@ -15,6 +15,12 @@ jobs:
           paths:
             - ~/.npm
       - run: npm run lint
+  deploy:
+    docker:
+      - image: cimg/node:20.4.0
+    steps:
+      - checkout
+      - run: curl $DEPLOY_ADDRESS
 
 workflows:
   lint_and_test:
@@ -23,3 +29,7 @@ workflows:
           filters:
             tags:
               only: /.*/
+      - deploy:
+          filters:
+            tags:
+              only: /^v\d+\.\d+.\d+-build\.\d+$/
