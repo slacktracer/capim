@@ -7,7 +7,7 @@
   "name": "capim",
   "scripts": {
     "build": "npm ci && npm run generate --prefix main",
-    "deploy": "npm version --preid build prerelease",
+    "deploy": "npm version --preid build prerelease --message 'New build: %s [skip ci]'",
     "install": "npm install --prefix main && npm install --prefix tests",
     "lf": "npm run live-feedback --prefix main",
     "lint": "npm run lint --prefix main && npm run lint --prefix tests",
