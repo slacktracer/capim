@@ -1,62 +1,52 @@
 <script lang="ts" setup>
 import { logout } from "../modules/authentication/logout.js";
 import { useUserStore } from "../modules/user/use-user-store.js";
+import MainMenu from "./MainMenu.vue";
 
 const userStore = useUserStore();
 </script>
 
 <template>
   <header>
-    <nav>
-      <div class="dropdown">
-        <button
-          aria-expanded="false"
-          class="btn btn-outline-dark dropdown-toggle btn-sm"
-          data-bs-toggle="dropdown"
-          type="button"
+    <nav class="navbar navbar-expand">
+      <div class="container-fluid">
+        <svg
+          aria-controls="main-menu"
+          class="bi"
+          data-bs-target="#main-menu"
+          data-bs-toggle="offcanvas"
+          fill="currentColor"
+          height="32"
+          role="button"
+          width="32"
         >
-          Menu
-        </button>
-        <ul class="dropdown-menu dropdown-menu-dark">
-          <li>
-            <NuxtLink class="dropdown-item" to="/accounts">Accounts</NuxtLink>
-          </li>
-          <li>
-            <NuxtLink class="dropdown-item" to="/balances">Balances</NuxtLink>
-          </li>
-          <li>
-            <NuxtLink class="dropdown-item" to="/categories">
-              Categories
-            </NuxtLink>
-          </li>
-          <li>
-            <NuxtLink class="dropdown-item" to="/operations">
-              Operations
-            </NuxtLink>
-          </li>
-          <li><NuxtLink class="dropdown-item" to="/tags">Tags</NuxtLink></li>
-          <li>
-            <NuxtLink class="dropdown-item" to="/transfers">Transfers</NuxtLink>
+          <use xlink:href="bootstrap-icons/bootstrap-icons.svg#list" />
+        </svg>
+
+        <ul class="navbar-nav">
+          <li class="nav-item dropdown">
+            <a
+              aria-expanded="false"
+              class="nav-link dropdown-toggle"
+              data-bs-toggle="dropdown"
+              href="#"
+              role="button"
+            >
+              {{ userStore.user?.username }}
+            </a>
+
+            <ul class="dropdown-menu dropdown-menu-end">
+              <li>
+                <a class="dropdown-item" href="#" @click.prevent="logout">
+                  Logout
+                </a>
+              </li>
+            </ul>
           </li>
         </ul>
       </div>
-
-      <div>
-        {{ userStore.user?.username }} |
-        <a href="#" @click.prevent="logout">Logout</a>
-      </div>
     </nav>
+
+    <MainMenu></MainMenu>
   </header>
 </template>
-
-<style>
-header {
-  padding: 1rem;
-}
-
-nav {
-  align-items: center;
-  display: flex;
-  justify-content: space-between;
-}
-</style>
