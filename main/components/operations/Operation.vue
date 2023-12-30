@@ -176,6 +176,15 @@ const save = () => {
   operationsStore.patchOperation({ editableOperation });
 };
 
+const onRefresh = () => {
+  if (operationID.value) {
+    operationsStore.getOperation({
+      bypassLocalCache: true,
+      operationID: operationID.value,
+    });
+  }
+};
+
 const promise = computed(
   () => operationsStore.promises[operationID.value] ?? {},
 );
@@ -186,7 +195,12 @@ const promise = computed(
     <section class="header">
       <h1>Operation</h1>
 
-      <PromiseState :promise="promise" resource-name="operation"></PromiseState>
+      <PromiseState
+        :promise="promise"
+        resource-name-plural="operation"
+        resource-name-singular="operation"
+        @refresh="onRefresh"
+      ></PromiseState>
     </section>
 
     <form @submit.prevent="save">

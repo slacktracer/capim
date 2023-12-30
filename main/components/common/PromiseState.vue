@@ -5,9 +5,12 @@ import { useLiveDistanceToNow } from "../../composables/use-live-distance-to-now
 import { core } from "../../core/core.js";
 import type { TrackedPromise } from "../../core/types/TrackedPromise";
 
+const emit = defineEmits<{ refresh: [] }>();
+
 const props = defineProps<{
   promise: TrackedPromise<any, unknown>;
-  resourceName: string;
+  resourceNamePlural: string;
+  resourceNameSingular: string;
 }>();
 
 const liveDistanceToNow = computed(
@@ -29,6 +32,14 @@ const isReading = computed(
 const isUpdating = computed(
   () => props.promise.action === core.promiseAction.update,
 );
+
+const resourceCount = computed(() =>
+  Array.isArray(props.promise.value) ? props.promise.value.length : 1,
+);
+
+const refresh = () => {
+  emit("refresh");
+};
 </script>
 
 <template>
@@ -46,25 +57,35 @@ const isUpdating = computed(
     </div>
 
     <div v-if="props.promise.isPending && isCreating">
-      Creating {{ props.resourceName }}...
+      Creating {{ props.resourceNameSingular }}...
     </div>
 
     <div v-if="props.promise.isPending && isReading">
-      Loading {{ props.resourceName }}...
+      Retrieving {{ props.resourceNamePlural }}...
     </div>
 
     <div v-if="props.promise.isPending && isUpdating">
-      Updating {{ props.resourceName }}...
+      Updating {{ props.resourceNameSingular }}...
     </div>
 
-    <div v-if="!props.promise.isPending && props.promise.isFulfilled">
-      <span v-if="isCreating">Created</span>
+    <div v-if="props.promise.isFulfilled">
+      <span v-if="resourceCount !== undefined && resourceCount > -1">
+        {{ resourceCount }}
+        {{
+          resourceCount > 1
+            ? props.resourceNamePlural
+            : props.resourceNameSingular
+        }}
+      </span>
 
-      <span v-if="isReading">Retrieved</span>
+      <span v-if="isCreating"> created</span>
 
-      <span v-if="isUpdating">Updated</span>
+      <span v-if="isReading"> retrieved</span>
 
-      {{ liveDistanceToNow }} ago
+      <span v-if="isUpdating"> updated</span>
+
+      {{ liveDistanceToNow }} ago &mdash;
+      <a href="#" @click.prevent="refresh">Refresh</a>
     </div>
   </div>
 </template>

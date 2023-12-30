@@ -53,6 +53,14 @@ const onSearch = ({ from, to }: { from: string; to: string }) => {
     operationListID.value = searchID;
   }
 };
+
+const onRefresh = () => {
+  operationListID.value = getOperations({
+    bypassLocalCache: true,
+    from: from.value,
+    to: to.value,
+  });
+};
 </script>
 
 <template>
@@ -77,7 +85,9 @@ const onSearch = ({ from, to }: { from: string; to: string }) => {
 
       <PromiseState
         :promise="trackedPromiseOfOperations"
-        resource-name="operations"
+        resource-name-plural="operations"
+        resource-name-singular="operation"
+        @refresh="onRefresh"
       ></PromiseState>
     </section>
 
