@@ -85,6 +85,7 @@ watch(
       search.value = currentSelectedOption[props.label];
     }
   },
+  { immediate: true },
 );
 
 const filteredOptions: Record<string, any> = computed(() => {
