@@ -10,18 +10,13 @@ const userStore = useUserStore();
   <header>
     <nav class="navbar navbar-expand">
       <div class="container-fluid">
-        <svg
-          aria-controls="main-menu"
-          class="bi"
+        <div
           data-bs-target="#main-menu"
           data-bs-toggle="offcanvas"
-          fill="currentColor"
-          height="32"
           role="button"
-          width="32"
         >
-          <use xlink:href="bootstrap-icons/bootstrap-icons.svg#list" />
-        </svg>
+          Menu →
+        </div>
 
         <ul class="navbar-nav">
           <li class="nav-item dropdown">
