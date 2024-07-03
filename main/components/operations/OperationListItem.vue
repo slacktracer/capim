@@ -1,6 +1,8 @@
 <script lang="ts" setup>
 import { format } from "date-fns";
+import { onMounted, ref } from "vue";
 
+import { useSwipeOperation } from "../../composables/use-swipe-operation";
 import type { Operation } from "../../core/types/Operation.js";
 import { useAccountsStore } from "../../modules/accounts/use-accounts-store.js";
 
@@ -9,44 +11,62 @@ const props = defineProps<{
 }>();
 
 const accountStore = useAccountsStore();
+
+const operationListItem = ref<HTMLDivElement>(document.createElement("div"));
+
+onMounted(() => {
+  useSwipeOperation({ operationListItem });
+});
 </script>
 
 <template>
-  <NuxtLink class="operation" :to="`/operations/${operation.operationID}`">
-    <div class="time">
-      <div>
-        {{ format(new Date(props.operation.at), "HH:mm") }}
+  <NuxtLink :to="`/operations/${operation.operationID}`">
+    <div ref="operationListItem" class="operation">
+      <div class="time">
+        <div>
+          {{ format(new Date(props.operation.at), "HH:mm") }}
+        </div>
       </div>
-    </div>
 
-    <div class="category-and-comments">
-      <div class="category">{{ props.operation.category.name }}</div>
+      <div class="category-and-comments">
+        <div class="category">{{ props.operation.category.name }}</div>
 
-      <div class="comments">
-        <span v-if="props.operation.comments">{{
-          props.operation.comments
-        }}</span>
-        <i v-else class="no-comments">No comments</i>
+        <div class="comments">
+          <span v-if="props.operation.comments">{{
+            props.operation.comments
+          }}</span>
+          <i v-else class="no-comments">No comments</i>
+        </div>
       </div>
-    </div>
 
-    <div class="amount-and-account">
-      <div class="amount">{{ (props.operation.amount / 100).toFixed(2) }}</div>
+      <div class="amount-and-account">
+        <div class="amount">
+          {{ (props.operation.amount / 100).toFixed(2) }}
+        </div>
 
-      <div class="account">
-        {{ accountStore.accountsByID[props.operation.accountID].name }}
+        <div class="account">
+          {{ accountStore.accountsByID[props.operation.accountID].name }}
+        </div>
       </div>
     </div>
   </NuxtLink>
 </template>
 
 <style scoped>
+a:has(.operation) {
+  position: relative;
+  text-decoration: none;
+}
+
 .operation {
+  --translate: 0;
+
   color: var(--bs-body-color);
   display: flex;
   gap: 1rem;
   padding: 0.5rem;
-  text-decoration: none;
+  translate: var(--translate);
+  transition: translate 0.2s ease-in-out;
 }
 
 .operation:hover {
