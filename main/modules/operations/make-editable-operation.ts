@@ -5,8 +5,13 @@ import type { MakeEditableOperation } from "../../types/MakeEditableOperation.js
 
 export const makeEditableOperation: MakeEditableOperation = ({
   data: operation,
+  options,
 }) => {
   const rawOperation = toRaw(operation);
+
+  if (options.copy) {
+    Object.assign(rawOperation, { operationID: undefined });
+  }
 
   return {
     ...rawOperation,

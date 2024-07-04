@@ -32,11 +32,26 @@ const newOperation = ref(false);
 
 const operationID = ref("");
 
+let copy = false;
+
 if (typeof route.params.id === "string") {
-  if (route.params.id === "new") {
-    newOperation.value = true;
-  } else {
-    operationID.value = route.params.id;
+  switch (route.params.id) {
+    case "new":
+      newOperation.value = true;
+
+      break;
+
+    case "copy":
+      copy = true;
+
+      if (typeof route.query.operationID === "string") {
+        operationID.value = route.query.operationID;
+      }
+
+      break;
+
+    default:
+      operationID.value = route.params.id;
   }
 }
 
@@ -65,6 +80,7 @@ const editableOperation: EditableOperation = useEditableResource<
   any
 >({
   makeEditableResource: makeEditableOperation,
+  options: { copy },
   resource: operationID.value
     ? operationsStore.promises[operationID.value]
     : { value: makeEmptyOperation(), isFulfilled: true },
@@ -159,7 +175,7 @@ const updateCategory = ({
 };
 
 const save = () => {
-  if (newOperation.value) {
+  if (newOperation.value || copy) {
     operationID.value = operationsStore.postOperation({
       onFulfilled: () => {
         history.replaceState({}, "", `/operations/${operationID.value}`);
@@ -369,6 +385,22 @@ const promise = computed(
         </div>
 
         <div class="action">
+          <div>
+            <button
+              class="btn btn-outline-secondary"
+              type="button"
+              @click="
+                $router.push(`/operations/copy?operationID=${operationID}`)
+              "
+            >
+              <svg class="bi" fill="currentColor" height="16" width="16">
+                <use xlink:href="bootstrap-icons/bootstrap-icons.svg#copy" />
+              </svg>
+
+              Copy
+            </button>
+          </div>
+
           <button class="btn btn-primary" type="submit">Save</button>
         </div>
       </fieldset>
@@ -476,7 +508,8 @@ label {
 }
 
 .action {
+  display: flex;
+  justify-content: space-between;
   padding: 1rem;
-  text-align: right;
 }
 </style>

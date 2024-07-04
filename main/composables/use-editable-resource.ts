@@ -9,9 +9,11 @@ export const useEditableResource = <
   Resource extends TrackedPromise<unknown, any>,
 >({
   makeEditableResource,
+  options,
   resource,
 }: {
   makeEditableResource: MakeEditableResource;
+  options?: { [key: string]: unknown };
   resource: Resource;
 }) => {
   const editableResource = reactive({});
@@ -19,7 +21,7 @@ export const useEditableResource = <
   if (resource.isFulfilled) {
     Object.assign(
       editableResource,
-      makeEditableResource({ data: resource.value }),
+      makeEditableResource({ data: resource.value, options }),
     );
   }
 
@@ -29,7 +31,7 @@ export const useEditableResource = <
       if (core.didSwitchTo({ currentValue, previousValue, to: true })) {
         Object.assign(
           editableResource,
-          makeEditableResource({ data: resource.value }),
+          makeEditableResource({ data: resource.value, options }),
         );
       }
     },

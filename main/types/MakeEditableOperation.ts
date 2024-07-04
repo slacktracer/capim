@@ -3,4 +3,7 @@ import type { EditableOperation } from "./EditableOperation.js";
 
 export type MakeEditableOperation = (input: {
   data: Operation;
+  options: {
+    copy: boolean;
+  };
 }) => EditableOperation;
