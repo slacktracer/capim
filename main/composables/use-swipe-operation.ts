@@ -17,7 +17,7 @@ export const useSwipeOperation = ({
           -lengthX.value + initialTranslateValue,
         );
 
-        if (totalTranslation < 1 && totalTranslation > -200) {
+        if (totalTranslation < 1 && totalTranslation > -56) {
           operationListItem.value.style.setProperty(
             "--translate",
             `${totalTranslation}px`,
@@ -35,7 +35,7 @@ export const useSwipeOperation = ({
         const finalTranslationInPixels = parseInt(translate, 10);
 
         const settleAt =
-          direction === "left" && finalTranslationInPixels < -100 ? -200 : 0;
+          direction === "left" && finalTranslationInPixels < -28 ? -56 : 0;
 
         operationListItem.value.style.setProperty(
           "--translate",

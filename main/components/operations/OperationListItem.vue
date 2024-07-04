@@ -17,10 +17,22 @@ const operationListItem = ref<HTMLDivElement>(document.createElement("div"));
 onMounted(() => {
   useSwipeOperation({ operationListItem });
 });
+
+const x = () => {
+  alert(`copying operation ${props.operation.operationID}`);
+};
 </script>
 
 <template>
   <NuxtLink :to="`/operations/${operation.operationID}`">
+    <div class="controls">
+      <button class="copy" @click.prevent.stop="x">
+        <svg class="bi" fill="currentColor" height="24" width="24">
+          <use xlink:href="bootstrap-icons/bootstrap-icons.svg#copy" />
+        </svg>
+      </button>
+    </div>
+
     <div ref="operationListItem" class="operation">
       <div class="time">
         <div>
@@ -61,6 +73,7 @@ a:has(.operation) {
 .operation {
   --translate: 0;
 
+  background: hsla(0, 0%, 100%, 1);
   color: var(--bs-body-color);
   display: flex;
   gap: 1rem;
@@ -116,5 +129,29 @@ a:has(.operation) {
   color: gray;
   font-size: 0.9rem;
   text-align: right;
+}
+
+.controls {
+  align-items: center;
+  background: #333333;
+  color: whitesmoke;
+  display: flex;
+  gap: 1rem;
+  inset: 0;
+  justify-content: end;
+  position: absolute;
+}
+
+.copy {
+  background: transparent;
+  border: 0;
+  box-shadow: none;
+  color: inherit;
+  margin: 1rem;
+  padding: 0;
+}
+
+.copy:focus-visible {
+  outline-offset: 0.25rem;
 }
 </style>
