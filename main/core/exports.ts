@@ -28,4 +28,5 @@ export { makeUUID } from "./utils/make-uuid.js";
 export { promiseAction } from "./utils/promise-action";
 export { promiseState } from "./utils/promise-state";
 export { selectInputContent } from "./utils/select-input-content.js";
+export { voidTrackedPromise } from "./utils/void-tracked-promise.js";
 export { wrapWithRetrievedAt } from "./utils/wrap-with-retrieved-at.js";

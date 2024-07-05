@@ -32,7 +32,7 @@ const newOperation = ref(false);
 
 const operationID = ref("");
 
-let copy = false;
+const copy = ref(false);
 
 if (typeof route.params.id === "string") {
   switch (route.params.id) {
@@ -42,7 +42,7 @@ if (typeof route.params.id === "string") {
       break;
 
     case "copy":
-      copy = true;
+      copy.value = true;
 
       if (typeof route.query.operationID === "string") {
         operationID.value = route.query.operationID;
@@ -80,7 +80,7 @@ const editableOperation: EditableOperation = useEditableResource<
   any
 >({
   makeEditableResource: makeEditableOperation,
-  options: { copy },
+  options: { copy: copy.value },
   resource: operationID.value
     ? operationsStore.promises[operationID.value]
     : { value: makeEmptyOperation(), isFulfilled: true },
@@ -175,10 +175,12 @@ const updateCategory = ({
 };
 
 const save = () => {
-  if (newOperation.value || copy) {
+  if (newOperation.value || copy.value) {
     operationID.value = operationsStore.postOperation({
       onFulfilled: () => {
         history.replaceState({}, "", `/operations/${operationID.value}`);
+
+        copy.value = false;
 
         newOperation.value = false;
       },
@@ -201,8 +203,10 @@ const onRefresh = () => {
   }
 };
 
-const promise = computed(
-  () => operationsStore.promises[operationID.value] ?? {},
+const promise = computed(() =>
+  copy.value || newOperation.value
+    ? core.voidTrackedPromise
+    : operationsStore.promises[operationID.value],
 );
 </script>
 
@@ -388,9 +392,20 @@ const promise = computed(
           <div>
             <button
               class="btn btn-outline-secondary"
+              :disabled="copy"
               type="button"
               @click="
-                $router.push(`/operations/copy?operationID=${operationID}`)
+                () => {
+                  // I need to think hard about extracting this function
+                  // or doing this differently
+                  // also, mental note, fieldset not disabled while saving copy
+                  // why?
+                  if (copy === false) {
+                    copy = true;
+                  }
+
+                  $router.push(`/operations/copy?operationID=${operationID}`);
+                }
               "
             >
               <svg class="bi" fill="currentColor" height="16" width="16">
