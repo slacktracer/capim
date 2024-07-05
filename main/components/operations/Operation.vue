@@ -398,8 +398,8 @@ const promise = computed(
           </div>
         </div>
 
-        <div class="action">
-          <div>
+        <div class="actions">
+          <div class="secondary-actions">
             <button
               class="btn btn-outline-secondary"
               :disabled="copy"
@@ -424,6 +424,31 @@ const promise = computed(
 
               Copy
             </button>
+
+            <div class="btn-group dropup">
+              <button
+                aria-expanded="false"
+                class="btn btn-outline-warning dropdown-toggle"
+                data-bs-toggle="dropdown"
+                type="button"
+              >
+                🔥
+              </button>
+
+              <ul class="dropdown-menu">
+                <li>
+                  <button class="dropdown-item" type="button">
+                    <svg class="bi" fill="currentColor" height="16" width="16">
+                      <use
+                        xlink:href="bootstrap-icons/bootstrap-icons.svg#trash"
+                      />
+                    </svg>
+
+                    Delete
+                  </button>
+                </li>
+              </ul>
+            </div>
           </div>
 
           <button class="btn btn-primary" type="submit">Save</button>
@@ -532,9 +557,14 @@ label {
   padding-block: 0.25rem;
 }
 
-.action {
+.actions {
   display: flex;
   justify-content: space-between;
   padding: 1rem;
+}
+
+.secondary-actions {
+  display: flex;
+  gap: 0.5rem;
 }
 </style>
