@@ -32,6 +32,8 @@ const newOperation = ref(false);
 
 const operationID = ref("");
 
+const copyOperationID = ref("");
+
 const copy = ref(false);
 
 if (typeof route.params.id === "string") {
@@ -45,7 +47,7 @@ if (typeof route.params.id === "string") {
       copy.value = true;
 
       if (typeof route.query.operationID === "string") {
-        operationID.value = route.query.operationID;
+        copyOperationID.value = route.query.operationID;
       }
 
       break;
@@ -55,8 +57,10 @@ if (typeof route.params.id === "string") {
   }
 }
 
-if (operationID.value) {
-  operationsStore.getOperation({ operationID: operationID.value });
+if (operationID.value || copyOperationID.value) {
+  operationsStore.getOperation({
+    operationID: operationID.value || copyOperationID.value,
+  });
 }
 
 const accountList: ComputedRef<AccountSelectOption[]> = computed(() =>
@@ -81,9 +85,10 @@ const editableOperation: EditableOperation = useEditableResource<
 >({
   makeEditableResource: makeEditableOperation,
   options: { copy: copy.value },
-  resource: operationID.value
-    ? operationsStore.promises[operationID.value]
-    : { value: makeEmptyOperation(), isFulfilled: true },
+  resource:
+    operationID.value || copyOperationID.value
+      ? operationsStore.promises[operationID.value || copyOperationID.value]
+      : { value: makeEmptyOperation(), isFulfilled: true },
 });
 
 const amount = computed(() => {
@@ -203,10 +208,10 @@ const onRefresh = () => {
   }
 };
 
-const promise = computed(() =>
-  copy.value || newOperation.value
-    ? core.voidTrackedPromise
-    : operationsStore.promises[operationID.value],
+const promise = computed(
+  () =>
+    operationsStore.promises[operationID.value || copyOperationID.value] ??
+    core.voidTrackedPromise,
 );
 </script>
 
@@ -215,7 +220,12 @@ const promise = computed(() =>
     <section class="header">
       <h1>Operation</h1>
 
+      <span v-if="copy" class="small text-muted">
+        Copying existing operation.
+      </span>
+
       <PromiseState
+        v-if="!copy"
         :promise="promise"
         resource-name-plural="operation"
         resource-name-singular="operation"
