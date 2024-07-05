@@ -2,6 +2,7 @@ import { defineStore } from "pinia";
 import { reactive, readonly, toRefs } from "vue";
 
 import { core } from "../../core/core.js";
+import type { DeleteOperation } from "../../types/DeleteOperation.js";
 import type { GetOperation } from "../../types/GetOperation.js";
 import type { GetOperations } from "../../types/GetOperations.js";
 import type { OperationsStoreState } from "../../types/OperationsStoreState.js";
@@ -9,6 +10,7 @@ import type { PatchOperation } from "../../types/PatchOperation";
 import type { PostOperation } from "../../types/PostOperation";
 import type { SetDatetimeRange } from "../../types/SetDatetimeRange.js";
 import { injectState } from "../common/utils/inject-state.js";
+import { deleteOperation } from "./delete-operation.js";
 import { getInitialOperationsStoreState } from "./get-initial-operations-store-state.js";
 import { getOperation } from "./get-operation.js";
 import { getOperations } from "./get-operations.js";
@@ -22,6 +24,10 @@ export const useOperationsStore = defineStore("operations", () => {
   );
 
   const actions = {
+    deleteOperation: injectState<DeleteOperation, OperationsStoreState>(
+      deleteOperation,
+      state,
+    ),
     getOperation: injectState<GetOperation, OperationsStoreState>(
       getOperation,
       state,

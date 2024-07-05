@@ -12,6 +12,7 @@ export type OperationsStoreState = {
         Operation[] & { byDate?: OperationsByDate }
       >
     | TrackedPromise<{ operationID: string }, Operation>
+    | TrackedPromise<{ operationID: string }, { deletedOperation: Operation }>
     | TrackedPromise<{ editableOperation: EditableOperation }, Operation>
   >;
 };

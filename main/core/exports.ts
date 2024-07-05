@@ -1,3 +1,4 @@
+export { deleteOperation } from "./delete-operation.js";
 export { CoreError } from "./errors/core-error.js";
 export { getAccounts } from "./get-accounts.js";
 export { getBalances } from "./get-balances.js";

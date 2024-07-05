@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import type { ComputedRef } from "vue";
 import { computed, ref } from "vue";
-import { useRoute } from "vue-router";
+import { useRoute, useRouter } from "vue-router";
 
 import { useEditableResource } from "../../composables/use-editable-resource.js";
 import { core } from "../../core/core.js";
@@ -27,6 +27,8 @@ const categoriesStore = useCategoriesStore();
 const operationsStore = useOperationsStore();
 
 const route = useRoute();
+
+const router = useRouter();
 
 const newOperation = ref(false);
 
@@ -203,6 +205,18 @@ const onRefresh = () => {
   if (operationID.value) {
     operationsStore.getOperation({
       bypassLocalCache: true,
+      operationID: operationID.value,
+    });
+  }
+};
+
+const del = () => {
+  if (operationID.value) {
+    core.mainEventBus.once(`operation-${operationID.value}-deleted`, () => {
+      router.replace(`/operations/`);
+    });
+
+    operationsStore.deleteOperation({
       operationID: operationID.value,
     });
   }
@@ -408,8 +422,6 @@ const promise = computed(
                 () => {
                   // I need to think hard about extracting this function
                   // or doing this differently
-                  // also, mental note, fieldset not disabled while saving copy
-                  // why?
                   if (copy === false) {
                     copy = true;
                   }
@@ -430,6 +442,7 @@ const promise = computed(
                 aria-expanded="false"
                 class="btn btn-outline-warning dropdown-toggle"
                 data-bs-toggle="dropdown"
+                :disabled="copy"
                 type="button"
               >
                 🔥
@@ -437,7 +450,7 @@ const promise = computed(
 
               <ul class="dropdown-menu">
                 <li>
-                  <button class="dropdown-item" type="button">
+                  <button class="dropdown-item" type="button" @click="del">
                     <svg class="bi" fill="currentColor" height="16" width="16">
                       <use
                         xlink:href="bootstrap-icons/bootstrap-icons.svg#trash"

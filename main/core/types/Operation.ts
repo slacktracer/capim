@@ -14,6 +14,7 @@ export type Operation = {
   comments: string;
   confirmed: boolean;
   createdAt: string;
+  deleted: boolean;
   operationID: string;
   tags: Record<TagKey["tagKeyID"], TagValue["tagValueID"]>;
   type: "Expense" | "Income";
