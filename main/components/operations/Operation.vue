@@ -219,17 +219,11 @@ const onRefresh = () => {
 
 const del = () => {
   if (operationID.value) {
-    core.mainEventBus.once(`operation-${operationID.value}-deleted`, () => {
-      router.replace(`/operations/`);
-    });
-
     operationsStore.deleteOperation({
       operationID: operationID.value,
 
-      onFulfilled({ deletedOperation }) {
-        core.mainEventBus.emit(
-          `operation-${deletedOperation.operationID}-deleted`,
-        );
+      onFulfilled() {
+        router.replace(`/operations/`);
       },
     });
   }
