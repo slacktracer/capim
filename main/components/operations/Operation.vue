@@ -19,6 +19,7 @@ import AmountInput from "../common/AmountInput.vue";
 import Debug from "../common/Debug.vue";
 import MyCombobox from "../common/my-combobox/MyCombobox.vue";
 import PromiseState from "../common/PromiseState.vue";
+import SaveAndClose from "./SaveAndClose.vue";
 
 const accountsStore = useAccountsStore();
 
@@ -190,6 +191,12 @@ const save = () => {
         copy.value = false;
 
         newOperation.value = false;
+
+        if (operationsStore.saveAndClose) {
+          setTimeout(() => {
+            router.push(`/operations/`);
+          }, 300);
+        }
       },
 
       editableOperation,
@@ -218,6 +225,12 @@ const del = () => {
 
     operationsStore.deleteOperation({
       operationID: operationID.value,
+
+      onFulfilled({ deletedOperation }) {
+        core.mainEventBus.emit(
+          `operation-${deletedOperation.operationID}-deleted`,
+        );
+      },
     });
   }
 };
@@ -464,7 +477,13 @@ const promise = computed(
             </div>
           </div>
 
-          <button class="btn btn-primary" type="submit">Save</button>
+          <div class="primary-actions">
+            <!-- I'm pretty sure I will replace this with a split button
+            but this is good enough for now to test the functionality for a little while -->
+            <SaveAndClose></SaveAndClose>
+
+            <button class="btn btn-primary" type="submit">Save</button>
+          </div>
         </div>
       </fieldset>
     </form>
@@ -574,6 +593,12 @@ label {
   display: flex;
   justify-content: space-between;
   padding: 1rem;
+}
+
+.primary-actions {
+  align-items: center;
+  display: flex;
+  gap: 0.5rem;
 }
 
 .secondary-actions {

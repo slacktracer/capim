@@ -3,7 +3,11 @@ import { core } from "../../core/core.js";
 import type { Operation } from "../../core/types/Operation.js";
 import type { DeleteOperation } from "../../types/DeleteOperation.js";
 
-export const deleteOperation: DeleteOperation = ({ operationID, state }) => {
+export const deleteOperation: DeleteOperation = ({
+  operationID,
+  onFulfilled,
+  state,
+}) => {
   const trackedPromise = useTrackedPromise<
     { operationID: string },
     { deletedOperation: Operation }
@@ -12,13 +16,8 @@ export const deleteOperation: DeleteOperation = ({ operationID, state }) => {
 
     asyncFunction: core.deleteOperation,
 
-    onFulfilled({ deletedOperation }) {
-      if (
-        deletedOperation.deleted &&
-        operationID === deletedOperation.operationID
-      ) {
-        core.mainEventBus.emit(`operation-${operationID}-deleted`);
-      }
+    onFulfilled: ({ deletedOperation }) => {
+      onFulfilled?.({ deletedOperation });
     },
   });
 

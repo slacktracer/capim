@@ -48,6 +48,7 @@ export const useOperationsStore = defineStore("operations", () => {
       setDatetimeRange,
       state,
     ),
+    updateSaveAndClose: (value: boolean) => (state.saveAndClose = value),
   };
 
   const $reset = () =>
