@@ -20,5 +20,5 @@
     "postversion": "git push --follow-tags",
     "x": "npm run x --prefix main"
   },
-  "version": "1.0.0-build.15"
+  "version": "1.0.0-build.16"
 }
