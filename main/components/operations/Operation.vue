@@ -4,6 +4,7 @@ import { computed, ref } from "vue";
 import { useRoute, useRouter } from "vue-router";
 
 import { useEditableResource } from "../../composables/use-editable-resource.js";
+import { useSaveOperation } from "../../composables/use-save-operation";
 import { core } from "../../core/core.js";
 import { useAccountsStore } from "../../modules/accounts/use-accounts-store";
 import { useCategoriesStore } from "../../modules/categories/use-categories-store.js";
@@ -19,7 +20,6 @@ import AmountInput from "../common/AmountInput.vue";
 import Debug from "../common/Debug.vue";
 import MyCombobox from "../common/my-combobox/MyCombobox.vue";
 import PromiseState from "../common/PromiseState.vue";
-import SaveAndClose from "./SaveAndClose.vue";
 
 const accountsStore = useAccountsStore();
 
@@ -35,9 +35,9 @@ const newOperation = ref(false);
 
 const operationID = ref("");
 
-const copyOperationID = ref("");
+const copyOperation = ref(false);
 
-const copy = ref(false);
+const copyOperationID = ref("");
 
 if (typeof route.params.id === "string") {
   switch (route.params.id) {
@@ -47,7 +47,7 @@ if (typeof route.params.id === "string") {
       break;
 
     case "copy":
-      copy.value = true;
+      copyOperation.value = true;
 
       if (typeof route.query.operationID === "string") {
         copyOperationID.value = route.query.operationID;
@@ -87,7 +87,7 @@ const editableOperation: EditableOperation = useEditableResource<
   any
 >({
   makeEditableResource: makeEditableOperation,
-  options: { copy: copy.value },
+  options: { copy: copyOperation.value },
   resource:
     operationID.value || copyOperationID.value
       ? operationsStore.promises[operationID.value || copyOperationID.value]
@@ -182,30 +182,77 @@ const updateCategory = ({
   }
 };
 
-const save = () => {
-  if (newOperation.value || copy.value) {
-    operationID.value = operationsStore.postOperation({
-      onFulfilled: () => {
-        history.replaceState({}, "", `/operations/${operationID.value}`);
+const submit = (payload: Event) => {
+  if (payload instanceof SubmitEvent) {
+    if (payload.submitter instanceof HTMLButtonElement) {
+      switch (payload.submitter.name) {
+        case "save":
+          {
+            const { saveOperation } = useSaveOperation({
+              copyOperation,
+              editableOperation,
+              newOperation,
+              operationID,
+            });
 
-        copy.value = false;
+            saveOperation(() => {
+              setTimeout(() => {
+                router.back();
+              }, 300);
+            });
+          }
 
-        newOperation.value = false;
+          break;
 
-        if (operationsStore.saveAndClose) {
-          setTimeout(() => {
-            router.push(`/operations/`);
-          }, 300);
-        }
-      },
+        case "saveAndStay":
+          {
+            const { saveOperation } = useSaveOperation({
+              copyOperation,
+              editableOperation,
+              newOperation,
+              operationID,
+            });
 
-      editableOperation,
-    });
+            saveOperation();
+          }
 
-    return;
+          break;
+
+        case "copy":
+          if (copyOperation.value === false) {
+            copyOperation.value = true;
+          }
+
+          history.replaceState(
+            {},
+            "",
+            `/operations/copy?operationID=${operationID.value}`,
+          );
+
+          break;
+
+        case "delete":
+          if (operationID.value) {
+            operationsStore.deleteOperation({
+              operationID: operationID.value,
+
+              onFulfilled() {
+                router.back();
+              },
+            });
+          }
+
+          break;
+
+        default:
+          window.console.error("Unexpected Error: NO_SUCH_SUBMIT_HANDLER!", {
+            name: payload.submitter.name,
+          });
+
+          window.alert("Unexpected Error: NO_SUCH_SUBMIT_HANDLER!");
+      }
+    }
   }
-
-  operationsStore.patchOperation({ editableOperation });
 };
 
 const onRefresh = () => {
@@ -213,18 +260,6 @@ const onRefresh = () => {
     operationsStore.getOperation({
       bypassLocalCache: true,
       operationID: operationID.value,
-    });
-  }
-};
-
-const del = () => {
-  if (operationID.value) {
-    operationsStore.deleteOperation({
-      operationID: operationID.value,
-
-      onFulfilled() {
-        router.replace(`/operations/`);
-      },
     });
   }
 };
@@ -241,12 +276,12 @@ const promise = computed(
     <section class="header">
       <h1>Operation</h1>
 
-      <span v-if="copy" class="small text-muted">
+      <span v-if="copyOperation" class="small text-muted">
         Copying existing operation.
       </span>
 
       <PromiseState
-        v-if="!copy"
+        v-if="!copyOperation"
         :promise="promise"
         resource-name-plural="operation"
         resource-name-singular="operation"
@@ -254,7 +289,7 @@ const promise = computed(
       ></PromiseState>
     </section>
 
-    <form @submit.prevent="save">
+    <form @submit.prevent="submit">
       <fieldset :disabled="promise.isPending">
         <div class="operation">
           <div class="date">
@@ -423,19 +458,9 @@ const promise = computed(
           <div class="secondary-actions">
             <button
               class="btn btn-outline-secondary"
-              :disabled="copy"
-              type="button"
-              @click="
-                () => {
-                  // I need to think hard about extracting this function
-                  // or doing this differently
-                  if (copy === false) {
-                    copy = true;
-                  }
-
-                  $router.push(`/operations/copy?operationID=${operationID}`);
-                }
-              "
+              :disabled="copyOperation"
+              name="copy"
+              type="submit"
             >
               <svg class="bi" fill="currentColor" height="16" width="16">
                 <use xlink:href="bootstrap-icons/bootstrap-icons.svg#copy" />
@@ -449,15 +474,17 @@ const promise = computed(
                 aria-expanded="false"
                 class="btn btn-outline-warning dropdown-toggle"
                 data-bs-toggle="dropdown"
-                :disabled="copy"
+                :disabled="copyOperation"
                 type="button"
               >
-                🔥
+                <svg class="bi" fill="currentColor" height="16" width="16">
+                  <use xlink:href="bootstrap-icons/bootstrap-icons.svg#trash" />
+                </svg>
               </button>
 
               <ul class="dropdown-menu">
                 <li>
-                  <button class="dropdown-item" type="button" @click="del">
+                  <button class="dropdown-item" name="delete" type="submit">
                     <svg class="bi" fill="currentColor" height="16" width="16">
                       <use
                         xlink:href="bootstrap-icons/bootstrap-icons.svg#trash"
@@ -472,11 +499,32 @@ const promise = computed(
           </div>
 
           <div class="primary-actions">
-            <!-- I'm pretty sure I will replace this with a split button
-            but this is good enough for now to test the functionality for a little while -->
-            <SaveAndClose></SaveAndClose>
+            <div class="btn-group dropup">
+              <button class="btn btn-primary" name="save" type="submit">
+                Save
+              </button>
 
-            <button class="btn btn-primary" type="submit">Save</button>
+              <button
+                aria-expanded="false"
+                class="btn btn-primary dropdown-toggle dropdown-toggle-split"
+                data-bs-toggle="dropdown"
+                type="button"
+              >
+                <span class="visually-hidden">Toggle Dropdown</span>
+              </button>
+
+              <ul class="dropdown-menu">
+                <li>
+                  <button
+                    class="dropdown-item"
+                    name="saveAndStay"
+                    type="submit"
+                  >
+                    Save & Stay
+                  </button>
+                </li>
+              </ul>
+            </div>
           </div>
         </div>
       </fieldset>

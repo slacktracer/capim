@@ -15,5 +15,4 @@ export type OperationsStoreState = {
     | TrackedPromise<{ operationID: string }, { deletedOperation: Operation }>
     | TrackedPromise<{ editableOperation: EditableOperation }, Operation>
   >;
-  saveAndClose: boolean;
 };

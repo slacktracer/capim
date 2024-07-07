@@ -6,6 +6,7 @@ import type { PatchOperation } from "../../types/PatchOperation";
 
 export const patchOperation: PatchOperation = ({
   editableOperation,
+  onFulfilled,
   state,
 }) => {
   const { operationID } = editableOperation;
@@ -20,6 +21,8 @@ export const patchOperation: PatchOperation = ({
 
     onFulfilled: (value) => {
       Object.assign(editableOperation, value);
+
+      onFulfilled?.(value);
     },
   });
 

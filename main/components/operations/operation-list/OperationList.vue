@@ -31,7 +31,7 @@ const trackedPromiseOfOperations = computed(
 const operationsByDate = computed(() => {
   const promise = unref(trackedPromiseOfOperations);
 
-  return Array.isArray(promise.value?.byDate) ? promise.value.byDate : [];
+  return Array.isArray(promise.value?.byDate) ? promise.value?.byDate : [];
 });
 
 watch(
@@ -51,6 +51,13 @@ const onSearch = ({ from, to }: { from: string; to: string }) => {
 
   if (searchID) {
     operationListID.value = searchID;
+
+    // I think I'm not using `setDateTimeRange`
+    // Maybe we don't need it all
+    // At least until I need to check the datetime range used in the last search
+    // But we will I ever?
+    // "Tomorrow we will know"
+    // operationsStore.setDatetimeRange({ from, to });
   }
 };
 
