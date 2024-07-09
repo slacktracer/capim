@@ -9,6 +9,7 @@ import type { OperationsStoreState } from "../../types/OperationsStoreState.js";
 import type { PatchOperation } from "../../types/PatchOperation";
 import type { PostOperation } from "../../types/PostOperation";
 import type { SetDatetimeRange } from "../../types/SetDatetimeRange.js";
+import type { UpdateCachedOperations } from "../../types/UpdateCachedOperations";
 import { injectState } from "../common/utils/inject-state.js";
 import { deleteOperation } from "./delete-operation.js";
 import { getInitialOperationsStoreState } from "./get-initial-operations-store-state.js";
@@ -17,6 +18,7 @@ import { getOperations } from "./get-operations.js";
 import { patchOperation } from "./patch-operation";
 import { postOperation } from "./post-operation";
 import { setDatetimeRange } from "./set-datetime-range.js";
+import { updateCachedOperations } from "./update-cached-operations";
 
 export const useOperationsStore = defineStore("operations", () => {
   const state: OperationsStoreState = reactive(
@@ -48,6 +50,10 @@ export const useOperationsStore = defineStore("operations", () => {
       setDatetimeRange,
       state,
     ),
+    updateCachedOperations: injectState<
+      UpdateCachedOperations,
+      OperationsStoreState
+    >(updateCachedOperations, state),
   };
 
   const $reset = () =>

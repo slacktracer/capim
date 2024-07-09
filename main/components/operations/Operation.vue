@@ -197,6 +197,10 @@ const submit = (payload: Event) => {
 
             saveOperation(() => {
               setTimeout(() => {
+                operationsStore.updateCachedOperations({
+                  operationID: operationID.value,
+                });
+
                 router.back();
               }, 300);
             });
