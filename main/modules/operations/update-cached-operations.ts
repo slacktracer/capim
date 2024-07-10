@@ -1,4 +1,5 @@
 import { core } from "../../core/core.js";
+import type { Operation } from "../../core/types/Operation";
 import type { UpdateCachedOperations } from "../../types/UpdateCachedOperations";
 import { isOperationList } from "./is-operation-list";
 
@@ -18,6 +19,20 @@ export const updateCachedOperations: UpdateCachedOperations = ({
     for (const operationList of operationLists) {
       if (isOperationList(operationList)) {
         switch (state.promises[operationID].action) {
+          case core.promiseAction.create:
+            {
+              const operation: Operation = state.promises[operationID]
+                .value as Operation;
+
+              operationList.push(operation);
+
+              operationList.byDate = core.makeOperationsByDate({
+                operations: operationList,
+              });
+            }
+
+            break;
+
           case core.promiseAction.delete:
             {
               const cachedOperationIndex = operationList.findIndex(
