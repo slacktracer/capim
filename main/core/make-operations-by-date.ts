@@ -25,5 +25,12 @@ export const makeOperationsByDate = ({
     ),
   );
 
+  Object.values(operationsByDate).map(([, operationList]) =>
+    operationList.sort(
+      (operationA, operationB) =>
+        new Date(operationB.at).getTime() - new Date(operationA.at).getTime(),
+    ),
+  );
+
   return operationsByDate;
 };
