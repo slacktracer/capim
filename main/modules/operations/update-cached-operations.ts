@@ -15,34 +15,48 @@ export const updateCachedOperations: UpdateCachedOperations = ({
       value && "byDate" in value ? value.byDate : false,
     );
 
-    if (state.promises[operationID].action === core.promiseAction.delete) {
-      for (const operationList of operationLists) {
-        if (isOperationList(operationList)) {
-          const cachedOperationIndex = operationList.findIndex(
-            (operation) => operation.operationID === operationID,
-          );
+    for (const operationList of operationLists) {
+      if (isOperationList(operationList)) {
+        switch (state.promises[operationID].action) {
+          case core.promiseAction.delete:
+            {
+              const cachedOperationIndex = operationList.findIndex(
+                (operation) => operation.operationID === operationID,
+              );
 
-          if (cachedOperationIndex > -1) {
-            operationList.splice(cachedOperationIndex, 1);
+              if (cachedOperationIndex > -1) {
+                operationList.splice(cachedOperationIndex, 1);
 
-            operationList.byDate = core.makeOperationsByDate({
-              operations: operationList,
-            });
-          }
-        }
-      }
-    }
+                operationList.byDate = core.makeOperationsByDate({
+                  operations: operationList,
+                });
+              }
+            }
 
-    if (state.promises[operationID].action === core.promiseAction.update) {
-      for (const operationList of operationLists) {
-        if (isOperationList(operationList)) {
-          const cachedOperation = operationList.find(
-            (operation) => operation.operationID === operationID,
-          );
+            break;
 
-          if (cachedOperation) {
-            Object.assign(cachedOperation, state.promises[operationID].value);
-          }
+          case core.promiseAction.update:
+            {
+              const cachedOperation = operationList.find(
+                (operation) => operation.operationID === operationID,
+              );
+
+              if (cachedOperation) {
+                Object.assign(
+                  cachedOperation,
+                  state.promises[operationID].value,
+                );
+              }
+            }
+
+            break;
+
+          default:
+            console.warn(
+              `Local cache update not implemented for promiseAction: ${String(
+                state.promises[operationID].action,
+              )}`,
+            );
         }
       }
     }
