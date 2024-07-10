@@ -1,5 +1,3 @@
-import { format } from "date-fns";
-
 import { core } from "../../core/core.js";
 import type { UpdateCachedOperations } from "../../types/UpdateCachedOperations";
 import { isOperationList } from "./is-operation-list";
@@ -25,31 +23,11 @@ export const updateCachedOperations: UpdateCachedOperations = ({
           );
 
           if (cachedOperationIndex > -1) {
-            const [cachedOperation] = operationList.splice(
-              cachedOperationIndex,
-              1,
-            );
+            operationList.splice(cachedOperationIndex, 1);
 
-            const cachedOperationDate = format(
-              new Date(cachedOperation.at),
-              "yyyy-MM-dd",
-            );
-
-            if (operationList.byDate) {
-              const operationsOnDate = operationList.byDate.find(
-                ([date]) => date === cachedOperationDate,
-              );
-
-              if (operationsOnDate) {
-                const [, operations] = operationsOnDate;
-
-                const cachedOperationIndexInByDate = operations.findIndex(
-                  (operation) => operation.operationID === operationID,
-                );
-
-                operations.splice(cachedOperationIndexInByDate, 1);
-              }
-            }
+            operationList.byDate = core.makeOperationsByDate({
+              operations: operationList,
+            });
           }
         }
       }
