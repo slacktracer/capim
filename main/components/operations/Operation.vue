@@ -217,7 +217,15 @@ const submit = (payload: Event) => {
               operationID,
             });
 
-            saveOperation();
+            saveOperation(() => {
+              setTimeout(() => {
+                operationsStore.updateCachedOperations({
+                  operationID: operationID.value,
+                });
+
+                router.back();
+              }, 300);
+            });
           }
 
           break;
