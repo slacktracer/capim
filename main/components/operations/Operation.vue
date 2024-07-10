@@ -241,6 +241,10 @@ const submit = (payload: Event) => {
               operationID: operationID.value,
 
               onFulfilled() {
+                operationsStore.updateCachedOperations({
+                  operationID: operationID.value,
+                });
+
                 router.back();
               },
             });
