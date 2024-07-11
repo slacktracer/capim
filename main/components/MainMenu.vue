@@ -79,8 +79,10 @@ const closeOnPageSelected = () => {
         </NuxtLink>
       </div>
 
-      <div class="build-number fw-light">
-        Build {{ commonStore.buildNumber }}
+      <div class="build-number">
+        <span class="badge text-bg-secondary">
+          Build {{ commonStore.buildNumber }}
+        </span>
       </div>
     </div>
   </div>
@@ -92,7 +94,6 @@ const closeOnPageSelected = () => {
 }
 
 .build-number {
-  bottom: 1rem;
-  position: fixed;
+  margin-top: 1rem;
 }
 </style>
