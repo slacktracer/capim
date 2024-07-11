@@ -1,31 +1,15 @@
 <script lang="ts" setup>
 import { format } from "date-fns";
-import { computed } from "vue";
 
 import type { Operation } from "../../core/types/Operation.js";
 import { useAccountsStore } from "../../modules/accounts/use-accounts-store.js";
+import CreatedUpdatedBadge from "./CreatedUpdatedBadge.vue";
 
 const props = defineProps<{
   operation: Operation;
 }>();
 
 const accountStore = useAccountsStore();
-
-const justCreated = computed(() => {
-  const diff = Date.now() - new Date(props.operation.createdAt).getTime();
-
-  return diff < 1000 * 60 * 5;
-});
-
-const justUpdated = computed(() => {
-  if (props.operation.updatedAt !== null) {
-    const diff = Date.now() - new Date(props.operation.updatedAt).getTime();
-
-    return diff < 1000 * 60 * 5;
-  }
-
-  return false;
-});
 </script>
 
 <template>
@@ -42,23 +26,10 @@ const justUpdated = computed(() => {
           <div class="category">
             {{ props.operation.category.name }}
 
-            <span class="badge-container">
-              <span
-                v-if="justCreated"
-                class="badge rounded-pill text-bg-success"
-              >
-                <span class="badge-content"> Just Created </span>
-              </span>
-            </span>
-
-            <span class="badge-container">
-              <span
-                v-if="justUpdated"
-                class="badge rounded-pill text-bg-success"
-              >
-                <span class="badge-content"> Just Updated </span>
-              </span>
-            </span>
+            <CreatedUpdatedBadge
+              :created-at="props.operation.createdAt"
+              :updated-at="props.operation.updatedAt"
+            ></CreatedUpdatedBadge>
           </div>
 
           <div class="comments">
@@ -143,13 +114,5 @@ a:has(.operation) {
   color: gray;
   font-size: 0.9rem;
   text-align: right;
-}
-
-.badge-container {
-  opacity: 0.75;
-}
-
-.badge-content {
-  font-variant: all-petite-caps;
 }
 </style>
