@@ -68,6 +68,14 @@ const onRefresh = () => {
     to: to.value,
   });
 };
+
+const dateTimeRangeBalance = computed(() => {
+  const promise = unref(trackedPromiseOfOperations);
+
+  return promise.value
+    ?.map((operation) => operation.amount)
+    .reduce((accumulator, amount) => accumulator + amount, 0);
+});
 </script>
 
 <template>
@@ -97,6 +105,10 @@ const onRefresh = () => {
         @refresh="onRefresh"
       ></PromiseState>
     </section>
+
+    <div class="dateTimeRangeBalance">
+      💸 <b>{{ dateTimeRangeBalance ? dateTimeRangeBalance / 100 : "..." }}</b>
+    </div>
 
     <section>
       <div v-for="[date, operations] in operationsByDate" :key="date">
@@ -146,5 +158,11 @@ const onRefresh = () => {
 .operations-separator {
   border-top: 1px dotted hsla(0, 0%, 95%, 1);
   margin-block: 0;
+}
+
+.dateTimeRangeBalance {
+  font-size: 1.2rem;
+  margin: 0.5rem;
+  text-align: right;
 }
 </style>
