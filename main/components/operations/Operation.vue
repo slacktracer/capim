@@ -115,7 +115,10 @@ const accountSelectFilter = ({
 }: {
   options: Record<string, any>[];
   search: string;
-}) => options.filter((option) => option.name.includes(search));
+}) =>
+  options.filter((option) =>
+    option.name.toLowerCase().startsWith(search.toLowerCase()),
+  );
 
 const categorySelectFilter = ({
   options,
@@ -123,7 +126,10 @@ const categorySelectFilter = ({
 }: {
   options: Record<string, any>[];
   search: string;
-}) => options.filter((option) => option.name.includes(search));
+}) =>
+  options.filter((option) =>
+    option.name.toLowerCase().startsWith(search.toLowerCase()),
+  );
 
 const updateAccount = ({
   value: accountID,
