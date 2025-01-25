@@ -292,10 +292,6 @@ const promise = computed(
     <section class="header">
       <h1>Operation</h1>
 
-      <span v-if="copyOperation" class="small text-muted">
-        Copying existing operation.
-      </span>
-
       <PromiseState
         v-if="!copyOperation"
         :promise="promise"
@@ -515,7 +511,7 @@ const promise = computed(
           </div>
 
           <div class="primary-actions">
-            <div class="btn-group dropup">
+            <div v-if="copyOperation" class="btn-group dropup">
               <button class="btn btn-primary" name="save" type="submit">
                 Save
               </button>
@@ -537,6 +533,33 @@ const promise = computed(
                     type="submit"
                   >
                     Save & Stay
+                  </button>
+                </li>
+              </ul>
+            </div>
+
+            <div v-if="!copyOperation" class="btn-group dropup">
+              <button class="btn btn-warning" name="save" type="submit">
+                Update
+              </button>
+
+              <button
+                aria-expanded="false"
+                class="btn btn-warning dropdown-toggle dropdown-toggle-split"
+                data-bs-toggle="dropdown"
+                type="button"
+              >
+                <span class="visually-hidden">Toggle Dropdown</span>
+              </button>
+
+              <ul class="dropdown-menu">
+                <li>
+                  <button
+                    class="dropdown-item"
+                    name="saveAndStay"
+                    type="submit"
+                  >
+                    Update & Stay
                   </button>
                 </li>
               </ul>
