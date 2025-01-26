@@ -517,7 +517,7 @@ const promise = computed(
           </div>
 
           <div class="primary-actions">
-            <div v-if="copyOperation" class="btn-group dropup">
+            <div v-if="newOperation || copyOperation" class="btn-group dropup">
               <button class="btn btn-primary" name="save" type="submit">
                 Save
               </button>
@@ -544,7 +544,7 @@ const promise = computed(
               </ul>
             </div>
 
-            <div v-if="!copyOperation" class="btn-group dropup">
+            <div v-else class="btn-group dropup">
               <button class="btn btn-warning" name="save" type="submit">
                 Update
               </button>
