@@ -91,6 +91,8 @@ watch(
 const filteredOptions: Record<string, any> = computed(() => {
   if (search.value === "") {
     previousSearchValue = "";
+  } else {
+    previousSearchValue = search.value;
   }
 
   const searchValue =
