@@ -1,15 +1,15 @@
 import { goToListItem } from "./option-key-down-event-handlers/option-list-traversing/go-to-list-item";
 import { roles } from "./roles.js";
-import type { OnOptionSelected } from "./types/OnOptionSelected";
+import type { EmitOptionSetEvent } from "./types/EmitOptionSetEvent";
 
 export const makeClickHandler =
   ({
     comboboxContainer,
-    onOptionSelected,
+    emitOptionSetEvent,
     toggleCombobox,
   }: {
     comboboxContainer: HTMLElement;
-    onOptionSelected: OnOptionSelected;
+    emitOptionSetEvent: EmitOptionSetEvent;
     toggleCombobox: () => void;
   }) =>
   (event: MouseEvent) => {
@@ -28,22 +28,21 @@ export const makeClickHandler =
           if (listbox instanceof HTMLUListElement) {
             const currentListItem = listbox.querySelector(".aria-selected");
 
-            const {
-              dataset: { label, value },
-            } = currentListItem;
+            if (currentListItem instanceof HTMLLIElement) {
+              const {
+                dataset: { label, value },
+              } = currentListItem;
 
-            if (label) {
-              onOptionSelected({
-                label,
-                value,
-              });
+              if (typeof label === "string" && typeof value === "string") {
+                emitOptionSetEvent({ label, value });
 
-              const [combobox] = comboboxContainer.children;
+                const [combobox] = comboboxContainer.children;
 
-              const comboboxAriaExpanded = combobox.ariaExpanded === "true";
+                const comboboxAriaExpanded = combobox.ariaExpanded === "true";
 
-              if (comboboxAriaExpanded) {
-                toggleCombobox();
+                if (comboboxAriaExpanded) {
+                  toggleCombobox();
+                }
               }
             }
           }

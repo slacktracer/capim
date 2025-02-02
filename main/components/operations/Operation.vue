@@ -351,7 +351,7 @@ const promise = computed(
               :options="accountList"
               :required="true"
               value="accountID"
-              @option-selected="updateAccount"
+              @option-set="updateAccount"
             >
               <template #option="{ option }: { option: AccountSelectOption }">
                 <div class="account-select-option">
@@ -372,7 +372,7 @@ const promise = computed(
               :options="categoryList"
               :required="true"
               value="categoryID"
-              @option-selected="updateCategory"
+              @option-set="updateCategory"
             >
               <template #option="{ option }: { option: CategorySelectOption }">
                 <div class="category-select-option">

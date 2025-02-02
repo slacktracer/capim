@@ -1,15 +1,16 @@
 import { makeClickHandler } from "./make-click-handler.js";
 import { makeInputHandler } from "./make-input-handler";
 import { makeKeydownHandler } from "./make-keydown-handler.js";
-import type { OnOptionSelected } from "./types/OnOptionSelected.js";
+import { makeSetSelectedOption } from "./make-set-selected-option";
+import type { EmitOptionSetEvent } from "./types/EmitOptionSetEvent";
 
 export const boot = ({
   comboboxContainer,
-  onOptionSelected,
+  emitOptionSetEvent,
   toggleCombobox,
 }: {
   comboboxContainer: HTMLElement;
-  onOptionSelected: OnOptionSelected;
+  emitOptionSetEvent: EmitOptionSetEvent;
   toggleCombobox: () => void;
 }) => {
   const [combobox, listbox] = comboboxContainer.children;
@@ -20,15 +21,21 @@ export const boot = ({
   ) {
     const clickHandler = makeClickHandler({
       comboboxContainer,
-      onOptionSelected,
+      emitOptionSetEvent,
       toggleCombobox,
     });
 
     comboboxContainer.addEventListener("click", clickHandler);
 
+    const setSelectedOption = makeSetSelectedOption({
+      comboboxContainer,
+      emitOptionSetEvent,
+      toggleCombobox,
+    });
+
     const keydownHandler = makeKeydownHandler({
       comboboxContainer,
-      onOptionSelected,
+      setSelectedOption,
       toggleCombobox,
     });
 

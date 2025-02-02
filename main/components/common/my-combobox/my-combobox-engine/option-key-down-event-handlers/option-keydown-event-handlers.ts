@@ -7,8 +7,6 @@ import { pageUpKeydownEventHandler } from "./page-up-keydown-event-handler.js";
 
 export const optionKeydownEventHandlers = {
   ArrowDown: arrowDownKeydownEventHandler,
-  ArrowLeft: () => {},
-  ArrowRight: () => {},
   ArrowUp: arrowUpKeydownEventHandler,
   End: endKeydownEventHandler,
   Home: homeKeydownEventHandler,

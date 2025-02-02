@@ -4,11 +4,11 @@ import { computed, onMounted, onUnmounted, ref, toRef, watch } from "vue";
 
 import { makeToggleCombobox } from "./make-toggle-combobox.js";
 import { boot } from "./my-combobox-engine/boot.js";
-import type { OnOptionSelected } from "./my-combobox-engine/types/OnOptionSelected.js";
+import type { EmitOptionSetEvent } from "./my-combobox-engine/types/EmitOptionSetEvent";
 import { capitalise } from "./my-combobox-engine/utils/capitalise.js";
 
 const emit = defineEmits<{
-  optionSelected: [{ label: string; value: string | undefined }];
+  optionSet: [{ label: string; value: string | undefined }];
 }>();
 
 const props = defineProps<{
@@ -40,6 +40,14 @@ const showOptions = ref(false);
 
 const myCombobox = ref();
 
+const emitOptionSetEvent: EmitOptionSetEvent = ({ label, value }) => {
+  count += 1;
+
+  search.value = label;
+
+  emit("optionSet", { label, value });
+};
+
 onMounted(() => {
   const { value: comboboxContainer } = myCombobox;
 
@@ -60,7 +68,7 @@ onMounted(() => {
 
   shutdown = boot({
     comboboxContainer,
-    onOptionSelected,
+    emitOptionSetEvent,
     toggleCombobox,
   });
 
@@ -96,6 +104,10 @@ const filteredOptions: Record<string, any> = computed(() => {
   }
 
   const searchValue =
+    // Now that I'm no longer changing the selected option by observing DOM
+    // mutations it is possible that this count variable is no longer necessary.
+    // I will investigate that at some point in the future.
+    // By next commit, hopefully.
     count === previousCount ? search.value : previousSearchValue;
 
   const updatedFilteredOptions = props.filter({
@@ -107,14 +119,6 @@ const filteredOptions: Record<string, any> = computed(() => {
 
   return updatedFilteredOptions;
 });
-
-const onOptionSelected: OnOptionSelected = ({ label, value }) => {
-  count += 1;
-
-  search.value = label;
-
-  emit("optionSelected", { label, value });
-};
 </script>
 
 <template>
