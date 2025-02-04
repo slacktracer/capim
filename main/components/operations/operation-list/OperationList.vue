@@ -28,11 +28,13 @@ const trackedPromiseOfOperations = computed(
       []) as TrackedPromiseOfOperations,
 );
 
+/*
 const operationsByDate = computed(() => {
   const promise = unref(trackedPromiseOfOperations);
 
   return Array.isArray(promise.value?.byDate) ? promise.value?.byDate : [];
 });
+ */
 
 watch(
   () => route.query,
@@ -69,6 +71,7 @@ const onRefresh = () => {
   });
 };
 
+/*
 const dateTimeRangeBalance = computed(() => {
   const promise = unref(trackedPromiseOfOperations);
 
@@ -76,10 +79,56 @@ const dateTimeRangeBalance = computed(() => {
     ?.map((operation) => operation.amount)
     .reduce((accumulator, amount) => accumulator + amount, 0);
 });
+ */
+
+/* testing something */
+const on = ref(false);
+const accountName = ref("");
+
+// @ts-expect-error
+const filterOperationsByDateByAccount = (operationsByDate) =>
+  // @ts-expect-error
+  operationsByDate.map(([date, operations]) => {
+    // @ts-expect-error
+    const y = operations.filter((operation) =>
+      on.value ? operation.account.name === accountName.value : true,
+    );
+    return [date, y];
+  });
+
+// @ts-expect-error
+const flatMapOperationsByDate = (operationsByDate) =>
+  // @ts-expect-error
+  operationsByDate.flatMap?.(([_date, operations]) => operations);
+
+const operationsByDate = computed(() => {
+  const promise = unref(trackedPromiseOfOperations);
+
+  if (Array.isArray(promise.value?.byDate)) {
+    return filterOperationsByDateByAccount(promise.value?.byDate);
+  }
+
+  return [];
+});
+
+const dateTimeRangeBalance = computed(
+  () =>
+    flatMapOperationsByDate(operationsByDate?.value)
+      // @ts-expect-error
+      ?.map((operation) => operation.amount)
+      // @ts-expect-error
+      .reduce((accumulator, amount) => accumulator + amount, 0),
+);
+/* quick and dirty feature */
 </script>
 
 <template>
   <div>
+    <div style="display: grid; place-items: center; gap: 1rem">
+      <input v-model="accountName" type="text" />
+      <input v-model="on" type="checkbox" />
+    </div>
+
     <section class="header">
       <h1>
         Operations
