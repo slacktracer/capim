@@ -111,13 +111,12 @@ const operationsByDate = computed(() => {
   return [];
 });
 
-const dateTimeRangeBalance = computed(
-  () =>
-    flatMapOperationsByDate(operationsByDate?.value)
-      // @ts-expect-error
-      ?.map((operation) => operation.amount)
-      // @ts-expect-error
-      .reduce((accumulator, amount) => accumulator + amount, 0),
+const dateTimeRangeBalance = computed(() =>
+  flatMapOperationsByDate(operationsByDate?.value)
+    // @ts-expect-error
+    ?.map((operation) => operation.amount)
+    // @ts-expect-error
+    .reduce((accumulator, amount) => accumulator + amount, 0),
 );
 /* quick and dirty feature */
 </script>

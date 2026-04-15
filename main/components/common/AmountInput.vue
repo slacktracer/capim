@@ -17,7 +17,7 @@ const notADigit = /\D/g;
 const formattedAmount = computed({
   get() {
     //  I NEED this, OK? =P
-    // eslint-disable-next-line no-unused-expressions
+    // eslint-disable-next-line @typescript-eslint/no-unused-expressions
     forceComputation.value;
 
     const formattedAmountAsString = String(props.amount).replace(notADigit, "");

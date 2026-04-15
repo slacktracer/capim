@@ -32,7 +32,7 @@ export default defineNuxtConfig({
   imports: {
     autoImport: false,
   },
-  modules: ["@pinia/nuxt"],
+  modules: ["@nuxt/eslint", "@pinia/nuxt"],
   runtimeConfig: { public: { baseURL: "" } },
   sourcemap: { client: true },
   spaLoadingTemplate: "spa-loading-template.html",

@@ -1,15 +1,15 @@
 {
   "author": "slacktracer",
   "dependencies": {
-    "@typescript-eslint/eslint-plugin": "^6.8.0",
-    "eslint": "^8.51.0",
-    "eslint-config-prettier": "^9.0.0",
-    "eslint-plugin-simple-import-sort": "^10.0.0",
+    "eslint": "^9.39.4",
+    "eslint-config-prettier": "^10.1.8",
+    "eslint-plugin-simple-import-sort": "^12.1.1",
+    "globals": "^15.11.0",
     "happy-dom": "^12.9.1",
-    "prettier": "^3.0.3",
+    "prettier": "^3.8.1",
     "tsc-files": "^1.1.4",
-    "vitest": "^0.34.6",
-    "vue-eslint-parser": "^9.3.2"
+    "typescript-eslint": "^8.58.0",
+    "vitest": "^0.34.6"
   },
   "name": "capim-test-suites",
   "scripts": {

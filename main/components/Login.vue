@@ -10,7 +10,9 @@ const password = ref("???");
 const username = ref("thiago");
 
 onMounted(() => {
-  core.isUserLoggedIn() && navigateTo("/");
+  if (core.isUserLoggedIn()) {
+    navigateTo("/");
+  }
 });
 </script>
 

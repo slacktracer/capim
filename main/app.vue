@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import "bootstrap/dist/js/bootstrap.esm.js";
 
-import { useHead, useRuntimeConfig } from "#imports"; // eslint-disable-line import/order
+import { useHead, useRuntimeConfig } from "#imports";
 
 import { core } from "./core/core.js";
 import { logout } from "./modules/authentication/logout.js";
