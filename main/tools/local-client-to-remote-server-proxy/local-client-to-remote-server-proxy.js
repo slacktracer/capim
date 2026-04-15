@@ -13,7 +13,7 @@ const keyPath = new URL("../../../capim.local-key.pem", import.meta.url)
 const cert = readFileSync(certPath, "utf-8");
 const key = readFileSync(keyPath, "utf-8");
 const proxy = httpProxy.createProxyServer();
-const target = "https://denarii.onrender.com";
+const target = "https://api.capim.club";
 
 proxy.on("error", errorHandler);
 proxy.on("proxyRes", proxyResponseHandler);
