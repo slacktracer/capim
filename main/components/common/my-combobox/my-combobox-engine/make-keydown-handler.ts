@@ -5,12 +5,12 @@ import type { SetSelectedOption } from "./types/SetSelectedOption";
 export const makeKeydownHandler =
   ({
     combobox,
-    comboboxContainer,
+    listbox,
     setSelectedOption,
     toggleCombobox,
   }: {
     combobox: HTMLInputElement;
-    comboboxContainer: HTMLElement;
+    listbox: HTMLUListElement;
     setSelectedOption: SetSelectedOption;
     toggleCombobox: () => void;
   }) =>
@@ -29,7 +29,7 @@ export const makeKeydownHandler =
 
         const typedCode = code as keyof typeof optionKeydownEventHandlers;
 
-        optionKeydownEventHandlers[typedCode]?.({ comboboxContainer });
+        optionKeydownEventHandlers[typedCode]?.({ listbox });
 
         return;
       }

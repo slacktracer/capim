@@ -1,13 +1,9 @@
 import { goToFirstListItem } from "./option-list-traversing/go-to-first-list-item";
 
 export const homeKeydownEventHandler = ({
-  comboboxContainer,
+  listbox,
 }: {
-  comboboxContainer: HTMLElement;
+  listbox: HTMLUListElement;
 }) => {
-  const [, listbox] = comboboxContainer.children;
-
-  if (listbox instanceof HTMLUListElement) {
-    goToFirstListItem({ listbox });
-  }
+  goToFirstListItem({ listbox });
 };

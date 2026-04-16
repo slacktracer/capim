@@ -3,27 +3,23 @@ import { goToFirstListItem } from "./option-list-traversing/go-to-first-list-ite
 import { goToListItem } from "./option-list-traversing/go-to-list-item.js";
 
 export const arrowDownKeydownEventHandler = ({
-  comboboxContainer,
+  listbox,
 }: {
-  comboboxContainer: HTMLElement;
+  listbox: HTMLUListElement;
 }) => {
-  const [, listbox] = comboboxContainer.children;
+  const currentListItem = listbox.querySelector(".aria-selected");
 
-  if (listbox instanceof HTMLUListElement) {
-    const currentListItem = listbox.querySelector(".aria-selected");
+  if (currentListItem instanceof HTMLLIElement) {
+    const nextListItem = getNextListItem({
+      listItem: currentListItem,
+    });
 
-    if (currentListItem instanceof HTMLLIElement) {
-      const nextListItem = getNextListItem({
-        listItem: currentListItem,
-      });
-
-      if (nextListItem) {
-        goToListItem({ listItem: nextListItem });
-      } else {
-        goToFirstListItem({ listbox });
-      }
+    if (nextListItem) {
+      goToListItem({ listItem: nextListItem });
     } else {
       goToFirstListItem({ listbox });
     }
+  } else {
+    goToFirstListItem({ listbox });
   }
 };

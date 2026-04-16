@@ -1,41 +1,37 @@
 import { getLastListItem } from "./get-last-list-item.js";
 
 export const getNextPageListItem = ({
-  comboboxContainer,
+  listbox,
 }: {
-  comboboxContainer: HTMLElement;
+  listbox: HTMLUListElement;
 }) => {
-  const [, listbox] = comboboxContainer.children;
+  const listboxHeight = listbox.offsetHeight;
 
-  if (listbox instanceof HTMLUListElement) {
-    const listboxHeight = listbox.offsetHeight;
+  let accumulatedHeight = 0;
+  let currentListItem;
+  let nextListItem: HTMLLIElement | null;
 
-    let accumulatedHeight = 0;
-    let currentListItem;
-    let nextListItem: HTMLLIElement | null;
+  let safetyCounter = 0;
 
-    let safetyCounter = 0;
+  currentListItem = listbox.querySelector(".aria-selected");
 
-    currentListItem = listbox.querySelector(".aria-selected");
+  while (safetyCounter < 100) {
+    if (currentListItem instanceof HTMLLIElement) {
+      nextListItem = currentListItem.nextElementSibling as HTMLLIElement;
 
-    while (safetyCounter < 100) {
-      if (currentListItem instanceof HTMLLIElement) {
-        nextListItem = currentListItem.nextElementSibling as HTMLLIElement;
+      if (nextListItem instanceof HTMLLIElement) {
+        accumulatedHeight += nextListItem.offsetHeight;
 
-        if (nextListItem instanceof HTMLLIElement) {
-          accumulatedHeight += nextListItem.offsetHeight;
-
-          if (accumulatedHeight > listboxHeight) {
-            return currentListItem;
-          }
-
-          currentListItem = nextListItem;
-        } else {
-          return getLastListItem({ listbox });
+        if (accumulatedHeight > listboxHeight) {
+          return currentListItem;
         }
-      }
 
-      safetyCounter += 1;
+        currentListItem = nextListItem;
+      } else {
+        return getLastListItem({ listbox });
+      }
     }
+
+    safetyCounter += 1;
   }
 };

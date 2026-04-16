@@ -2,19 +2,13 @@ import { getPreviousPageListItem } from "./option-list-traversing/get-previous-p
 import { goToListItem } from "./option-list-traversing/go-to-list-item.js";
 
 export const pageUpKeydownEventHandler = ({
-  comboboxContainer,
+  listbox,
 }: {
-  comboboxContainer: HTMLElement;
+  listbox: HTMLUListElement;
 }) => {
-  const [, listbox] = comboboxContainer.children;
+  const previousPageListItem = getPreviousPageListItem({ listbox });
 
-  if (listbox instanceof HTMLUListElement) {
-    const previousPageListItem = getPreviousPageListItem({
-      comboboxContainer,
-    });
-
-    if (previousPageListItem) {
-      goToListItem({ listItem: previousPageListItem });
-    }
+  if (previousPageListItem) {
+    goToListItem({ listItem: previousPageListItem });
   }
 };

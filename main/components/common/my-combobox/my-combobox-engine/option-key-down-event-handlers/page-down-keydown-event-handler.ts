@@ -2,19 +2,13 @@ import { getNextPageListItem } from "./option-list-traversing/get-next-page-list
 import { goToListItem } from "./option-list-traversing/go-to-list-item.js";
 
 export const pageDownKeydownEventHandler = ({
-  comboboxContainer,
+  listbox,
 }: {
-  comboboxContainer: HTMLElement;
+  listbox: HTMLUListElement;
 }) => {
-  const [, listbox] = comboboxContainer.children;
+  const nextPageListItem = getNextPageListItem({ listbox });
 
-  if (listbox instanceof HTMLUListElement) {
-    const nextPageListItem = getNextPageListItem({
-      comboboxContainer,
-    });
-
-    if (nextPageListItem) {
-      goToListItem({ listItem: nextPageListItem });
-    }
+  if (nextPageListItem) {
+    goToListItem({ listItem: nextPageListItem });
   }
 };

@@ -37,7 +37,7 @@ export const boot = ({
 
     const keydownHandler = makeKeydownHandler({
       combobox,
-      comboboxContainer,
+      listbox,
       setSelectedOption,
       toggleCombobox,
     });
