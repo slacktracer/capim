@@ -4,10 +4,12 @@ import type { SetSelectedOption } from "./types/SetSelectedOption";
 
 export const makeKeydownHandler =
   ({
+    combobox,
     comboboxContainer,
     setSelectedOption,
     toggleCombobox,
   }: {
+    combobox: HTMLInputElement;
     comboboxContainer: HTMLElement;
     setSelectedOption: SetSelectedOption;
     toggleCombobox: () => void;
@@ -15,8 +17,6 @@ export const makeKeydownHandler =
   (event: KeyboardEvent) => {
     if (event.target instanceof HTMLElement) {
       const { code, shiftKey } = event;
-
-      const [combobox] = comboboxContainer.children;
 
       const comboboxAriaExpanded = combobox.ariaExpanded === "true";
 

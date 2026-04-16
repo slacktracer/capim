@@ -2,15 +2,13 @@ import type { ToggleCombobox } from "../types/ToggleCombobox";
 
 export const makeInputHandler =
   ({
-    comboboxContainer,
+    combobox,
     toggleCombobox,
   }: {
-    comboboxContainer: HTMLElement;
+    combobox: HTMLInputElement;
     toggleCombobox: ToggleCombobox;
   }) =>
   () => {
-    const [combobox] = comboboxContainer.children;
-
     const comboboxAriaExpanded = combobox.ariaExpanded === "true";
 
     if (!comboboxAriaExpanded) {

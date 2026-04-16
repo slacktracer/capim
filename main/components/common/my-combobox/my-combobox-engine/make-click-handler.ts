@@ -4,11 +4,13 @@ import type { EmitOptionSetEvent } from "./types/EmitOptionSetEvent";
 
 export const makeClickHandler =
   ({
-    comboboxContainer,
+    combobox,
+    listbox,
     emitOptionSetEvent,
     toggleCombobox,
   }: {
-    comboboxContainer: HTMLElement;
+    combobox: HTMLInputElement;
+    listbox: HTMLUListElement;
     emitOptionSetEvent: EmitOptionSetEvent;
     toggleCombobox: () => void;
   }) =>
@@ -23,26 +25,20 @@ export const makeClickHandler =
         if (target instanceof HTMLLIElement) {
           goToListItem({ listItem: target, noDebounce: true });
 
-          const [, listbox] = comboboxContainer.children;
+          const currentListItem = listbox.querySelector(".aria-selected");
 
-          if (listbox instanceof HTMLUListElement) {
-            const currentListItem = listbox.querySelector(".aria-selected");
+          if (currentListItem instanceof HTMLLIElement) {
+            const {
+              dataset: { label, value },
+            } = currentListItem;
 
-            if (currentListItem instanceof HTMLLIElement) {
-              const {
-                dataset: { label, value },
-              } = currentListItem;
+            if (typeof label === "string" && typeof value === "string") {
+              emitOptionSetEvent({ label, value });
 
-              if (typeof label === "string" && typeof value === "string") {
-                emitOptionSetEvent({ label, value });
+              const comboboxAriaExpanded = combobox.ariaExpanded === "true";
 
-                const [combobox] = comboboxContainer.children;
-
-                const comboboxAriaExpanded = combobox.ariaExpanded === "true";
-
-                if (comboboxAriaExpanded) {
-                  toggleCombobox();
-                }
+              if (comboboxAriaExpanded) {
+                toggleCombobox();
               }
             }
           }

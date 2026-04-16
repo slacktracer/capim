@@ -20,7 +20,8 @@ export const boot = ({
     listbox instanceof HTMLUListElement
   ) {
     const clickHandler = makeClickHandler({
-      comboboxContainer,
+      combobox,
+      listbox,
       emitOptionSetEvent,
       toggleCombobox,
     });
@@ -28,12 +29,14 @@ export const boot = ({
     comboboxContainer.addEventListener("click", clickHandler);
 
     const setSelectedOption = makeSetSelectedOption({
-      comboboxContainer,
+      combobox,
+      listbox,
       emitOptionSetEvent,
       toggleCombobox,
     });
 
     const keydownHandler = makeKeydownHandler({
+      combobox,
       comboboxContainer,
       setSelectedOption,
       toggleCombobox,
@@ -42,7 +45,7 @@ export const boot = ({
     comboboxContainer.addEventListener("keydown", keydownHandler);
 
     const inputHandler = makeInputHandler({
-      comboboxContainer,
+      combobox,
       toggleCombobox,
     });
 
