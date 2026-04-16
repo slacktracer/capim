@@ -22,6 +22,9 @@
     "typescript-eslint": "^8.58.0",
     "vue-tsc": "^3.2.6"
   },
+  "engines": {
+    "node": "^20.19.0"
+  },
   "name": "capim",
   "scripts": {
     "build": "nuxt build",
