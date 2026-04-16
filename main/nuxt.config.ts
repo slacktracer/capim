@@ -1,6 +1,7 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 // @ts-ignore
 export default defineNuxtConfig({
+  compatibilityDate: "2026-04-15",
   components: {
     dirs: [],
   },

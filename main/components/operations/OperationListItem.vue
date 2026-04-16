@@ -46,7 +46,7 @@ const accountStore = useAccountsStore();
           </div>
 
           <div class="account">
-            {{ accountStore.accountsByID[props.operation.accountID].name }}
+            {{ accountStore.accountsByID[props.operation.accountID]?.name }}
           </div>
         </div>
       </div>

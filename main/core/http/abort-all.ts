@@ -6,6 +6,6 @@ export const abortAll = ({ reason }: { reason: string }) => {
   );
 
   ongoingRequestsControllersSymbols.forEach((symbol) =>
-    ongoingRequestsControllers[symbol].abort(reason),
+    ongoingRequestsControllers[symbol]?.abort(reason),
   );
 };
