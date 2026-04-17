@@ -1,4 +1,8 @@
 <script lang="ts" setup>
+import { onMounted } from "vue";
+
+import { navigateTo } from "#imports";
+
 import { useAccountsStore } from "../modules/accounts/use-accounts-store.js";
 import { useCategoriesStore } from "../modules/categories/use-categories-store.js";
 import { useTagsStore } from "../modules/tags/use-tags-store.js";
@@ -6,6 +10,12 @@ import { useTagsStore } from "../modules/tags/use-tags-store.js";
 const accountsStore = useAccountsStore();
 const tagsStore = useTagsStore();
 const categoriesStore = useCategoriesStore();
+
+onMounted(() => {
+  setTimeout(() => {
+    navigateTo("/operations");
+  }, 2000);
+});
 </script>
 
 <template>
