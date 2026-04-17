@@ -1,4 +1,3 @@
-import { core } from "../../../core/core.js";
 import { useCommonStore } from "../use-common-store.js";
 
 export const areSearchParamsUpToDate = ({
@@ -8,7 +7,17 @@ export const areSearchParamsUpToDate = ({
 }) => {
   const { router } = useCommonStore();
 
-  return Object.keys(
-    core.filterOutFalsyEntries({ object: newSearchParams }),
-  ).every((key) => router.currentRoute?.query?.[key] === newSearchParams[key]);
+  return Object.keys(newSearchParams).every((key) => {
+    const currentValue = router.currentRoute?.query?.[key];
+
+    const newValue = newSearchParams[key];
+
+    if (newValue) {
+      return currentValue === newValue;
+    }
+
+    const paramIsAlreadyAbsentFromURL = Boolean(currentValue) === false;
+
+    return paramIsAlreadyAbsentFromURL;
+  });
 };

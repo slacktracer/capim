@@ -3,6 +3,8 @@ import { computed, ref, unref, watch } from "vue";
 import type { LocationQuery } from "vue-router";
 import { useRoute } from "vue-router";
 
+import { setSearchParams } from "../../../modules/common/utils/set-search-params.js";
+import { defaultDatetimeRange } from "../../../modules/operations/default-datetime-range.js";
 import { useOperationsStore } from "../../../modules/operations/use-operations-store.js";
 import type { TrackedPromiseOfOperations } from "../../../types/TrackedPromiseOfOperations.js";
 import PromiseState from "../../common/PromiseState.vue";
@@ -36,6 +38,15 @@ const operationsByDate = computed(() => {
 });
  */
 
+const needsDefaultFrom = !route.query.from;
+
+if (needsDefaultFrom) {
+  setSearchParams({
+    data: { from: defaultDatetimeRange.from },
+    replace: true,
+  });
+}
+
 watch(
   () => route.query,
   (searchParams: LocationQuery) => {
@@ -45,7 +56,7 @@ watch(
 
     operationListID.value = getOperations({ ...fromAndTo });
   },
-  { immediate: true },
+  { immediate: !needsDefaultFrom },
 );
 
 const onSearch = ({ from, to }: { from: string; to: string }) => {
