@@ -5,7 +5,7 @@ export default defineNuxtConfig({
   components: {
     dirs: [],
   },
-  css: ["bootstrap/dist/css/bootstrap.min.css"],
+  css: ["bootstrap/dist/css/bootstrap.min.css", "~/assets/css/styles.css"],
   hooks: {
     // What is going on here? Had to set as _any_ because tsc-files. But fails only for "lint staged".
     // Do I need tsc-files AND nuxi typecheck?

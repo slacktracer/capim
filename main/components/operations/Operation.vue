@@ -33,6 +33,8 @@ const router = useRouter();
 
 const newOperation = ref(false);
 
+const newOperationDate = ref<string | undefined>();
+
 const operationID = ref("");
 
 const copyOperation = ref(false);
@@ -43,6 +45,10 @@ if (typeof route.params.id === "string") {
   switch (route.params.id) {
     case "new":
       newOperation.value = true;
+
+      if (typeof route.query.date === "string") {
+        newOperationDate.value = route.query.date;
+      }
 
       break;
 
@@ -91,7 +97,10 @@ const editableOperation: EditableOperation = useEditableResource<
   resource:
     operationID.value || copyOperationID.value
       ? operationsStore.promises[operationID.value || copyOperationID.value]
-      : { value: makeEmptyOperation(), isFulfilled: true },
+      : {
+          value: makeEmptyOperation({ date: newOperationDate.value }),
+          isFulfilled: true,
+        },
 });
 
 const amount = computed(() => {

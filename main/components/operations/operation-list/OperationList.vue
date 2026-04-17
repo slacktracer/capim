@@ -8,6 +8,7 @@ import { defaultDatetimeRange } from "../../../modules/operations/default-dateti
 import { useOperationsStore } from "../../../modules/operations/use-operations-store.js";
 import type { TrackedPromiseOfOperations } from "../../../types/TrackedPromiseOfOperations.js";
 import PromiseState from "../../common/PromiseState.vue";
+import AddOperationToDate from "../AddOperationToDate.vue";
 import OperationListItem from "../OperationListItem.vue";
 import OperationsDatetimeRangeSelector from "../OperationsDatetimeRangeSelector.vue";
 import { getFromAndTo } from "./get-from-and-to.js";
@@ -171,8 +172,12 @@ const dateTimeRangeBalance = computed(() =>
 
     <section>
       <div v-for="[date, operations] in operationsByDate" :key="date">
-        <div class="date">
-          {{ date }}
+        <div class="day-header">
+          <div class="date">
+            {{ date }}
+          </div>
+
+          <AddOperationToDate :date="date" />
         </div>
 
         <div
@@ -202,16 +207,26 @@ const dateTimeRangeBalance = computed(() =>
   justify-content: space-between;
 }
 
-.date {
+.day-header {
   align-items: center;
   background: hsla(0, 0%, 95%, 1);
-  display: flex;
-  font-size: 1.1rem;
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
   height: 2.25rem;
-  justify-content: center;
+  padding-inline: 1rem;
   position: sticky;
   top: 0;
   z-index: 1;
+}
+
+.day-header .date {
+  font-size: 1.1rem;
+  grid-column: 2;
+}
+
+.day-header > :last-child {
+  grid-column: 3;
+  justify-self: end;
 }
 
 .operations-separator {

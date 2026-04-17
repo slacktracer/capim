@@ -9,6 +9,7 @@ export type Operation = {
   amount: number;
   amountPerUnit: number;
   at: string;
+  atTimezone: string;
   category: Pick<Category, "categoryID" | "group" | "name">;
   categoryID: string;
   comments: string;

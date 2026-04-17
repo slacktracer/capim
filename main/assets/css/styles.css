@@ -1,0 +1,5 @@
+:root {
+  --cs-success-color: #198754;
+  --cs-success-focus-shadow: 0 0 0 0.25rem rgba(60, 153, 110, 0.25);
+  --cs-success-hover-color: #157347;
+}
