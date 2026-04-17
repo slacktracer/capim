@@ -4,7 +4,6 @@ import type { TrackedPromise } from "../core/types/TrackedPromise";
 import type { EditableOperation } from "./EditableOperation";
 
 export type OperationsStoreState = {
-  datetimeRange: [string, string];
   promises: Record<
     string,
     | TrackedPromise<
