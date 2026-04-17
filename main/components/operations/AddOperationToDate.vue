@@ -23,18 +23,20 @@ const addOperation = () => {
 <style scoped>
 .add-operation-to-date-button {
   all: unset;
-  color: var(--cs-success-color);
   cursor: pointer;
   display: inline-flex;
 }
 
 .add-operation-to-date-button:focus-visible {
-  color: var(--cs-success-hover-color);
-  outline: 1px solid var(--cs-success-hover-color);
+  outline: 1px solid currentColor;
   outline-offset: 2px;
 }
 
-.add-operation-to-date-button:hover {
-  color: var(--cs-success-hover-color);
+.add-operation-to-date-button svg {
+  transition: rotate 0.3s ease;
+}
+
+.add-operation-to-date-button:is(:hover, :focus-visible) svg {
+  rotate: 90deg;
 }
 </style>
