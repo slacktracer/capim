@@ -71,15 +71,6 @@ onMounted(() => {
     emitOptionSetEvent,
     toggleCombobox,
   });
-
-  const [combobox] = comboboxContainer.children;
-
-  if (combobox instanceof HTMLInputElement) {
-    comboboxContainer.style.setProperty(
-      "--combobox-height",
-      `${combobox.offsetHeight}px`,
-    );
-  }
 });
 
 onUnmounted(() => {
@@ -163,7 +154,6 @@ const filteredOptions: Record<string, any> = computed(() => {
 
 <style scoped>
 .my-combobox {
-  --combobox-height: 1rem;
   position: relative;
 }
 
@@ -175,9 +165,9 @@ const filteredOptions: Record<string, any> = computed(() => {
   overflow-y: scroll;
   padding-inline-start: 0;
   position: absolute;
-  top: calc(var(--combobox-height) + 0.5rem);
+  top: calc(100% + 0.5rem);
   width: 100%;
-  z-index: 1;
+  z-index: 2;
 }
 
 [role="option"] {
