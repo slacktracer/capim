@@ -39,11 +39,21 @@ const operationsByDate = computed(() => {
 });
  */
 
-const needsDefaultFrom = !route.query.from;
+const defaults: { from?: string; to?: string } = {};
 
-if (needsDefaultFrom) {
+if (!route.query.from) {
+  defaults.from = defaultDatetimeRange.from;
+}
+
+if (!route.query.to) {
+  defaults.to = defaultDatetimeRange.to;
+}
+
+const needsDefaults = defaults.from || defaults.to;
+
+if (needsDefaults) {
   setSearchParams({
-    data: { from: defaultDatetimeRange.from },
+    data: defaults,
     replace: true,
   });
 }
@@ -57,7 +67,7 @@ watch(
 
     operationListID.value = getOperations({ ...fromAndTo });
   },
-  { immediate: !needsDefaultFrom },
+  { immediate: !needsDefaults },
 );
 
 const onSearch = ({ from, to }: { from: string; to: string }) => {
