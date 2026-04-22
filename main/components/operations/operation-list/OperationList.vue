@@ -3,6 +3,8 @@ import { computed, ref, unref, watch } from "vue";
 import type { LocationQuery } from "vue-router";
 import { useRoute } from "vue-router";
 
+import { useAccountsStore } from "../../../modules/accounts/use-accounts-store.js";
+import { useCategoriesStore } from "../../../modules/categories/use-categories-store.js";
 import { setSearchParams } from "../../../modules/common/utils/set-search-params.js";
 import { defaultDatetimeRange } from "../../../modules/operations/default-datetime-range.js";
 import { useOperationsStore } from "../../../modules/operations/use-operations-store.js";
@@ -14,6 +16,10 @@ import OperationsDatetimeRangeSelector from "../OperationsDatetimeRangeSelector.
 import { getFromAndTo } from "./get-from-and-to.js";
 import { getOperations } from "./get-operations.js";
 import { search } from "./search.js";
+
+const accountsStore = useAccountsStore();
+
+const categoriesStore = useCategoriesStore();
 
 const operationsStore = useOperationsStore();
 
@@ -96,19 +102,33 @@ const dateTimeRangeBalance = computed(() => {
 });
  */
 
-/* testing something */
-const on = ref(false);
-const accountName = ref("");
+const selectedAccountName = ref("");
+
+const selectedCategoryName = ref("");
 
 // @ts-expect-error
 const filterOperationsByDateByAccount = (operationsByDate) =>
   // @ts-expect-error
   operationsByDate.map(([date, operations]) => {
     // @ts-expect-error
-    const y = operations.filter((operation) =>
-      on.value ? operation.account.name === accountName.value : true,
-    );
-    return [date, y];
+    const filtered = operations.filter((operation) => {
+      if (
+        selectedAccountName.value &&
+        operation.account.name !== selectedAccountName.value
+      ) {
+        return false;
+      }
+
+      if (
+        selectedCategoryName.value &&
+        operation.category.name !== selectedCategoryName.value
+      ) {
+        return false;
+      }
+
+      return true;
+    });
+    return [date, filtered];
   });
 
 // @ts-expect-error
@@ -138,9 +158,30 @@ const dateTimeRangeBalance = computed(() =>
 
 <template>
   <div>
-    <div style="display: grid; place-items: center; gap: 1rem">
-      <input v-model="accountName" type="text" />
-      <input v-model="on" type="checkbox" />
+    <div
+      style="display: flex; flex-wrap: wrap; justify-content: center; gap: 1rem"
+    >
+      <select v-model="selectedAccountName">
+        <option value="">None</option>
+        <option
+          v-for="account in accountsStore.accounts.data"
+          :key="account.accountID"
+          :value="account.name"
+        >
+          {{ account.name }}
+        </option>
+      </select>
+
+      <select v-model="selectedCategoryName">
+        <option value="">None</option>
+        <option
+          v-for="category in categoriesStore.categories.data"
+          :key="category.categoryID"
+          :value="category.name"
+        >
+          {{ category.name }}
+        </option>
+      </select>
     </div>
 
     <section class="header">
