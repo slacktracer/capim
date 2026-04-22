@@ -1,4 +1,5 @@
 <script lang="ts" setup>
+import { format } from "date-fns";
 import { computed, ref, unref, watch } from "vue";
 import type { LocationQuery } from "vue-router";
 import { useRoute } from "vue-router";
@@ -237,6 +238,10 @@ const dateTimeRangeBalance = computed(() =>
     <section>
       <div v-for="[date, operations] in operationsByDate" :key="date">
         <div class="day-header">
+          <div class="day-of-the-week">
+            {{ format(new Date(date + "T00:00:00"), "EEE") }}
+          </div>
+
           <div class="date">
             {{ date }}
           </div>
@@ -281,6 +286,11 @@ const dateTimeRangeBalance = computed(() =>
   position: sticky;
   top: 0;
   z-index: 1;
+}
+
+.day-header .day-of-the-week {
+  font-size: 0.9rem;
+  text-transform: uppercase;
 }
 
 .day-header .date {
