@@ -3,6 +3,7 @@ import { computed, ref, unref, watch } from "vue";
 import type { LocationQuery } from "vue-router";
 import { useRoute } from "vue-router";
 
+import { core } from "../../../core/core.js";
 import { useAccountsStore } from "../../../modules/accounts/use-accounts-store.js";
 import { useCategoriesStore } from "../../../modules/categories/use-categories-store.js";
 import { setSearchParams } from "../../../modules/common/utils/set-search-params.js";
@@ -102,9 +103,28 @@ const dateTimeRangeBalance = computed(() => {
 });
  */
 
-const selectedAccountName = ref("");
+const userOptions = core.getUserOptions();
 
-const selectedCategoryName = ref("");
+const selectedAccountName = ref(
+  userOptions.options.operationList.filters.account,
+);
+
+const selectedCategoryName = ref(
+  userOptions.options.operationList.filters.category,
+);
+
+watch([selectedAccountName, selectedCategoryName], () => {
+  core.setUserOptions({
+    options: {
+      operationList: {
+        filters: {
+          account: selectedAccountName.value,
+          category: selectedCategoryName.value,
+        },
+      },
+    },
+  });
+});
 
 // @ts-expect-error
 const filterOperationsByDateByAccount = (operationsByDate) =>

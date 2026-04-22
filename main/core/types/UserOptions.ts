@@ -3,6 +3,7 @@ export type UserOptions = {
     operationList: {
       filters: {
         account: string;
+        category: string;
       };
     };
   };
