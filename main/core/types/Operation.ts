@@ -1,4 +1,4 @@
-import type { Account } from "./Account";
+import type { Account } from "./Account.js";
 import type { Category } from "./Category.js";
 import type { TagKey } from "./TagKey.js";
 import type { TagValue } from "./TagValue.js";

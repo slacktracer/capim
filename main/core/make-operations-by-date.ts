@@ -1,7 +1,7 @@
 import { format } from "date-fns";
 
 import type { Operation } from "./types/Operation.js";
-import type { OperationsByDate } from "./types/OperationsByDate";
+import type { OperationsByDate } from "./types/OperationsByDate.js";
 
 export const makeOperationsByDate = ({
   operations,
@@ -31,6 +31,8 @@ export const makeOperationsByDate = ({
         new Date(operationB.at).getTime() - new Date(operationA.at).getTime(),
     ),
   );
+
+  operationsByDate.sort(([dateA], [dateB]) => dateB.localeCompare(dateA));
 
   return operationsByDate;
 };
