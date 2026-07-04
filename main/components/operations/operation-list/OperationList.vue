@@ -127,6 +127,12 @@ watch([selectedAccountName, selectedCategoryName], () => {
   });
 });
 
+const onCopyOperationsJSON = () => {
+  navigator.clipboard.writeText(
+    JSON.stringify(trackedPromiseOfOperations.value.value, null, 2),
+  );
+};
+
 // @ts-expect-error
 const filterOperationsByDateByAccount = (operationsByDate) =>
   // @ts-expect-error
@@ -203,6 +209,10 @@ const dateTimeRangeBalance = computed(() =>
           {{ category.name }}
         </option>
       </select>
+
+      <button class="btn btn-outline-secondary" @click="onCopyOperationsJSON">
+        Copy operations JSON
+      </button>
     </div>
 
     <section class="header">
