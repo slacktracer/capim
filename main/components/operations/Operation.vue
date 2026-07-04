@@ -239,8 +239,6 @@ const submit = (payload: Event) => {
                 operationsStore.updateCachedOperations({
                   operationID: operationID.value,
                 });
-
-                router.back();
               }, 300);
             });
           }
