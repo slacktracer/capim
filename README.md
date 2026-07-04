@@ -38,6 +38,14 @@ Two top-level directories:
 
 ## Setup
 
+Steps 2-4 below (hosts file, mkcert, certs, `.env`) can be done in one shot on Fedora with:
+
+```sh
+./scripts/setup-dev-machine.sh
+```
+
+Safe to re-run — skips anything already in place. Otherwise, follow the manual steps:
+
 1. Install dependencies from the root:
 
 ```sh
