@@ -1,24 +1,23 @@
 {
   "devDependencies": {
-    "@types/bootstrap": "^5.2.9",
     "husky": "^8.0.3",
     "lint-staged": "^13.2.3"
   },
-  "name": "capim",
+  "name": "capim-root",
+  "private": true,
   "scripts": {
-    "build": "npm ci && npm run generate --prefix main",
+    "build": "pnpm install --frozen-lockfile && pnpm --filter capim generate",
     "deploy": "npm version --preid build prerelease --message 'New build: %s [skip ci]'",
-    "install": "npm install --prefix main && npm install --prefix tests",
-    "lf": "npm run live-feedback --prefix main",
-    "lint": "npm run lint --prefix main && npm run lint --prefix tests",
-    "lint-staged": "lint-staged",
+    "lf": "pnpm --filter capim live-feedback",
+    "lint": "pnpm -r lint",
     "prepare": "husky install",
-    "p": "npm run local-client-to-remote-server-proxy --prefix main",
-    "s": "npm run start-using-https --prefix main",
-    "start": "npm run dev --prefix main",
-    "test": "npm run test --prefix tests",
+    "p": "pnpm --filter capim local-client-to-remote-server-proxy",
+    "s": "pnpm --filter capim start-using-https",
+    "start": "pnpm --filter capim dev",
+    "test": "pnpm --filter capim-test-suites test",
     "postversion": "git push --follow-tags",
-    "x": "npm run x --prefix main"
+    "x": "pnpm --filter capim x"
   },
-  "version": "1.0.0-build.33"
+  "version": "1.0.0-build.33",
+  "packageManager": "pnpm@10.34.4+sha512.8768be55200ae3f2226b6527fcca2687e14bc4e5f12d7721a0f25da3df47915177058648db4177baf348120fa0ba2752d8d8d93f6beaf1fe64ae18da8de961af"
 }

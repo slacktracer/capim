@@ -3,5 +3,5 @@ services:
     name: capim
     env: static
     branch: main
-    buildCommand: npm run build
-    staticPublishPath: main/output/public
+    buildCommand: corepack enable && pnpm run build
+    staticPublishPath: main/.output/public

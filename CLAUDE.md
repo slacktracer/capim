@@ -12,16 +12,16 @@ All commands run from the repo root unless noted.
 
 | Task | Command |
 |------|---------|
-| Install deps | `npm install` (fans out to `main/` and `tests/`) |
-| Dev server (HTTP) | `npm start` |
-| Dev server (HTTPS + remote proxy) | `npm run x` |
-| Build (static site) | `npm run build` |
-| Lint (main + tests) | `npm run lint` |
-| Format | `npm run format --prefix main` |
-| Type-check | `npm run check-types --prefix main` |
-| Live feedback (watch types + lint) | `npm run lf` |
-| Run tests | `npm test` |
-| Deploy (bump version, push tag) | `npm run deploy` |
+| Install deps | `pnpm install` (workspace: root, `main/`, `tests/`) |
+| Dev server (HTTP) | `pnpm start` |
+| Dev server (HTTPS + remote proxy) | `pnpm run x` |
+| Build (static site) | `pnpm run build` |
+| Lint (main + tests) | `pnpm run lint` |
+| Format | `pnpm --filter capim format` |
+| Type-check | `pnpm --filter capim check-types` |
+| Live feedback (watch types + lint) | `pnpm run lf` |
+| Run tests | `pnpm test` |
+| Deploy (bump version, push tag) | `pnpm run deploy` |
 
 Tests use Vitest with `happy-dom`. Test files live under `tests/__tests__/`.
 
