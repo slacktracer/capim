@@ -4,5 +4,5 @@
 export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"
 
-npm run lint-staged --prefix main && npm run lint-staged --prefix tests
+pnpm --filter capim lint-staged && pnpm --filter capim-test-suites lint-staged
 

@@ -12,11 +12,13 @@
   },
   "devDependencies": {
     "@nuxt/eslint": "^1.15.2",
+    "@types/bootstrap": "^5.2.9",
     "@types/ramda": "^0.29.7",
     "eslint": "^9.39.4",
     "eslint-config-prettier": "^10.1.8",
     "eslint-plugin-simple-import-sort": "^12.1.1",
     "http-proxy": "^1.18.1",
+    "nodemon": "^3.1.11",
     "prettier": "^3.8.1",
     "tsc-files": "^1.1.4",
     "typescript-eslint": "^8.58.0",
@@ -35,13 +37,13 @@
     "https-dev": "nuxt dev --host capim.local --https --ssl-cert ../capim.local.pem --ssl-key ../capim.local-key.pem",
     "lint": "eslint --cache --fix .",
     "lint-staged": "lint-staged",
-    "live-feedback": "npx nodemon --exec \"npm run check-types && npm run lint\" --ext js,json,ts,vue",
+    "live-feedback": "nodemon --exec \"pnpm run check-types && pnpm run lint\" --ext js,json,ts,vue",
     "local-client-to-remote-server-proxy": "node ./tools/local-client-to-remote-server-proxy/local-client-to-remote-server-proxy.js",
     "no-https": "nuxt dev",
     "postinstall": "nuxt prepare",
     "preview": "nuxt preview",
-    "start-using-https": "npm run https-dev",
-    "x": "npm run local-client-to-remote-server-proxy & npm run https-dev"
+    "start-using-https": "pnpm run https-dev",
+    "x": "pnpm run local-client-to-remote-server-proxy & pnpm run https-dev"
   },
   "type": "module",
   "version": "1.0.0"

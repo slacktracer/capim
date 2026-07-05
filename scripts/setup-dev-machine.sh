@@ -33,4 +33,4 @@ else
   sed -i 's#^NUXT_PUBLIC_BASE_URL=$#NUXT_PUBLIC_BASE_URL=https://capim.local:2099#' "$repo_root/main/.env"
 fi
 
-echo "==> Done. Run 'npm run x' from the repo root, then open https://capim.local:3000"
+echo "==> Done. Run 'pnpm run x' from the repo root, then open https://capim.local:3000"

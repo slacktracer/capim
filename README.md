@@ -32,8 +32,8 @@ Two top-level directories:
 
 ## Prerequisites
 
-- Node.js 18 (see `.node-version`)
-- npm
+- Node.js 22 (see `.node-version`)
+- pnpm via corepack: `corepack enable` (the exact version is pinned by the `packageManager` field in `package.json`)
 - [mkcert](https://github.com/FiloSottile/mkcert) — for locally-trusted HTTPS certificates on `capim.local`
 
 ## Setup
@@ -49,10 +49,10 @@ Safe to re-run — skips anything already in place. Otherwise, follow the manual
 1. Install dependencies from the root:
 
 ```sh
-npm install
+pnpm install
 ```
 
-This fans out to `main/` and `tests/`.
+The repo is a pnpm workspace — one install covers the root, `main/`, and `tests/`.
 
 2. Copy the example env file and set the API base URL:
 
@@ -89,7 +89,7 @@ The common workflow. No local denarii needed — a local proxy forwards API call
 Set `NUXT_PUBLIC_BASE_URL=https://capim.local:2099` in `main/.env`, then:
 
 ```sh
-npm run x
+pnpm run x
 ```
 
 This starts two processes in parallel:
@@ -104,7 +104,7 @@ Open `https://capim.local:3000` in the browser.
 When working on both sides at once. Run denarii locally (see the [denarii README](https://github.com/slacktracer/denarii/blob/main/README.md#backend-development-local-denarii-server)), set `NUXT_PUBLIC_BASE_URL=http://localhost:2099` in `main/.env`, then:
 
 ```sh
-npm start
+pnpm start
 ```
 
 This runs the Nuxt dev server on plain HTTP without the proxy. Note: denarii's `secret` cookie is not set over HTTP, but session auth via `connect.sid` still works.
@@ -112,18 +112,18 @@ This runs the Nuxt dev server on plain HTTP without the proxy. Note: denarii's `
 ## Build
 
 ```sh
-npm run build
+pnpm run build
 ```
 
-Runs `npm ci` and then `nuxt generate`, producing static files in `main/output/public`.
+Runs `pnpm install --frozen-lockfile` and then `nuxt generate`, producing static files in `main/.output/public`.
 
 ## Deploy
 
 ```sh
-npm run deploy
+pnpm run deploy
 ```
 
-Bumps the prerelease version (e.g. `v1.0.0-build.27`), commits, and pushes the tag. The tag triggers CircleCI, which lints and — on matching tags — hits the Render deploy webhook. Render serves the static build from `main/output/public` (see `render.yaml`).
+Bumps the prerelease version (e.g. `v1.0.0-build.27`), commits, and pushes the tag. The tag triggers CircleCI, which lints and — on matching tags — hits the Render deploy webhook. Render serves the static build from `main/.output/public` (see `render.yaml`).
 
 ## CI
 
@@ -138,12 +138,11 @@ CircleCI config lives at `.circleci/config.yml`:
 
 | Script | Purpose |
 |--------|---------|
-| `install` | Installs dependencies for both `main/` and `tests/` |
 | `start` | Runs the Nuxt dev server (plain HTTP, no proxy) |
 | `x` | Runs the HTTPS dev server and the local-to-remote proxy in parallel |
 | `s` | Runs just the HTTPS dev server |
 | `p` | Runs just the local-to-remote proxy |
-| `build` | `npm ci` + `nuxt generate` (static site) |
+| `build` | `pnpm install --frozen-lockfile` + `nuxt generate` (static site) |
 | `lint` | Lints `main/` and `tests/` |
 | `test` | Runs the test suite |
 | `lf` | Live feedback — watches files and runs type-check + lint on change |
