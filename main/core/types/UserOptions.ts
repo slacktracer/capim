@@ -2,8 +2,9 @@ export type UserOptions = {
   options: {
     operationList: {
       filters: {
-        account: string;
-        category: string;
+        account: string[];
+        category: string[];
+        group: string[];
       };
     };
   };
