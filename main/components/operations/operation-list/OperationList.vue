@@ -49,11 +49,11 @@ const operationsByDate = computed(() => {
 
 const defaults: { from?: string; to?: string } = {};
 
-if (!route.query.from) {
+if (route.query.from === undefined) {
   defaults.from = defaultDatetimeRange.from;
 }
 
-if (!route.query.to) {
+if (route.query.to === undefined) {
   defaults.to = defaultDatetimeRange.to;
 }
 

@@ -16,7 +16,7 @@ export const setSearchParams = ({
   const query: LocationQueryRaw = { ...currentRoute.query };
 
   for (const [key, value] of Object.entries(data)) {
-    query[key] = value || undefined;
+    query[key] = value;
   }
 
   router[replace ? "replace" : "push"]({
