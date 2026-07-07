@@ -4,8 +4,9 @@ export const defaultUserOptions: UserOptions = {
   options: {
     operationList: {
       filters: {
-        account: "",
-        category: "",
+        account: [],
+        category: [],
+        group: [],
       },
     },
   },

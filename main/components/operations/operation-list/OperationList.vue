@@ -11,6 +11,7 @@ import { setSearchParams } from "../../../modules/common/utils/set-search-params
 import { defaultDatetimeRange } from "../../../modules/operations/default-datetime-range.js";
 import { useOperationsStore } from "../../../modules/operations/use-operations-store.js";
 import type { TrackedPromiseOfOperations } from "../../../types/TrackedPromiseOfOperations.js";
+import MyMultiCombobox from "../../common/my-multi-combobox/MyMultiCombobox.vue";
 import PromiseState from "../../common/PromiseState.vue";
 import AddOperationToDate from "../AddOperationToDate.vue";
 import OperationListItem from "../OperationListItem.vue";
@@ -106,26 +107,96 @@ const dateTimeRangeBalance = computed(() => {
 
 const userOptions = core.getUserOptions();
 
-const selectedAccountName = ref(
-  userOptions.options.operationList.filters.account,
+const toSelectedOptions = (names: string[]) =>
+  names.map((name) => ({ label: name, value: name }));
+
+const selectedAccounts = ref(
+  toSelectedOptions(userOptions.options.operationList.filters.account),
 );
 
-const selectedCategoryName = ref(
-  userOptions.options.operationList.filters.category,
+const selectedCategories = ref(
+  toSelectedOptions(userOptions.options.operationList.filters.category),
 );
 
-watch([selectedAccountName, selectedCategoryName], () => {
-  core.setUserOptions({
-    options: {
-      operationList: {
-        filters: {
-          account: selectedAccountName.value,
-          category: selectedCategoryName.value,
+const selectedGroups = ref(
+  toSelectedOptions(userOptions.options.operationList.filters.group),
+);
+
+const accountOptions = computed(() => [...accountsStore.accounts.data]);
+
+const categoryOptions = computed(() => [...categoriesStore.categories.data]);
+
+const groupOptions = computed(() => {
+  const seenGroupNames = new Set<string>();
+
+  return categoriesStore.categories.data
+    .map((category) => category.group.name)
+    .filter((groupName) => {
+      if (seenGroupNames.has(groupName)) {
+        return false;
+      }
+
+      seenGroupNames.add(groupName);
+
+      return true;
+    })
+    .map((name) => ({ name }));
+});
+
+const filterByName = ({
+  options,
+  search: searchValue,
+}: {
+  options: Record<string, any>[];
+  search: string;
+}) =>
+  options.filter((option) =>
+    core.simplifyAndTestStringIncludesString(option.name, searchValue),
+  );
+
+const addOption = (
+  selectedOptions: { label: string; value: string }[],
+  option: { label: string; value: string },
+) => {
+  if (
+    !selectedOptions.some(
+      (selectedOption) => selectedOption.value === option.value,
+    )
+  ) {
+    selectedOptions.push(option);
+  }
+};
+
+const removeOption = (
+  selectedOptions: { label: string; value: string }[],
+  option: { label: string; value: string },
+) => {
+  const index = selectedOptions.findIndex(
+    (selectedOption) => selectedOption.value === option.value,
+  );
+
+  if (index !== -1) {
+    selectedOptions.splice(index, 1);
+  }
+};
+
+watch(
+  [selectedAccounts, selectedCategories, selectedGroups],
+  () => {
+    core.setUserOptions({
+      options: {
+        operationList: {
+          filters: {
+            account: selectedAccounts.value.map((option) => option.value),
+            category: selectedCategories.value.map((option) => option.value),
+            group: selectedGroups.value.map((option) => option.value),
+          },
         },
       },
-    },
-  });
-});
+    });
+  },
+  { deep: true },
+);
 
 const onCopyOperationsJSON = () => {
   navigator.clipboard.writeText(
@@ -140,15 +211,28 @@ const filterOperationsByDateByAccount = (operationsByDate) =>
     // @ts-expect-error
     const filtered = operations.filter((operation) => {
       if (
-        selectedAccountName.value &&
-        operation.account.name !== selectedAccountName.value
+        selectedAccounts.value.length &&
+        !selectedAccounts.value.some(
+          (option) => option.value === operation.account.name,
+        )
       ) {
         return false;
       }
 
       if (
-        selectedCategoryName.value &&
-        operation.category.name !== selectedCategoryName.value
+        selectedCategories.value.length &&
+        !selectedCategories.value.some(
+          (option) => option.value === operation.category.name,
+        )
+      ) {
+        return false;
+      }
+
+      if (
+        selectedGroups.value.length &&
+        !selectedGroups.value.some(
+          (option) => option.value === operation.category.group.name,
+        )
       ) {
         return false;
       }
@@ -188,27 +272,47 @@ const dateTimeRangeBalance = computed(() =>
     <div
       style="display: flex; flex-wrap: wrap; justify-content: center; gap: 1rem"
     >
-      <select v-model="selectedAccountName">
-        <option value="">None</option>
-        <option
-          v-for="account in accountsStore.accounts.data"
-          :key="account.accountID"
-          :value="account.name"
-        >
-          {{ account.name }}
-        </option>
-      </select>
+      <MyMultiCombobox
+        combobox-class="form-select"
+        :current-selected-options="selectedAccounts"
+        :filter="filterByName"
+        label="name"
+        listbox-class="border rounded"
+        name="account"
+        :options="accountOptions"
+        placeholder="Any account"
+        value="name"
+        @option-add="addOption(selectedAccounts, $event)"
+        @option-remove="removeOption(selectedAccounts, $event)"
+      />
 
-      <select v-model="selectedCategoryName">
-        <option value="">None</option>
-        <option
-          v-for="category in categoriesStore.categories.data"
-          :key="category.categoryID"
-          :value="category.name"
-        >
-          {{ category.name }}
-        </option>
-      </select>
+      <MyMultiCombobox
+        combobox-class="form-select"
+        :current-selected-options="selectedCategories"
+        :filter="filterByName"
+        label="name"
+        listbox-class="border rounded"
+        name="category"
+        :options="categoryOptions"
+        placeholder="Any category"
+        value="name"
+        @option-add="addOption(selectedCategories, $event)"
+        @option-remove="removeOption(selectedCategories, $event)"
+      />
+
+      <MyMultiCombobox
+        combobox-class="form-select"
+        :current-selected-options="selectedGroups"
+        :filter="filterByName"
+        label="name"
+        listbox-class="border rounded"
+        name="group"
+        :options="groupOptions"
+        placeholder="Any group"
+        value="name"
+        @option-add="addOption(selectedGroups, $event)"
+        @option-remove="removeOption(selectedGroups, $event)"
+      />
 
       <button class="btn btn-outline-secondary" @click="onCopyOperationsJSON">
         Copy operations JSON
