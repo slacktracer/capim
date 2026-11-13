@@ -38,7 +38,7 @@ Two top-level directories:
 
 ## Setup
 
-Steps 2-4 below (hosts file, mkcert, certs, `.env`) can be done in one shot on Fedora with:
+Steps 2-4 below (hosts file, mkcert, certs, `.env`) can be done in one shot on Fedora or openSUSE with:
 
 ```sh
 ./scripts/setup-dev-machine.sh

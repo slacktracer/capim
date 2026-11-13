@@ -11,10 +11,31 @@ else
 fi
 
 echo "==> mkcert"
+if command -v dnf &>/dev/null; then
+  install_packages() { sudo dnf install -y "$@"; }
+  nss_tools_package="nss-tools"
+elif command -v zypper &>/dev/null; then
+  install_packages() { sudo zypper --non-interactive install "$@"; }
+  nss_tools_package="mozilla-nss-tools"
+else
+  install_packages() {
+    echo "Unsupported package manager. Install these manually and re-run: $*" >&2
+    exit 1
+  }
+  nss_tools_package="nss-tools"
+fi
+
 if ! command -v mkcert &>/dev/null; then
-  sudo dnf install -y mkcert
+  install_packages mkcert
 else
   echo "mkcert already installed, skipping"
+fi
+
+# certutil lets mkcert add its CA to the Chrome/Firefox (NSS) trust stores
+if ! command -v certutil &>/dev/null; then
+  install_packages "$nss_tools_package"
+else
+  echo "certutil already installed, skipping"
 fi
 
 mkcert -install
