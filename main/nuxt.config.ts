@@ -42,5 +42,14 @@ export default defineNuxtConfig({
     define: {
       __VUE_OPTIONS_API__: false,
     },
+    optimizeDeps: {
+      include: [
+        "bootstrap",
+        "bootstrap/dist/js/bootstrap.esm.js",
+        "date-fns",
+        "ky",
+        "ramda",
+      ],
+    },
   },
 });
